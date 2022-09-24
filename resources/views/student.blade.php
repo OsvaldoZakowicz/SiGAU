@@ -1,9 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
+    {{-- <x-slot name="header">
         <h2 class="font-semibold text-l text-gray-800 leading-tight">
             {{ __('Students') }}
         </h2>
-    </x-slot>
+    </x-slot> --}}
 
 		<!-- vista de estudiantes -->
     <div class="py-12">
