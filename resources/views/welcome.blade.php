@@ -25,7 +25,7 @@
 							</a>
 					</div> --}}
 
-					<div class="flex justify-center items-center space-x-8 sm:-my-px sm:ml-10">
+					<div class="flex justify-center items-center space-x-8 sm:-my-px sm:ml-10 text-gray-600">
 						<h1>SiGAU</h1>
 					</div>
 

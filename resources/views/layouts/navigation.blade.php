@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+                        <h2 class="flex justify-center items-center space-x-8 sm:-my-px sm:ml-10 text-gray-600">SiGAU</h2>
                     </a>
                 </div>
 
