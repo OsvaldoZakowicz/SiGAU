@@ -7,6 +7,9 @@
                 <a href="/" class="underline text-sm text-gray-600 hover:text-gray-900">
                     {{__("Go Home")}}
                 </a>
+                <a href="/register" class="underline text-sm text-gray-600 hover:text-gray-900">
+                    {{__("Register")}}
+                </a>
             </div>
         </x-slot>
 
@@ -21,14 +24,19 @@
 
             <!-- Email Address -->
             <div>
-                <x-input-label for="email" :value="__('Email')" />
+                <x-required-input-label for="email" :value="__('Email')" 
+                                title="correo electrónico válido" />
 
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-text-input id="email" class="block mt-1 w-full" 
+                                type="email" name="email" 
+                                :value="old('email')" 
+                                required autofocus />
             </div>
 
             <!-- Password -->
             <div class="mt-4">
-                <x-input-label for="password" :value="__('Password')" />
+                <x-required-input-label for="password" :value="__('Password')"
+                                title="contraseña de su cuenta" />
 
                 <x-text-input id="password" class="block mt-1 w-full"
                                 type="password"
@@ -42,6 +50,11 @@
                     <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
                     <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
+            </div>
+
+            <!-- informacion -->
+            <div class="mt-4 mb-6 py-1 border-b border-gray-300">
+                <span class="block font-medium text-sm text-gray-600" >mantenga el cursor sobre el icono <i class="fa-solid fa-circle-info"></i> para mas informacion.</span>
             </div>
 
             <div class="flex items-center justify-end mt-4">

@@ -7,7 +7,7 @@
 
     <!-- vista dashboard de administracion -->
     <div class="w-100vw h-screen flex flex-row">
-        <aside class="flex-none w-1/6 p-2 bg-gray-400 border-r-2 border-gray-200">
+        <aside class="flex-none w-1/6 p-2 bg-gray-200 border-r-2 border-gray-200">
             <h2 class="uppercase text-sm text-gray-500">Secciones Principales</h2>
             <!-- lista de enlaces de navegacion -->
             <!-- BECA -->

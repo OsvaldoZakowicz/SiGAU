@@ -23,9 +23,17 @@
 
             <!-- Email Address -->
             <div>
-                <x-input-label for="email" :value="__('Email')" />
+                <x-required-input-label for="email" :value="__('Email')"
+                                title="ingrese el correo electrónico con el que había creado cuenta"/>
 
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-text-input id="email" class="block mt-1 w-full" 
+                                type="email" name="email" 
+                                :value="old('email')" required autofocus />
+            </div>
+
+            <!-- informacion -->
+            <div class="mt-4 mb-6 py-1 border-b border-gray-300">
+                <span class="block font-medium text-sm text-gray-600" >mantenga el cursor sobre el icono <i class="fa-solid fa-circle-info"></i> para mas informacion.</span>
             </div>
 
             <div class="flex items-center justify-end mt-4">

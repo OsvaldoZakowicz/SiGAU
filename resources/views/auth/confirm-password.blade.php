@@ -18,7 +18,9 @@
 
             <!-- Password -->
             <div>
-                <x-input-label for="password" :value="__('Password')" />
+                {{-- <x-input-label for="password" :value="__('Password')" /> --}}
+                <x-required-input-label for="password" :value="__('Password')"
+                                title="ingrese su contraseña para esta sesion"/>
 
                 <x-text-input id="password" class="block mt-1 w-full"
                                 type="password"

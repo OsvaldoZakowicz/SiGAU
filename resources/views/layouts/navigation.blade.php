@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="mb-1 bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="mb-1 bg-gray-200 border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="w-100vw mx-2 px-2 sm:px-6 lg:px-4">
         <div class="flex justify-between h-12">
@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <h2 class="flex justify-center items-center space-x-8 sm:-my-px sm:ml-10 text-gray-600">SiGAU</h2>
+                        <h2 class="flex justify-center items-center space-x-8 sm:-my-px sm:ml-2 text-gray-600">SiGAU</h2>
                     </a>
                 </div>
 
