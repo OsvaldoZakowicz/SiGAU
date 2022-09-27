@@ -1,9 +1,11 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
+            <div class="flex flex-col items-center justify-center">
+                <h2 class="text-gray-800 text-xl font-semibold">SiGAU</h2>
+                <span class="text-gray-600 text-base uppercase">{{__('Reset Password')}}</span>
+                <span class="text-gray-600 text-base">Escriba una nueva contraseña para su cuenta.</span>
+            </div>
         </x-slot>
 
         <!-- Validation Errors -->

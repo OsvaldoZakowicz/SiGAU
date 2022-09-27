@@ -17,12 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//el acceso debe pasar por el middleware auth y verified
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
+//el acceso debe pasar por el middleware auth y verified
 Route::get('/student', function () {
     return view('student');
-})->middleware(['auth'])->name('student');
+})->middleware(['auth', 'verified'])->name('student');
 
 require __DIR__.'/auth.php';
