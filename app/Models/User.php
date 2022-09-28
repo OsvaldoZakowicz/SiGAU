@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+//para el paquete roles y permisos
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * *Verificacion de email:
@@ -20,6 +22,8 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
+    //para el paquete roles y permisos
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
