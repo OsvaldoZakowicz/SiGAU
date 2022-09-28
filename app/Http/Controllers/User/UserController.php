@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+//necesito el modelo User
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -14,7 +16,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        //obtener todos
+        //$users = User::all();
+        $users = User::paginate();
+        return view('users.index', compact('users'));
     }
 
     /**
