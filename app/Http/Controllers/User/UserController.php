@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 //necesito el modelo User
 use App\Models\User;
+//necesito el modelo Role
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -45,24 +47,26 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * getRoleNames() retorna una coleccion de items clave => valor
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        //roles del usuario
+        $rolesAsignados = $user->getRoleNames();
+        return view('users.show', compact('user','rolesAsignados'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * getRoleNames() retorna una coleccion de items clave => valor
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -72,9 +76,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $user)
     {
-        //
+        return $request;
     }
 
     /**
