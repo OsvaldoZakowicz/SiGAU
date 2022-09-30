@@ -19,11 +19,11 @@ class UserSeeder extends Seeder
     {
         //*crear un administrador por defecto
         //NOTA: debe tener email valido
-        $adminDefault = User::create([
-            'name' => 'admin',
+        User::create([
+            'name' => 'super admin',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'password' => bcrypt('12345678')
-        ])->assignRole('administrador');
+        ]);
     }
 }

@@ -171,7 +171,7 @@
                                 </div>
                             </x-aside-dropdown-link>
                             <!-- enlace roles -->
-                            <x-aside-dropdown-link :href="route('dashboard')">
+                            <x-aside-dropdown-link :href="route('roles.index')">
                                 <div class="w-full flex flex-row items-center justify-start">
                                     <div class="w-7 h-full flex items-center justify-center">
                                         <i class="fa-solid fa-user-shield"></i>

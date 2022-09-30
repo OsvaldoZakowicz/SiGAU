@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +29,12 @@ Route::get('/student', function () {
     return view('student');
 })->middleware(['auth', 'verified'])->name('student');
 
-//*controlador de recursos User
-Route::resource('users', UserController::class)->names('users');
+//rutas recursos
+Route::middleware(['auth'])->group(function () {
+    //*controlador de recursos User
+    Route::resource('users', UserController::class)->names('users');
+    Route::resource('roles', RoleController::class)->names('roles');
+});
 
 //*rutas auth
 require __DIR__.'/auth.php';

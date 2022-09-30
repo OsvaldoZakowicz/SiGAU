@@ -31,16 +31,5 @@ class RoleSeeder extends Seeder
         $becado = Role::create(['name' => 'becado']);
         $delegado = Role::create(['name' => 'delegado']);
 
-        //*permisos a roles del sistema
-
-        //acceso al panel administrativo
-        $permisoDashboard = Permission::create(['name' => 'dashboard'])
-            ->syncRoles($administrador, $auditor, $encargadoAlbergue, $secretarioGeneral);
-
-        //*permisos a roles del dominio
-
-        //acceso a vistas de estudiante
-        $permisoStudent = Permission::create(['name' => 'student'])
-            ->syncRoles($estudiante);
     }
 }
