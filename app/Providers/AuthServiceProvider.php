@@ -27,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
 
         //*definimos superusuario al usuario con email 'admin@gmail.com'
         Gate::before(function($user, $ability) {
-            return $user->email == 'admin@gmail.com' ?? null;
+            return $user->email == 'admin@admin.com' ?? null;
         });
 
     }
