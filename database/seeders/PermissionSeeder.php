@@ -16,6 +16,29 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $permisos = [
+
+            //rutas iniciales
+            'ver-pagina-estudiante',
+            'ver-pagina-dashboard',
+            
+
+            //tabla usuarios
+            'ver-usuario',
+            'crear-usuario',
+            'editar-usuario',
+            'borrar-usuario',
+
+            //tabla roles
+            'ver-rol',
+            'crear-rol',
+            'editar-rol',
+            'borrar-rol',
+
+        ];
+
+        foreach ($permisos as $permiso) {
+            Permission::create(['name' => $permiso]);
+        }
     }
 }
