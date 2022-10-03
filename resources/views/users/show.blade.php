@@ -4,9 +4,9 @@
         <div class="mx-2 flex flex-col items-start justify-start">
             <h3 class="text-base text-zinc-800 capitalize">usuarios: ver usuario</h3>
             <div class="w-full flex items-center justify-end">
-                <x-buttons.button-link-zinc href="{{route('users.edit', $user)}}" class="mr-2">
+                <x-buttons.button-link-zinc href="{{route('users.edit', $user->id)}}" class="mr-2">
                     <i class="fa-solid fa-user-shield mr-1"></i>
-                    <span>editar/asignar rol</span>
+                    <span>asignar rol</span>
                 </x-button-link-zinc>
                 <x-buttons.button-link-red href="#">
                     <i class="fa-solid fa-lock mr-1"></i>
@@ -34,6 +34,8 @@
                         @foreach ($rolesAsignados as $role)
                             <span class="bg-green-300 px-1 text-zinc-600">{{$role}}</span>
                         @endforeach
+                    @elseif ($user->email === "admin@admin.com")
+                        <span class="bg-red-300 px-1 text-zinc-600">super administrador</span>
                     @else
                         <span class="text-red-600">sin roles</span>
                     @endif

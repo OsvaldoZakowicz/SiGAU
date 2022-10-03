@@ -2,58 +2,67 @@
 @section('dashboard-content')
     <div class="w-full h-max flex flex-col p-1">
         <div class="mx-2 flex flex-col items-start justify-start">
-            <h3 class="text-base text-zinc-800 capitalize">usuarios: editar / asignar rol al usuario</h3>
+            <h3 class="text-base text-zinc-800 capitalize">usuarios: asignar rol al usuario</h3>
         </div>
     </div>
     <div class="my-2 mx-auto w-1/2 border border-zinc-200">
         {{-- errores --}}
 
         {{-- formulario --}}
-        {!! Form::model($user, ['method' => 'PUT', 'route' => ['users.update',$user]]) !!}
-        <div class="flex">
-            {{-- nombre de usuario --}}
-            <div class="">
-                <x-required-input-label for="name" :value="__('User Name')" title="ingrese un nombre de usuario o nickname" />
-                {!! Form::text('name', null, ['class' => 'block mt-1 w-full']) !!}
+        {!! Form::model($user, ['method' => 'PUT', 'route' => ['users.update',$user->id]]) !!}
+        <div class="flex flex-col items-center justify-center">
+            <div class="flex items-center justify-between w-full mt-2 p-2">
+                {{-- nombre de usuario --}}
+                <div class="w-1/2">
+                    <x-required-input-label for="name" :value="__('User Name')" title="ingrese un nombre de usuario o nickname" />
+                    {!! Form::text('name', null, ['class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
+                </div>
+                {{-- email --}}
+                <div class="w-1/2 ml-1">
+                    <x-required-input-label for="email" :value="__('Email')"
+                        title="ingrese un correo electrónico válido, ejemplo: micorreo@gmail.com" />
+                    {!! Form::email('email', null, ['class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
+                </div>
             </div>
-            {{-- email --}}
-            <div class="">
-                <x-required-input-label for="email" :value="__('Email')"
-                    title="ingrese un correo electrónico válido, ejemplo: micorreo@gmail.com" />
-                {!! Form::email('email', null, ['class' => 'block mt-1 w-full']) !!}
+            <div class="flex items-center justify-between w-full mt-2 p-2">
+                {{-- password --}}
+                <div class="w-1/2">
+                    <x-required-input-label for="password" :value="__('Password')"
+                        title="ingrese una contraseña con minimo 8 caracteres" />
+                    {!! Form::password('password', ['class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
+                </div>
+                {{-- confirm password --}}
+                <div class="w-1/2 ml-1">
+                    <x-required-input-label for="confirm-password" :value="__('Confirm Password')"
+                        title="repita la misma contraseña que ingresó" />
+                    {!! Form::password('confirm-password', ['class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
+                </div>
             </div>
-        </div>
-        <div class="flex">
-            {{-- password --}}
-            <div class="">
-                <x-required-input-label for="password" :value="__('Password')"
-                    title="ingrese una contraseña con minimo 8 caracteres" />
-                {!! Form::password('password', ['class' => 'block mt-1 w-full']) !!}
+            <div class="flex items-center justify-start w-full mt-2 p-2">
+                {{-- roles --}}
+                <div class="w-1/2">
+                    <x-required-input-label for="roles" :value="'Seleccione rol'" 
+                        title="Elija el rol que cumplirá esta cuenta"/>
+                    {!! Form::select('roles[]', $roles, $userRoles, ['class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
+                </div>
             </div>
-            {{-- confirm password --}}
-            <div class="">
-                <x-required-input-label for="confirm-password" :value="__('Confirm Password')"
-                    title="repita la misma contraseña que ingresó" />
-                {!! Form::password('confirm-password', ['class' => 'block mt-1 w-full']) !!}
-            </div>
-        </div>
-        <div class="flex">
-            {{-- roles --}}
-            <div class="mt-4">
-                <x-required-input-label for="roles" :value="'Seleccione rol'" />
-                {!! Form::select('roles[]', $roles, [], ['class' => 'block mt-1 w-full']) !!}
-            </div>
-        </div>
-        {{-- informacion --}}
-        <div class="mt-4 mb-6 py-1 border-b border-gray-300">
-            <span class="block font-medium text-sm text-gray-600">mantenga el cursor sobre el icono <i
+            {{-- informacion --}}
+            <div class="w-full mt-2 p-2 border-b border-zinc-300">
+                <span class="block font-medium text-sm text-gray-600">mantenga el cursor sobre el icono <i
                     class="fa-solid fa-circle-info"></i> para mas informacion.</span>
-        </div>
-        {{-- submit --}}
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button class="ml-4">
-                Guardar
-            </x-primary-button>
+                <span class="block font-medium text-sm text-red-600">AVISO! deje los campos de contraseña vacios, para que la cuenta mantenga la misma. O cambie la contraseña definiendo una nueva!</span>
+            </div>
+            {{-- buttons --}}
+            <div class="w-full p-2 flex items-center justify-end">
+                <x-buttons.button-link-zinc-light href="{{route('users.index')}}" class="mr-2">
+                    <i class="fa-solid fa-ban mr-1"></i>
+                    <span>cancelar</span>
+                </x-buttons.button-link-zinc-light>
+                <x-buttons.button-submit-green>
+                    <i class="fa-solid fa-floppy-disk mr-1"></i>
+                    <span>guardar</span>
+                </x-buttons.button-submit-green>
+            </div>
         </div>
         {!! Form::close() !!}
     </div>
