@@ -13,7 +13,16 @@ use Illuminate\Support\Facades\DB;
 class RoleController extends Controller
 {
 
-    //TODO: constructor con middleware permission
+    //* controlador protegido por middleware
+    //middleware permission configurado en kernel.php
+
+    function __construct()
+    {
+        $this->middleware('permission: ver-rol | crear-rol | editar-rol | borrar-rol',['only' => ['index']]);
+        $this->middleware('permission: crear-rol',['only' => ['create','store']]);
+        $this->middleware('permission: editar-rol',['only' => ['edit','update']]);
+        $this->middleware('permission: borrar-rol',['only' => ['destroy']]);
+    }
 
     /**
      * Display a listing of the resource.
@@ -46,12 +55,14 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:roles,name',
             'permission' => 'required'
         ]);
 
         $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permissions'));
+        //syncPermissions() es un metodo para sincronizar permisos a un usuario, o rol
+        //quita todos los permisos y concede los proporcionados en el request permission
+        $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index');
     }
@@ -64,7 +75,18 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+        $role = Role::find($id);
+
+        /* $rolePermissions = DB::table('role_has_permissions')
+            ->where('role_has_permissions.role_id', $id)
+            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+            ->all(); */
+        
+        $rolePermissions = $role->permissions->pluck('name');
+
+        //dd($rolePermissions);
+
+        return view('roles.show', compact('role','rolePermissions'));
     }
 
     /**
@@ -77,6 +99,7 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         $permission = Permission::get();
+        //permisos del rol
         $rolePermissions = DB::table('role_has_permissions')
             ->where('role_has_permissions.role_id', $id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
@@ -102,19 +125,24 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role->name = $request->input('name');
         $role->save();
-        $role->syncPermissions($request->input('permissions'));
+
+        //sincronizar permisos
+        $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     *  
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
+        //TODO: No borrar roles que estan asignados a usuarios
+        //TODO: ERROR al intentar borrar!!
+
         DB::table('roles')->where('id', $id)->delete();
         return redirect()->route('roles.index');
     }
