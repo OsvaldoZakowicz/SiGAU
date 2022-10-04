@@ -122,18 +122,14 @@
                     <x-aside-dropdown align="left" width="48">
                         <!-- slot trigger contiene el boton que dispara el dropdown -->
                         <x-slot name="trigger">
-                            <button
-                                class="w-full flex items-center justify-between text-md font-medium text-gray-800 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                            <x-aside-dropdown-button>
                                 <div class="w-full flex flex-row items-center justify-start">
                                     <div class="w-7 h-full flex items-center justify-center">
                                         <i class="fa-solid fa-screwdriver-wrench"></i>
                                     </div>
                                     <span>Mantenimiento</span>
                                 </div>
-                                <div class="ml-1">
-                                    <i class="fa-solid fa-caret-down"></i>
-                                </div>
-                            </button>
+                            </x-aside-dropdown-button>
                         </x-slot>
                         <!-- slot content, mostrara los enlaces del dropdown -->
                         <x-slot name="content">
