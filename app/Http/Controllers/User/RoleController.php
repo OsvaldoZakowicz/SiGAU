@@ -25,8 +25,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
+     * Mostrar lista de roles.
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -36,30 +35,35 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Mostrar formulario de creacion de roles.
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $permission = Permission::get();
+        //obtengo permisos aplicables solo a administradores
+        $permission = Permission::where('asignable_to','administrador')->get();
         return view('roles.create', compact('permission'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Guardar rol.
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:roles,name',
+            'name' => 'required|max:65|unique:roles,name',
+            'description' => 'required|max:125',
             'permission' => 'required'
         ]);
 
-        $role = Role::create(['name' => $request->input('name')]);
+        $role = Role::create([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'visibility' => 'readwrite'
+        ]);
+
         //syncPermissions() es un metodo para sincronizar permisos a un usuario, o rol
         //quita todos los permisos y concede los proporcionados en el request permission
         $role->syncPermissions($request->input('permission'));
@@ -68,37 +72,29 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
+     * Mostrar rol.
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $role = Role::find($id);
-
-        /* $rolePermissions = DB::table('role_has_permissions')
-            ->where('role_has_permissions.role_id', $id)
-            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
-            ->all(); */
-        
+        //permisos del rol
         $rolePermissions = $role->permissions->pluck('name');
-
-        //dd($rolePermissions);
 
         return view('roles.show', compact('role','rolePermissions'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
+     * Editar rol.
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $role = Role::find($id);
-        $permission = Permission::get();
+        //obtengo permisos aplicables solo a administradores
+        $permission = Permission::where('asignable_to','administrador')->get();
         //permisos del rol
         $rolePermissions = DB::table('role_has_permissions')
             ->where('role_has_permissions.role_id', $id)
@@ -109,8 +105,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
+     * Modificar rol.
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -118,12 +113,15 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|max:65',
+            'description' => 'required|max:125',
             'permission' => 'required'
         ]);
 
         $role = Role::find($id);
         $role->name = $request->input('name');
+        $role->description = $request->input('description');
+        $role->visibility = 'readwrite';
         $role->save();
 
         //sincronizar permisos
@@ -133,8 +131,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *  
+     * Eliminar rol. 
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

@@ -17,6 +17,11 @@
             <tr>
                 <x-tables.th-cell>id</x-tables.th-cell>
                 <x-tables.th-cell>nombre</x-tables.th-cell>
+                <x-tables.th-cell>descripcion</x-tables.th-cell>
+                <x-tables.th-cell title="readonly: es un rol no editable, readwrite: rol editable">
+                    <span>visibilidad</span>
+                    <i class="fa-solid fa-circle-info ml-1"></i>
+                </x-tables.th-cell>
                 <x-tables.th-cell>acciones</x-tables.th-cell>
             </tr>
         </thead>
@@ -26,6 +31,14 @@
                     <tr class="text-sm text-zinc-800">
                         <x-tables.td-cell>{{$role->id}}</x-tables.td-cell>
                         <x-tables.td-cell>{{$role->name}}</x-tables.td-cell>
+                        <x-tables.td-cell>{{$role->description}}</x-tables.td-cell>
+                        <x-tables.td-cell>
+                            @if ($role->visibility === "readonly")
+                                <span class="bg-red-300 text-zinc-600">{{$role->visibility}}</span>
+                            @else
+                                <span class="bg-green-300 text-zinc-600">{{$role->visibility}}</span>
+                            @endif
+                        </x-tables.td-cell>
                         <x-tables.td-cell>
                             <a href="{{route('roles.show', $role->id)}}" class="mr-1 text-xs uppercase hover:text-sky-500">
                                 <i class="fa-solid fa-eye"></i>

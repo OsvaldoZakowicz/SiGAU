@@ -15,6 +15,11 @@
                     <x-required-input-label for="name" :value="'nombre del rol'" title="ingrese el nombre del rol a crear" />
                     {!! Form::text('name', null, ['class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
                 </div>
+                {{-- descripcion --}}
+                <div class="w-full mt-2 p-2">
+                    <x-required-input-label for="description" :value="'descripcion del rol'" title="ingrese una breve descripcion del rol a crear" />
+                    {!! Form::text('description', null, ['class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
+                </div>
                 {{-- permisos --}}
                 <div class="w-full mt-2 p-2">
                     <x-required-input-label for="" :value="'seleccione los permisos'"
