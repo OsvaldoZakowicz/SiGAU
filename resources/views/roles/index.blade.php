@@ -41,8 +41,9 @@
             @endif
         </tbody>
     </table>
+    {{-- paginacion --}}
     <div class="mx-2">
-        <p>paginacion aqui!</p>
+        {{$roles->links()}}
     </div>
 </div>
 @endsection

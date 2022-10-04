@@ -38,8 +38,9 @@
             @endforeach
         </tbody>
     </table>
+    {{-- paginacion --}}
     <div class="mx-2">
-        <p>paginacion aqui!</p>
+        {{$users->links()}}
     </div>
 </div>
 @endsection
