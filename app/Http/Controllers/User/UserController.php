@@ -14,6 +14,18 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+
+    //* controlador protegido por middleware
+    //middleware permission configurado en kernel.php
+
+    function __construct()
+    {
+        $this->middleware('permission:ver-usuario|crear-usuario|editar-usuario|borrar-usuario',['only' => ['index']]);
+        $this->middleware('permission:crear-usuario',['only' => ['create','store']]);
+        $this->middleware('permission:editar-usuario',['only' => ['edit','update']]);
+        $this->middleware('permission:borrar-usuario',['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
