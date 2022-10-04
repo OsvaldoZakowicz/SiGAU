@@ -16,29 +16,41 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        $permisos = [
 
-            //rutas iniciales
-            'ver-pagina-estudiante',
-            'ver-pagina-dashboard',
-            
+        /**
+         * *estudiante: engloba permisos asigables a los roles estudiante, becado, delegado
+         * *administrador: engloba permisos asignables a los roles administrador, auditor, secretarios, encargados
+         * y otros roles definidos por un administrador.
+         */
 
-            //tabla usuarios
-            'ver-usuario',
-            'crear-usuario',
-            'editar-usuario',
-            'borrar-usuario',
+        /**
+         * *Permisos sobre rutas iniciales
+         */
+        Permission::create(['name' => 'ver-pagina-estudiante','asignable_to' => 'estudiante']);
+        Permission::create(['name' => 'ver-pagina-dashboard','asignable_to' => 'administrador']);
 
-            //tabla roles
-            'ver-rol',
-            'crear-rol',
-            'editar-rol',
-            'borrar-rol',
+        Permission::create(['name' => 'ver-seccion-beca','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'ver-seccion-becados','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'ver-seccion-casas','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'ver-seccion-planificaciones','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'ver-seccion-mantenimiento','asignable_to' => 'administrador']);
 
-        ];
+        Permission::create(['name' => 'ver-seccion-usuarios','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'ver-seccion-auditoria','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'ver-seccion-parametros','asignable_to' => 'administrador']);
 
-        foreach ($permisos as $permiso) {
-            Permission::create(['name' => $permiso]);
-        }
+        /**
+         * *Permisos sobre roles y usuarios
+         */
+        Permission::create(['name' => 'ver-usuario','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'crear-usuario','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'editar-usuario','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'borrar-usuario','asignable_to' => 'administrador']);
+
+        Permission::create(['name' => 'ver-rol','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'crear-rol','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'editar-rol','asignable_to' => 'administrador']);
+        Permission::create(['name' => 'borrar-rol','asignable_to' => 'administrador']);
+
     }
 }
