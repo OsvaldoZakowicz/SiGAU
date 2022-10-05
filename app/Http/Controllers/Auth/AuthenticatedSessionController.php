@@ -49,6 +49,11 @@ class AuthenticatedSessionController extends Controller
         //rol
         $userRol = $user->getRoleNames(); //$userRol[0] trae el nombre
 
+        //si es superadmin
+        if ($user->email === "admin@admin.com") {
+            return redirect()->route('dashboard');
+        };
+
         //segun el rol
         if ($userRol[0] === "estudiante" || $userRol[0] === "becado" || $userRol === "delegado") {
             //redirigir a student
