@@ -15,21 +15,24 @@ use App\Http\Controllers\User\RoleController;
 |
 */
 
+//*vista publica
 Route::get('/', function () {
     return view('welcome');
 });
 
-//el acceso debe pasar por el middleware auth y verified
+//*el acceso debe pasar por el middleware auth, verified, permission
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'permission:ver-pagina-dashboard'])->name('dashboard');
 
-//el acceso debe pasar por el middleware auth y verified
+
+//*el acceso debe pasar por el middleware auth, verified, role
 Route::get('/student', function () {
     return view('student');
-})->middleware(['auth', 'verified'])->name('student');
+})->middleware(['auth', 'verified', 'role:estudiante|becado|delegado'])->name('student');
 
-//rutas recursos
+
+//*rutas recursos, middleware en los controladores
 Route::middleware(['auth'])->group(function () {
     //*controlador de recursos User
     Route::resource('users', UserController::class)->names('users');

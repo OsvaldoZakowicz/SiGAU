@@ -11,18 +11,22 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <!-- link a vista para estudiantes -->
-                    <x-nav-link :href="route('student')" :active="request()->routeIs('student')">
-                        {{ __('Students') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <!-- link a vista para otros roles -->
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+                @can('ver-pagina-estudiantes')
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <!-- link a vista para estudiantes -->
+                        <x-nav-link :href="route('student')" :active="request()->routeIs('student')">
+                            {{ __('Students') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+                @can('ver-pagina-dashboard')
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <!-- link a vista para otros roles -->
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
             </div>
 
             <!-- Settings Dropdown -->
@@ -45,14 +49,24 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <!-- Authentication -->
+                        {{-- rol --}}
+                        <span>
+                            {{Auth()->user()->getRolenames()}}
+                        </span>
+                        {{-- perfil  --}}
+                        <x-dropdown-link href="#">
+                            <i class="fa-solid fa-address-card mr-1"></i>
+                            <span>Mi perfil</span>
+                        </x-dropdown-link>
+                        {{-- cerrar sesion --}}
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault();
-																this.closest('form').submit();">
-                                {{ __('Log Out') }}
+								this.closest('form').submit();">
+                                <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i>
+                                <span>{{ __('Log Out') }}</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -77,18 +91,22 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <!-- link responsivo a vista para estudiantes -->
-            <x-responsive-nav-link :href="route('student')" :active="request()->routeIs('student')">
-                {{ __('Student') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2 pb-3 space-y-1">
-            <!-- link responsivo a vista para otros roles -->
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
+        @can('ver-pagina-estudiante')
+            <div class="pt-2 pb-3 space-y-1">
+                <!-- link responsivo a vista para estudiantes -->
+                <x-responsive-nav-link :href="route('student')" :active="request()->routeIs('student')">
+                    {{ __('Student') }}
+                </x-responsive-nav-link>
+            </div>
+        @endcan
+        @can('ver-pagina-dashboard')
+            <div class="pt-2 pb-3 space-y-1">
+                <!-- link responsivo a vista para otros roles -->
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            </div>
+        @endcan
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-zinc-200">
@@ -98,14 +116,19 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <!-- Authentication -->
+                {{-- perfil --}}
+                <x-responsive-nav-link href="#">
+                    <i class="fa-solid fa-address-card mr-1"></i>
+                    <span>Mi perfil</span>
+                </x-responsive-nav-link>
+                {{-- cerrar sesion --}}
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault();
-														this.closest('form').submit();">
-                        {{ __('Log Out') }}
+						this.closest('form').submit();">
+                        <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i>
+                        <span>{{ __('Log Out') }}</span>
                     </x-responsive-nav-link>
                 </form>
             </div>

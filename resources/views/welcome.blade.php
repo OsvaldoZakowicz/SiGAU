@@ -25,14 +25,29 @@
                 <!-- Navigation Links -->
                 @if (Route::has('login'))
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
+                        {{-- si estoy en 'welcome' y autenticado --}}
                         @auth
+                            @can('ver-pagina-estudiante')
+                                <x-nav-link :href="route('student')" :active="request()->routeIs('student')">
+                                    {{ __('Students')}}
+                                </x-nav-link>
+                            @endcan
+                            @can('ver-pagina-dashboard')
                             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                                 {{ __('Dashboard') }}
                             </x-nav-link>
+                            @endcan
                         @else
-                            <x-nav-link :href="route('login')">{{ __('Log in') }}</x-nav-link>
+                        {{-- si estoy en 'welcome' sin autenticar --}}
+                            <x-nav-link :href="route('login')">
+                                <i class="fa-solid fa-arrow-right-to-bracket mr-1"></i>
+                                <span>{{ __('Log in') }}</span>
+                            </x-nav-link>
                             @if (Route::has('register'))
-                                <x-nav-link :href="route('register')">{{ __('Register') }}</x-nav-link>
+                                <x-nav-link :href="route('register')">
+                                    <i class="fa-solid fa-user-pen mr-1"></i>
+                                    <span>{{ __('Register') }}</span>
+                                </x-nav-link>
                             @endif
                         @endauth
                     </div>
