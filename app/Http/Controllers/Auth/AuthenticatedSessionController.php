@@ -7,6 +7,10 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -32,7 +36,29 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        /**
+         * *redireccion segun el email del login
+         * - capturar id de usuario Auth()->user()->id,
+         * por que ya esta autenticado a este punto
+         */
+        
+        //id
+        $id = Auth()->user()->id;
+        //usuario
+        $user = User::find($id);
+        //rol
+        $userRol = $user->getRoleNames(); //$userRol[0] trae el nombre
+
+        //segun el rol
+        if ($userRol[0] === "estudiante" || $userRol[0] === "becado" || $userRol === "delegado") {
+            //redirigir a student
+            return redirect()->route('student');
+        } else {
+            //redirigir a dashboard
+            return redirect()->route('dashboard');
+        }
+
+        //return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

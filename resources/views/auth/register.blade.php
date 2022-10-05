@@ -3,7 +3,7 @@
         <x-slot name="logo">
             <div class="flex flex-col items-center justify-center">
                 <h2 class="text-gray-800 text-xl font-semibold">SiGAU</h2>
-                <span class="text-gray-600 text-base uppercase">{{__('Register')}}</span>
+                <span class="text-gray-600 text-base uppercase">registrarse como estudiante</span>
                 <a href="/" class="underline text-sm text-gray-600 hover:text-gray-900">{{__('Go Home')}}</a>
             </div>
         </x-slot>
