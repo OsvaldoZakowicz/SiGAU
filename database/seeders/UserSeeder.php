@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         //administrador base
         User::create([
             'name' => 'jose',
-            'email' => 'jose@gmail.com',
+            'email' => 'administrador@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('administrador');
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
         //auditor
         User::create([
             'name' => 'maria',
-            'email' => 'maria@gmail.com',
+            'email' => 'auditor@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('auditor');
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
         //encargado de albergues
         User::create([
             'name' => 'pepe',
-            'email' => 'pepe@gmail.com',
+            'email' => 'encargado@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('encargado albergues');
@@ -56,7 +56,7 @@ class UserSeeder extends Seeder
         //secretario general
         User::create([
             'name' => 'miranda',
-            'email' => 'miranda@gmail.com',
+            'email' => 'secretario@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('secretario general');
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
         //estudiante
         User::create([
             'name' => 'carlos',
-            'email' => 'carlos@gmail.com',
+            'email' => 'estudiante@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('estudiante');
@@ -72,7 +72,7 @@ class UserSeeder extends Seeder
         //becado
         User::create([
             'name' => 'laura',
-            'email' => 'laura@gmail.com',
+            'email' => 'becado@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('becado');
@@ -80,7 +80,7 @@ class UserSeeder extends Seeder
         //delegado
         User::create([
             'name' => 'osvaldo',
-            'email' => 'osvaldo@gmail.com',
+            'email' => 'delegado@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('delegado');
