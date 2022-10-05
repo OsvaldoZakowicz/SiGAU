@@ -27,41 +27,59 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
+     * Listar usuarios.
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //TODO no retornar usuarios con rol becado o estudiante
 
-        $users = User::paginate(15);
+        /**
+         * *NOTA: el superadmin se crea por seeder, no tiene rol como tal,
+         * por ello no es tomado en el join multiple.
+         * !cuidado al cambiar el join por otra consulta, el super admin sera listado
+         */
+
+        //usuarios sin rol de becado, estudiante o delegado, ordenado por fecha de creacion mas reciente  
+        $users = DB::table('users')
+            ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+            ->join('roles','model_has_roles.role_id','=','roles.id')
+            ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name')
+            ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+            ->orderBy('users.created_at','desc')
+            ->paginate(15);
+
         return view('users.index', compact('users'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Crear usuario
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //TODO no retornar roles de becado y estudiante
-
         //roles para un usuario
-        $roles = Role::pluck('name','name')->all();
+        //$roles = Role::pluck('name','name')->all();
+
+        //roles disponibles para usuarios internos
+        $roles = DB::table('roles')
+            ->whereNotIn('name',['estudiante','becado','delegado'])
+            ->pluck('name','name')
+            ->all();
+
         return view('users.create', compact('roles'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Guardar usuario.
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //TODO verificar email de forma automatica
+        /**
+         * *NOTA: la verificacion de correo se solicitara
+         * al primer inicio de sesion.
+         */
 
         $this->validate($request, [
             'name' => 'required',
@@ -73,7 +91,12 @@ class UserController extends Controller
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
 
-        $user = User::create($input);
+        $user = User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'password' => $input['password']
+        ]);
+
         //en $request se recibe un solo rol
         $user->assignRole($request->input('roles'));
 
@@ -81,32 +104,34 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar usuario.
      * getRoleNames() retorna una coleccion de items clave => valor
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
+        $user = User::find($id);
         //roles del usuario
         $rolesAsignados = $user->getRoleNames();
         return view('users.show', compact('user','rolesAsignados'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Editar usuario.
      * getRoleNames() retorna una coleccion de items clave => valor
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //TODO no se puede editar al superadministrador
-        //TODO no retornar roles de becado y estudiante
 
         $user = User::find($id);
         //roles
-        $roles = Role::pluck('name','name')->all();
+        $roles = DB::table('roles')
+            ->whereNotIn('name',['estudiante','becado','delegado'])
+            ->pluck('name','name')
+            ->all();
         //roles del usuario
         $userRoles = $user->roles->pluck('name','name')->all();
 
@@ -114,8 +139,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
+     * Modificar usuario.
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response

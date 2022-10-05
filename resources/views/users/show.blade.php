@@ -4,7 +4,11 @@
         <div class="mx-2 flex flex-col items-start justify-start">
             <h3 class="text-base text-zinc-800 capitalize">usuarios: ver usuario</h3>
             <div class="w-full flex items-center justify-end">
-                <x-buttons.button-link-zinc href="{{route('users.edit', $user->id)}}" class="mr-2">
+                <x-buttons.button-link-zinc-light href="{{route('users.index')}}" class="mr-1">
+                    <i class="fa-solid fa-rotate-left mr-1"></i>
+                    <span>volver al listado</span>
+                </x-buttons.button-link-zinc-light>
+                <x-buttons.button-link-zinc href="{{route('users.edit', $user->id)}}" class="mr-1">
                     <i class="fa-solid fa-user-shield mr-1"></i>
                     <span>asignar rol</span>
                 </x-button-link-zinc>

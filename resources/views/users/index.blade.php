@@ -29,7 +29,7 @@
                     <x-tables.td-cell>{{$user->email}}</x-tables.td-cell>
                     <x-tables.td-cell>{{$user->created_at}}</x-tables.td-cell>
                     <x-tables.td-cell>
-                        <a href="{{route('users.show', $user)}}" class="mr-1 text-xs uppercase hover:text-sky-500">
+                        <a href="{{route('users.show', $user->id)}}" class="mr-1 text-xs uppercase hover:text-sky-500">
                             <i class="fa-solid fa-eye"></i>
                             <span>ver</span>
                         </a>

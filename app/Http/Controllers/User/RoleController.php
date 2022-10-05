@@ -30,7 +30,13 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::paginate(15);
+        //$roles = Role::paginate(15);
+
+        //roles ordenados por fecha de creacion mas reciente
+        $roles = DB::table('roles')
+            ->orderBy('created_at','desc')
+            ->paginate(15);
+
         return view('roles.index', compact('roles'));
     }
 

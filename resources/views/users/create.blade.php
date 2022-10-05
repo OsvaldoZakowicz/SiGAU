@@ -53,7 +53,7 @@
             </div>
             {{-- buttons --}}
             <div class="w-full p-2 flex items-center justify-end">
-                <x-buttons.button-link-zinc-light href="{{route('users.index')}}" class="mr-2">
+                <x-buttons.button-link-zinc-light href="{{route('users.index')}}" class="mr-1">
                     <i class="fa-solid fa-ban mr-1"></i>
                     <span>cancelar</span>
                 </x-buttons.button-link-zinc-light>
