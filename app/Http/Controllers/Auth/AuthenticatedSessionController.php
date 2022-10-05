@@ -54,16 +54,18 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('dashboard');
         };
 
-        //segun el rol
-        if ($userRol[0] === "estudiante" || $userRol[0] === "becado" || $userRol === "delegado") {
-            //redirigir a student
-            return redirect()->route('student');
-        } else {
-            //redirigir a dashboard
-            return redirect()->route('dashboard');
-        }
-
-        //return redirect()->intended(RouteServiceProvider::HOME);
+        switch ($userRol[0]) {
+            case 'estudiante':
+                return redirect()->route('student');
+            case 'delegado':
+                return redirect()->route('student');
+            case 'becado':
+                return redirect()->route('student');
+            
+            default:
+                return redirect()->route('dashboard');
+        };
+        
     }
 
     /**
