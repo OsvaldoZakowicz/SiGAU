@@ -29,7 +29,7 @@ Route::get('/dashboard', function () {
 //*el acceso debe pasar por el middleware auth, verified, role
 Route::get('/student', function () {
     return view('student');
-})->middleware(['auth', 'verified', 'role:estudiante|becado|delegado'])->name('student');
+})->middleware(['auth', 'verified', 'permission:ver-pagina-estudiante'])->name('student');
 
 
 //*rutas recursos, middleware en los controladores
