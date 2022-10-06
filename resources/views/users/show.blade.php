@@ -12,10 +12,15 @@
                     <i class="fa-solid fa-user-shield mr-1"></i>
                     <span>asignar rol</span>
                 </x-button-link-zinc>
-                <x-buttons.button-link-red href="#">
-                    <i class="fa-solid fa-lock mr-1"></i>
-                    <span>inhabilitar cuenta</span>
-                </x-button-link-red>
+                {{-- inhabilitar --}}
+                <form action="{{route('users.destroy', $user)}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <x-buttons.button-submit-red>
+                        <i class="fa-solid fa-lock mr-1"></i>
+                        <span>inhabilitar cuenta</span>
+                    </x-buttons.button-submit-red>
+                </form>
             </div>
         </div>
         <table class="m-2 border border-zinc-300 border-collapse">
@@ -36,7 +41,11 @@
                 <x-tables.td-cell>
                     @if ($rolesAsignados->count())
                         @foreach ($rolesAsignados as $role)
-                            <span class="bg-green-300 px-1 text-zinc-600">{{$role}}</span>
+                            @if ($role === "inhabilitado")
+                                <span class="bg-yellow-300 px-1 text-zinc-600">{{$role}}</span>
+                            @else
+                                <span class="bg-green-300 px-1 text-zinc-600">{{$role}}</span>
+                            @endif
                         @endforeach
                     @elseif ($user->email === "admin@admin.com")
                         <span class="bg-red-300 px-1 text-zinc-600">super administrador</span>

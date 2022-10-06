@@ -100,7 +100,9 @@ class UserController extends Controller
         //en $request se recibe un solo rol
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index');
+        return redirect()
+            ->route('users.index')
+            ->with('exito', 'usuario creado');
     }
 
     /**
@@ -173,7 +175,9 @@ class UserController extends Controller
         DB::table('model_has_roles')->where('model_id',$id)->delete();
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index');
+        return redirect()
+            ->route('users.index')
+            ->with('exito', 'usuario actualizado');
     }
 
     /**
@@ -182,11 +186,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //TODO borrar usuarios? o inhabilitar con un rol por defecto?, en todo caso, se cambia el rol.
-        //TODO para borrar, primero quitar roles!
-        User::find($id)->delete();
-        return redirect()->route('users.index');
+        //!Borrar un usuario se realizara en otro controlador, a cargo del propio usuario
+        
+        //?estoy inhabilitando mi propia cuenta?
+        if (Auth()->user()->id === $user->id) {
+            return redirect()
+                ->route('users.show', $user)
+                ->with('error', 'no puedes inhabilitarte a ti mismo');
+        };
+        
+        //*Inhabilitar cuenta dejando solo permisos para ver dashboard.
+
+        //quitar rol anterior
+        DB::table('model_has_roles')->where('model_id',$user->id)->delete();
+        //asignar rol nuevo
+        $user->assignRole('inhabilitado');
+
+        return redirect()
+            ->route('users.index')
+            ->with('exito', 'la cuenta del usuario '.$user->name.' ha sido inhabilitada');
     }
 }
