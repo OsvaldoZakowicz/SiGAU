@@ -139,6 +139,7 @@ return [
     'attributes' => [
         'name' => 'nombre',
         'email' => 'correo electrónico',
-        'password' => 'contraseña'
+        'password' => 'contraseña',
+        'confirm-password' => 'confirmar contraseña'
     ]
 ];
