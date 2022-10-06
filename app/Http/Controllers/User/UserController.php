@@ -28,9 +28,10 @@ class UserController extends Controller
 
     /**
      * Listar usuarios.
+     * Recibe $request de formulario de busqueda.
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $busqueda)
     {
 
         /**
@@ -39,14 +40,32 @@ class UserController extends Controller
          * !cuidado al cambiar el join por otra consulta, el super admin sera listado
          */
 
-        //usuarios sin rol de becado, estudiante o delegado, ordenado por fecha de creacion mas reciente  
-        $users = DB::table('users')
-            ->join('model_has_roles','users.id','=','model_has_roles.model_id')
-            ->join('roles','model_has_roles.role_id','=','roles.id')
-            ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name')
-            ->whereNotIn('roles.name',['estudiante','becado','delegado'])
-            ->orderBy('users.created_at','desc')
-            ->paginate(15);
+        if ($busqueda->filtro !== null && $busqueda->search !== null) {
+            
+            dd([$busqueda->filtro, $busqueda->search]);
+
+            /* $users = DB::table('users')
+                ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                ->join('roles','model_has_roles.role_id','=','roles.id')
+                ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name')
+                ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+                ->orWhere(function($query, $busqueda) {
+                    $query->where('users.name','like','%'.$busqueda->search.'%')
+                          ->where('users.email','like','%'.$busqueda->search.'%');
+                })->orderBy('users.created_at','desc')->paginate(15); */
+
+        } else {
+            //usuarios sin rol de becado, estudiante o delegado, 
+            //ordenado por fecha de creacion mas reciente  
+            $users = DB::table('users')
+                ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                ->join('roles','model_has_roles.role_id','=','roles.id')
+                ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name')
+                ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+                ->orderBy('users.created_at','desc')
+                ->paginate(15);
+        }
+
 
         return view('users.index', compact('users'));
     }

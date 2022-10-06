@@ -4,7 +4,24 @@
     <div class="mx-2 flex flex-col items-start justify-start">
         <h3 class="text-base text-zinc-800 capitalize">usuarios: listado</h3>
         <div class="w-full flex items-center justify-between">
-            <span>filtros/busqueda aqui!</span>
+            <div class="w-1/2">
+                <form action="{{route('users.index')}}" method="GET">
+                    <div class="flex items-center">
+                        {{-- filtros --}}
+                        <select name="filtro" class="w-36 my-1 p-1 mr-1 rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <option value="email">email</option>
+                            <option value="name">nombre</option>
+                        </select>
+                        {{-- busqueda --}}
+                        <input type="text" name="search" placeholder="buscar ..." class="my-1 mr-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm" required>
+                        {{-- submit --}}
+                        <x-buttons.button-submit-green class="ml-1">
+                            <i class="fa-solid fa-magnifying-glass mr-1"></i>
+                            <span>buscar</span>
+                        </x-buttons.button-submit-green>
+                    </div>
+                </form>
+            </div>
             <x-buttons.button-link-zinc href="{{route('users.create')}}">
                 <i class="fa-solid fa-user-plus mr-1"></i>
                 <span>crear usuario interno</span>
