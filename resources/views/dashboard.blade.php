@@ -16,11 +16,11 @@
 </head>
 
 <body class="font-sans antialiased">
-    <!-- vista dashboard de administracion -->
+    {{-- vista dashboard de administracion --}}
     <div class="min-h-screen bg-zinc-100">
-        <!-- navegacion -->
+        {{-- navegacion --}}
         @include('layouts.navigation')
-        <!-- aside + main -->
+        {{-- aside + main --}}
         <div class="w-100vw h-screen flex flex-row">
             <aside class="flex-none w-1/6 p-2 bg-zinc-500 border-r-2 border-zinc-300">
                 <h2 class="uppercase text-xs text-zinc-100">menu</h2>
@@ -240,8 +240,18 @@
                     </div>
                 @endcan
             </aside>
-            <main class="flex-initial w-5/6 bg-white border-gray-200">
-                <!-- contenido dinamico -->
+            <main class="relative flex-initial w-5/6 bg-white border-gray-200">
+                {{-- mensajes de sesion --}}
+                @if (session('exito'))
+                    <x-alerts.alert-success>
+                        <span class="mx-1">{{session('exito')}}</span>
+                    </x-alerts.alert-success>
+                @elseif (session('error'))
+                    <x-alerts.alert-failure>
+                        <span class="mx-1">{{session('error')}}</span>
+                    </x-alerts.alert-failure>    
+                @endif
+                {{-- contenido dinamico --}}
                 @yield('dashboard-content')
             </main>
         </div>
