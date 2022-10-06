@@ -13,10 +13,15 @@
                         <i class="fa-solid fa-pen-to-square mr-1"></i>
                         <span>editar rol</span>
                     </x-button-link-zinc>
-                    <x-buttons.button-link-red href="{{ route('roles.destroy', $role->id) }}">
-                        <i class="fa-solid fa-trash-can mr-1"></i>
-                        <span>eliminar rol</span>
-                    </x-button-link-red>
+                    {{-- eliminar --}}
+                    <form action="{{route('roles.destroy', $role)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <x-buttons.button-submit-red>
+                            <i class="fa-solid fa-trash-can mr-1"></i>
+                            <span>eliminar rol</span>
+                        </x-buttons.button-submit-red>
+                    </form>
                 @else
                     <x-buttons.button-link-zinc-light href="{{ route('roles.index') }}">
                         <i class="fa-solid fa-rotate-left"></i>

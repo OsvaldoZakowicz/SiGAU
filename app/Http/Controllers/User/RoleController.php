@@ -74,7 +74,9 @@ class RoleController extends Controller
         //quita todos los permisos y concede los proporcionados en el request permission
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('roles.index');
+        return redirect()
+            ->route('roles.index')
+            ->with('exito','rol creado');
     }
 
     /**
@@ -133,7 +135,9 @@ class RoleController extends Controller
         //sincronizar permisos
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('roles.index');
+        return redirect()
+            ->route('roles.index')
+            ->with('exito','rol actualizado');
     }
 
     /**
@@ -141,12 +145,38 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        //TODO: No borrar roles que estan asignados a usuarios
-        //TODO: ERROR al intentar borrar!!
 
-        DB::table('roles')->where('id', $id)->delete();
-        return redirect()->route('roles.index');
+        //?se puede borrar el rol?
+        if ($role->visibility === "readonly") {
+            return redirect()
+                ->route('roles.show', compact('role'))
+                ->with('error', 'no se puede borrar, el rol '.$role->name.' es de solo lectura');
+        };
+
+        //?el rol esta asociado a usuarios, o algun modelo?
+        $count = DB::table('model_has_roles')->where('role_id','=',$role->id)->count();
+
+        //si tiene usuarios asociados, redirect con error
+        if ($count !== 0) {
+            return redirect()
+                ->route('roles.show', compact('role'))
+                ->with('error', 'no se puede borrar el rol '.$role->name.' existen usuarios con ese rol');
+        };
+
+        //?el rol tiene permisos
+        //si no tiene usuarios, se puede borrar, quitar permisos, si tiene
+        if ($role->permissions->count() !== 0) {
+            //sincronizar con array vacio, quita permisos
+            $role->syncPermissions([]);
+        };
+
+        //*borrar rol
+        $role->delete();
+
+        return redirect()
+            ->route('roles.index')
+            ->with('exito', 'rol eliminado');
     }
 }
