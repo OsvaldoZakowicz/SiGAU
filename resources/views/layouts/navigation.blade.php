@@ -11,22 +11,20 @@
                 </div>
 
                 <!-- Navigation Links -->
-                @can('ver-pagina-estudiantes')
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
+                    @can('ver-pagina-estudiantes')
                         <!-- link a vista para estudiantes -->
                         <x-nav-link :href="route('student')" :active="request()->routeIs('student')">
                             {{ __('Students') }}
                         </x-nav-link>
-                    </div>
-                @endcan
-                @can('ver-pagina-dashboard')
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    @endcan
+                    @can('ver-pagina-dashboard')
                         <!-- link a vista para otros roles -->
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                    </div>
-                @endcan
+                    @endcan
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -49,10 +47,6 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        {{-- rol --}}
-                        <span>
-                            {{Auth()->user()->getRolenames()}}
-                        </span>
                         {{-- perfil  --}}
                         <x-dropdown-link href="#">
                             <i class="fa-solid fa-address-card mr-1"></i>
@@ -91,22 +85,20 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        @can('ver-pagina-estudiante')
-            <div class="pt-2 pb-3 space-y-1">
+        <div class="pt-2 pb-3 space-y-1">
+            @can('ver-pagina-estudiante')
                 <!-- link responsivo a vista para estudiantes -->
                 <x-responsive-nav-link :href="route('student')" :active="request()->routeIs('student')">
                     {{ __('Student') }}
                 </x-responsive-nav-link>
-            </div>
-        @endcan
-        @can('ver-pagina-dashboard')
-            <div class="pt-2 pb-3 space-y-1">
+            @endcan
+            @can('ver-pagina-dashboard')
                 <!-- link responsivo a vista para otros roles -->
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
-            </div>
-        @endcan
+            @endcan
+        </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-zinc-200">
