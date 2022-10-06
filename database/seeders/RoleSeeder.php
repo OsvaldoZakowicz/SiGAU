@@ -19,12 +19,13 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        //*roles del sistema
+
         $adminPermissions = DB::table('permissions')
             ->where('asignable_to','administrador')
             ->pluck('name','name')
             ->all();
 
-        //*roles del sistema
         $administrador = Role::create([
             'name' => 'administrador',
             'description' => 'accede a todos los modulos del dashboard',
@@ -41,6 +42,7 @@ class RoleSeeder extends Seeder
         ]);
 
         //*roles del dominio
+
         $secretarioGeneral = Role::create([
             'name' => 'secretario general',
             'description' => 'accede al modulo de beca, becados, y casas',
@@ -63,6 +65,15 @@ class RoleSeeder extends Seeder
             'ver-seccion-mantenimiento',
             'ver-seccion-planificaciones'
         ]);
+
+        $rolInhabilitado = Role::create([
+            'name' => 'inhabilitado',
+            'description' => 'rol de una cuenta interna inhabilitada',
+            'visibility' => 'readonly'
+        ])->syncPermissions(['ver-pagina-dashboard']);
+
+
+        //*roles de estudiante
 
         $estudiantePermission = DB::table('permissions')
             ->where('asignable_to','estudiante')
