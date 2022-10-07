@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 //necesito el modelo Role
 use Spatie\Permission\Models\Role;
+//dompdf
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
@@ -40,13 +42,7 @@ class UserController extends Controller
          * !cuidado al cambiar el join por otra consulta, el super admin sera listado
          */
 
-        if ($busqueda->filtro !== null && $busqueda->orden !== null) {
-            
-            //si no hay busqueda, reemplazo null por vacio
-            //de esta forma 'LIKE' coincide con todo
-            if ($busqueda->valor === null) {
-                $busqueda->valor = "";
-            };
+        if ($busqueda->filtro !== null && $busqueda->orden !== null && $busqueda->valor !== null) {
 
             //buscar por nombre o email
             if ($busqueda->filtro === 'name' || $busqueda->filtro === 'email') {
@@ -70,12 +66,47 @@ class UserController extends Controller
                     ->whereNotIn('roles.name',['estudiante','becado','delegado'])
                     ->orderBy('roles.name', $busqueda->orden)
                     ->paginate(15);
-            }
+            };
+
+            //filtros de busqueda
+            $input = $busqueda->all();
 
             //retornar busqueda con filtros
-            return view('users.index', compact('users'));
+            return view('users.index', compact('users','input'));
 
         };
+
+        if ($busqueda->filtro !== null && $busqueda->orden !== null) {
+            
+            //buscar por nombre o email
+            if ($busqueda->filtro === 'name' || $busqueda->filtro === 'email') {
+                $users = DB::table('users')
+                    ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                    ->join('roles','model_has_roles.role_id','=','roles.id')
+                    ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name') 
+                    ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+                    ->orderBy('users.'.$busqueda->filtro, $busqueda->orden)
+                    ->paginate(15);
+            };
+
+            //buscar por rol
+            if ($busqueda->filtro === "role") {
+                $users = DB::table('users')
+                    ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                    ->join('roles','model_has_roles.role_id','=','roles.id')
+                    ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name') 
+                    ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+                    ->orderBy('roles.name', $busqueda->orden)
+                    ->paginate(15);
+            };
+
+            //filtros de busqueda
+            $input = $busqueda->all();
+
+            //retornar busqueda con filtros
+            return view('users.index', compact('users','input'));
+
+        }
 
         $users = DB::table('users')
             ->join('model_has_roles','users.id','=','model_has_roles.model_id')
@@ -85,7 +116,62 @@ class UserController extends Controller
             ->orderBy('users.created_at','desc')
             ->paginate(15);
 
-        return view('users.index', compact('users'));
+        //filtros por defecto
+        $input = ['filtro'=>'created_at','valor' => 'null',"orden"=>'desc'];
+
+        return view('users.index', compact('users','input'));
+    }
+
+    /**
+     * Dscargar reporte de index.
+     */
+    public function reporte(Request $busqueda)
+    {
+        //*pdf
+        $pdf = app('dompdf.wrapper');
+
+        //?tengo filtros nulos
+        if ($busqueda->filtro !== null && $busqueda->orden !== null && $busqueda->valor !== null) {
+            
+            //buscar por nombre o email
+            if ($busqueda->filtro === 'name' || $busqueda->filtro === 'email') {
+                $users = DB::table('users')
+                    ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                    ->join('roles','model_has_roles.role_id','=','roles.id')
+                    ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name') 
+                    ->where('users.'.$busqueda->filtro,'LIKE', '%' . $busqueda->valor . '%')
+                    ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+                    ->orderBy('users.'.$busqueda->filtro, $busqueda->orden)
+                    ->get();
+            };
+
+            //buscar por rol
+            if ($busqueda->filtro === "role") {
+                $users = DB::table('users')
+                    ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                    ->join('roles','model_has_roles.role_id','=','roles.id')
+                    ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name') 
+                    ->where('roles.name','LIKE', '%' . $busqueda->valor . '%')
+                    ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+                    ->orderBy('roles.name', $busqueda->orden)
+                    ->get();
+            };
+
+            $pdf->loadView('reports.report', compact('users'));
+            return $pdf->stream();
+
+        };
+        
+        $users = DB::table('users')
+            ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+            ->join('roles','model_has_roles.role_id','=','roles.id')
+            ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name')
+            ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+            ->orderBy('users.created_at','desc')
+            ->get();
+
+        $pdf->loadView('reports.report', compact('users'));
+        return $pdf->stream();
     }
 
     /**

@@ -34,10 +34,15 @@ Route::get('/student', function () {
 
 //*rutas recursos, middleware en los controladores
 Route::middleware(['auth'])->group(function () {
+    
     //*controlador de recursos User
+    //!siempre metodos adicionales antes de rutas resource
+    Route::get('users/report', [UserController::class, 'reporte'])->name('reporte-usuarios');
     Route::resource('users', UserController::class)->names('users');
+    
     Route::resource('roles', RoleController::class)->names('roles');
 });
+
 
 //*rutas auth
 require __DIR__.'/auth.php';
