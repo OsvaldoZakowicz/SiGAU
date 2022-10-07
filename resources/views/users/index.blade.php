@@ -3,17 +3,27 @@
 <div class="w-full h-max flex flex-col p-1">
     <div class="mx-2 flex flex-col items-start justify-start">
         <h3 class="text-base text-zinc-800 capitalize">usuarios: listado</h3>
+        {{-- menu de recargar, filtros, busqueda --}}
         <div class="w-full flex items-center justify-between">
-            <div class="w-1/2">
+            <x-buttons.button-link-zinc-light href="{{route('users.index')}}">
+                <i class="fa-solid fa-rotate text-zinc-600"></i>
+            </x-buttons.button-link-zinc-light>
+            <div class="w-2/3">
                 <form action="{{route('users.index')}}" method="GET">
                     <div class="flex items-center">
                         {{-- filtros --}}
-                        <select name="filtro" class="w-36 my-1 p-1 mr-1 rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                        <select name="filtro" class="w-52 my-1 p-1 mr-1 rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             <option value="email">email</option>
                             <option value="name">nombre</option>
+                            <option value="role">rol</option>
                         </select>
                         {{-- busqueda --}}
-                        <input type="text" name="search" placeholder="buscar ..." class="my-1 mr-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm" required>
+                        <input type="text" name="valor" placeholder="buscar ..." class="my-1 mr-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                        {{-- orden de listado --}}
+                        <select name="orden" class="w-36 my-1 p-1 mr-1 rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <option value="asc">a&rarr;z</option>
+                            <option value="desc">z&rarr;a</option>
+                        </select>
                         {{-- submit --}}
                         <x-buttons.button-submit-green class="ml-1">
                             <i class="fa-solid fa-magnifying-glass mr-1"></i>
@@ -34,6 +44,7 @@
                 <x-tables.th-cell>id</x-tables.th-cell>
                 <x-tables.th-cell>nombre</x-tables.th-cell>
                 <x-tables.th-cell>correo</x-tables.th-cell>
+                <x-tables.th-cell>rol activo</x-tables.th-cell>
                 <x-tables.th-cell>fecha de creacion</x-tables.th-cell>
                 <x-tables.th-cell>acciones</x-tables.th-cell>
             </tr>
@@ -44,6 +55,15 @@
                     <x-tables.td-cell>{{$user->id}}</x-tables.td-cell>
                     <x-tables.td-cell>{{$user->name}}</x-tables.td-cell>
                     <x-tables.td-cell>{{$user->email}}</x-tables.td-cell>
+                    <x-tables.td-cell>
+                        @if ($user->role_name === "inhabilitado")
+                            <span class="bg-yellow-300 px-1 text-zinc-600">{{$user->role_name}}</span>
+                        @elseif ($user->email === "admin@admin.com")
+                            <span class="bg-red-300 px-1 text-zinc-600">super admin</span>
+                        @else
+                            <span class="bg-green-300 px-1 text-zinc-600">{{$user->role_name}}</span>
+                        @endif
+                    </x-tables.td-cell>
                     <x-tables.td-cell>{{$user->created_at}}</x-tables.td-cell>
                     <x-tables.td-cell>
                         <a href="{{route('users.show', $user->id)}}" class="mr-1 text-xs uppercase hover:text-sky-500">

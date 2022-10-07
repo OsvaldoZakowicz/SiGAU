@@ -28,9 +28,26 @@ class RoleController extends Controller
      * Mostrar lista de roles.
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $busqueda)
     {
-        //$roles = Role::paginate(15);
+        if ($busqueda->filtro !== null && $busqueda->orden !== null) {
+            
+            //si no hay busqueda, reemplazo null por vacio
+            //de esta forma 'LIKE' coincide con todo
+            if ($busqueda->valor === null) {
+                $busqueda->valor = "";
+            };
+
+            //buscar por nombre o descripcion, con orden
+            if ($busqueda->filtro === 'name' || $busqueda->filtro === 'description') {
+                $roles = DB::table('roles')
+                    ->where('roles.'.$busqueda->filtro,'LIKE','%' . $busqueda->valor . '%')
+                    ->orderBy('roles.'.$busqueda->filtro, $busqueda->orden)
+                    ->paginate(15);
+            };
+
+            return view('roles.index', compact('roles'));
+        };
 
         //roles ordenados por fecha de creacion mas reciente
         $roles = DB::table('roles')

@@ -40,32 +40,50 @@ class UserController extends Controller
          * !cuidado al cambiar el join por otra consulta, el super admin sera listado
          */
 
-        if ($busqueda->filtro !== null && $busqueda->search !== null) {
+        if ($busqueda->filtro !== null && $busqueda->orden !== null) {
             
-            dd([$busqueda->filtro, $busqueda->search]);
+            //si no hay busqueda, reemplazo null por vacio
+            //de esta forma 'LIKE' coincide con todo
+            if ($busqueda->valor === null) {
+                $busqueda->valor = "";
+            };
 
-            /* $users = DB::table('users')
-                ->join('model_has_roles','users.id','=','model_has_roles.model_id')
-                ->join('roles','model_has_roles.role_id','=','roles.id')
-                ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name')
-                ->whereNotIn('roles.name',['estudiante','becado','delegado'])
-                ->orWhere(function($query, $busqueda) {
-                    $query->where('users.name','like','%'.$busqueda->search.'%')
-                          ->where('users.email','like','%'.$busqueda->search.'%');
-                })->orderBy('users.created_at','desc')->paginate(15); */
+            //buscar por nombre o email
+            if ($busqueda->filtro === 'name' || $busqueda->filtro === 'email') {
+                $users = DB::table('users')
+                    ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                    ->join('roles','model_has_roles.role_id','=','roles.id')
+                    ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name') 
+                    ->where('users.'.$busqueda->filtro,'LIKE', '%' . $busqueda->valor . '%')
+                    ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+                    ->orderBy('users.'.$busqueda->filtro, $busqueda->orden)
+                    ->paginate(15);
+            };
 
-        } else {
-            //usuarios sin rol de becado, estudiante o delegado, 
-            //ordenado por fecha de creacion mas reciente  
-            $users = DB::table('users')
-                ->join('model_has_roles','users.id','=','model_has_roles.model_id')
-                ->join('roles','model_has_roles.role_id','=','roles.id')
-                ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name')
-                ->whereNotIn('roles.name',['estudiante','becado','delegado'])
-                ->orderBy('users.created_at','desc')
-                ->paginate(15);
-        }
+            //buscar por rol
+            if ($busqueda->filtro === "role") {
+                $users = DB::table('users')
+                    ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                    ->join('roles','model_has_roles.role_id','=','roles.id')
+                    ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name') 
+                    ->where('roles.name','LIKE', '%' . $busqueda->valor . '%')
+                    ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+                    ->orderBy('roles.name', $busqueda->orden)
+                    ->paginate(15);
+            }
 
+            //retornar busqueda con filtros
+            return view('users.index', compact('users'));
+
+        };
+
+        $users = DB::table('users')
+            ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+            ->join('roles','model_has_roles.role_id','=','roles.id')
+            ->select('users.id','users.name','users.email','users.created_at','roles.id as role_id','roles.name as role_name')
+            ->whereNotIn('roles.name',['estudiante','becado','delegado'])
+            ->orderBy('users.created_at','desc')
+            ->paginate(15);
 
         return view('users.index', compact('users'));
     }
