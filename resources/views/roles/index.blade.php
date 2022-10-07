@@ -31,10 +31,12 @@
                     </div>
                 </form>
             </div>
-            <x-buttons.button-link-zinc href="{{route('roles.create')}}">
-                <i class="fa-solid fa-user-tag"></i>
-                <span>crear rol</span>
-            </x-buttons.button-link-zinc>
+            @can('crear-rol')
+                <x-buttons.button-link-zinc href="{{route('roles.create')}}">
+                    <i class="fa-solid fa-user-tag"></i>
+                    <span>crear rol</span>
+                </x-buttons.button-link-zinc>
+            @endcan
         </div>
     </div>
     <table class="table-auto m-2 border border-zinc-300 border-collapse">

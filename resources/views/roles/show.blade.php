@@ -9,19 +9,23 @@
                         <i class="fa-solid fa-rotate-left"></i>
                         <span>volver al listado</span>
                     </x-buttons.button-link-zinc-light>
-                    <x-buttons.button-link-zinc href="{{ route('roles.edit', $role->id) }}" class="mr-2">
-                        <i class="fa-solid fa-pen-to-square mr-1"></i>
-                        <span>editar rol</span>
-                    </x-button-link-zinc>
+                    @can('editar-rol')
+                        <x-buttons.button-link-zinc href="{{ route('roles.edit', $role->id) }}" class="mr-2">
+                            <i class="fa-solid fa-pen-to-square mr-1"></i>
+                            <span>editar rol</span>
+                        </x-button-link-zinc>
+                    @endcan
                     {{-- eliminar --}}
-                    <form action="{{route('roles.destroy', $role)}}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <x-buttons.button-submit-red>
-                            <i class="fa-solid fa-trash-can mr-1"></i>
-                            <span>eliminar rol</span>
-                        </x-buttons.button-submit-red>
-                    </form>
+                    @can('borrar-rol')
+                        <form action="{{route('roles.destroy', $role)}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <x-buttons.button-submit-red>
+                                <i class="fa-solid fa-trash-can mr-1"></i>
+                                <span>eliminar rol</span>
+                            </x-buttons.button-submit-red>
+                        </form>
+                    @endcan
                 @else
                     <x-buttons.button-link-zinc-light href="{{ route('roles.index') }}">
                         <i class="fa-solid fa-rotate-left"></i>

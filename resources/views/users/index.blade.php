@@ -32,10 +32,12 @@
                     </div>
                 </form>
             </div>
-            <x-buttons.button-link-zinc href="{{route('users.create')}}">
-                <i class="fa-solid fa-user-plus mr-1"></i>
-                <span>crear usuario interno</span>
-            </x-buttons.button-link-zinc>
+            @can('crear-usuario')
+                <x-buttons.button-link-zinc href="{{route('users.create')}}">
+                    <i class="fa-solid fa-user-plus mr-1"></i>
+                    <span>crear usuario interno</span>
+                </x-buttons.button-link-zinc>
+            @endcan
         </div>
     </div>
     <table class="table-auto m-2 border border-zinc-300 border-collapse">

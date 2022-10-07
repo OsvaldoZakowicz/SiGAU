@@ -8,19 +8,23 @@
                     <i class="fa-solid fa-rotate-left mr-1"></i>
                     <span>volver al listado</span>
                 </x-buttons.button-link-zinc-light>
-                <x-buttons.button-link-zinc href="{{route('users.edit', $user->id)}}" class="mr-1">
-                    <i class="fa-solid fa-user-shield mr-1"></i>
-                    <span>asignar rol</span>
-                </x-button-link-zinc>
+                @can('editar-usuario')
+                    <x-buttons.button-link-zinc href="{{route('users.edit', $user->id)}}" class="mr-1">
+                        <i class="fa-solid fa-user-shield mr-1"></i>
+                        <span>asignar rol</span>
+                    </x-button-link-zinc>
+                @endcan
                 {{-- inhabilitar --}}
-                <form action="{{route('users.destroy', $user)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <x-buttons.button-submit-red>
-                        <i class="fa-solid fa-lock mr-1"></i>
-                        <span>inhabilitar cuenta</span>
-                    </x-buttons.button-submit-red>
-                </form>
+                @can('borrar-usuario')
+                    <form action="{{route('users.destroy', $user)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <x-buttons.button-submit-red>
+                            <i class="fa-solid fa-lock mr-1"></i>
+                            <span>inhabilitar cuenta</span>
+                        </x-buttons.button-submit-red>
+                    </form>
+                @endcan
             </div>
         </div>
         <table class="m-2 border border-zinc-300 border-collapse">
