@@ -8,23 +8,6 @@
             <x-buttons.button-link-zinc-light href="{{route('users.index')}}" title="refrescar lista">
                 <i class="fa-solid fa-rotate text-zinc-600"></i>
             </x-buttons.button-link-zinc-light>
-            {{-- formulario oculto para reporte --}}
-            @if (count($input) !== 0)
-                <form action="{{route('reporte-usuarios')}}" method="GET">
-                    <div class="flex items-center">
-                        {{-- filtros --}}
-                        <input type="text" name="filtro" value="{{$input['filtro']}}" class="hidden">
-                        {{-- busqueda --}}
-                        <input type="text" name="valor" class="hidden">                        {{-- orden de listado --}}
-                        {{-- orden --}}
-                        <input type="text" name="orden" value="{{$input['orden']}}" class="hidden">
-                        {{-- submit --}}
-                        <button type="submit" title="obtener PDF de la tabla">
-                            <i class="fa-solid fa-file-pdf text-red-600 text-xl"></i>
-                        </button>
-                    </div>
-                </form>
-            @endif
             {{-- formulario de busqueda --}}
             <div class="w-2/3">
                 <form action="{{route('users.index')}}" method="GET">
@@ -59,26 +42,25 @@
         </div>
     </div>
     {{-- informe de busqueda --}}
-    @if (count($input) !== 0)
+    @if (count($validated) !== 0)
         <div class="mx-2 flex items-center justify-start mt-2 text-md text-zinc-700">
             <span>filtrado por columna:
-            @if ($input['filtro'] !== null)
-                <span class="ml-1 font-bold">
-                    {{__($input['filtro'])}}
-                </span>
-            @endif
-            @if ($input['valor'] !== null && $input['valor'] !== 'null')
+            <span class="ml-1 font-bold">
+                {{__($validated['filtro'])}}
+            </span>
+            @if (array_key_exists('valor', $validated))
                 <span class="ml-1">con valor:</span>
                 <span class="ml-1 font-bold">
-                    {{$input['valor']}}
+                    {{$validated['valor']}}
                 </span>
             @endif
             <span class="ml-1">ordenado de forma:</span>
             <span class="ml-1 font-bold">
-                {{__($input['orden'])}}
+                {{__($validated['orden'])}}
             </span>
         </div>
     @endif
+    {{-- tabla --}}
     <table class="table-auto m-2 border border-zinc-300 border-collapse">
         <thead>
             <tr>

@@ -59,13 +59,13 @@ class UserController extends Controller
                     //buscar por rol
                     $users = $userService->buscarUsuariosInternosPorRol($validated);
 
-                    return view('users.index', compact('users'));
+                    return view('users.index', compact('users', 'validated'));
                 } else {
 
                     //buscar por campos name, email. con orden
                     $users = $userService->buscarUsuariosInternos($validated);
 
-                    return view('users.index', compact('users'));
+                    return view('users.index', compact('users', 'validated'));
                 };
             } else {
                 //no hay busqueda, ordenar por filtro
@@ -77,21 +77,24 @@ class UserController extends Controller
                     //ordenar por campo rol
                     $users = $userService->ordenarUsuariosInternosPorRol($validated);
 
-                    return view('users.index', compact('users'));
+                    return view('users.index', compact('users', 'validated'));
                 } else {
 
                     //ordenar por campos name, email
                     $users = $userService->ordenarUsuariosInternos($validated);
 
-                    return view('users.index', compact('users'));
+                    return view('users.index', compact('users', 'validated'));
                 };
             };
         } else {
             
             //*si no se recibe request
+            $validated = ['filtro' => 'created_at', 'orden' => 'desc'];
+
+            //*lista por defecto
             $users = $userService->listarUsuariosInternos();
 
-            return view('users.index', compact('users'));
+            return view('users.index', compact('users','validated'));
         };
     }
 
