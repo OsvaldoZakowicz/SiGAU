@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 
 /**
  * *servicios para usuarios
@@ -102,6 +103,11 @@ class UserService
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('users.created_at', 'desc')
             ->paginate(15);
+        
+        //formato de fecha
+        foreach($users as $user) {
+            $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+        };
 
         return $users;
     }
@@ -121,6 +127,11 @@ class UserService
             ->orderBy('users.' . $parametros['filtro'], $parametros['orden'])
             ->paginate(15);
 
+        //formato de fecha
+        foreach($users as $user) {
+            $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+        };
+
         return $users;
     }
 
@@ -138,6 +149,11 @@ class UserService
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('roles.name', $parametros['orden'])
             ->paginate(15);
+        
+        //formato de fecha
+        foreach($users as $user) {
+            $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+        };
 
         return $users;
     }
@@ -156,6 +172,11 @@ class UserService
             ->orderBy('users.' . $parametros['filtro'], $parametros['orden'])
             ->paginate(15);
 
+        //formato de fecha
+        foreach($users as $user) {
+            $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+        };
+
         return $users;
     }
 
@@ -171,6 +192,11 @@ class UserService
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('roles.name', $parametros['orden'])
             ->paginate(15);
+        
+        //formato de fecha
+        foreach($users as $user) {
+            $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+        };
 
         return $users;
     }

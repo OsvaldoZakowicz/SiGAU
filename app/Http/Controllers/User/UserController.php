@@ -5,11 +5,9 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Arr;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
@@ -140,6 +138,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
+        $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+        
         $rolesAsignados = $user->getRoleNames();
 
         return view('users.show', compact('user', 'rolesAsignados'));

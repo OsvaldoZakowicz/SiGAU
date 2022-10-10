@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Validator;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserReportController extends Controller
 {
@@ -45,17 +44,19 @@ class UserReportController extends Controller
                     //buscar por rol
                     $users = $userService->buscarUsuariosInternosPorRol($validated);
 
-                    //return view('reports.report', compact('users', 'validated'));
-                    $pdf->loadView('reports.users.report-index', compact('users'));
-                    return $pdf->download('reporte-de-usuarios');
+                    $fechaEmision = \Carbon\Carbon::parse(\Carbon\Carbon::now())->locale('es_ES')->format('d-m-Y H:i');
+                    $pdf->loadView('reports.users.report-index', compact('users','fechaEmision'));
+                    return $pdf->stream('reporte-de-usuarios');
+
                 } else {
 
                     //buscar por campos name, email. con orden
                     $users = $userService->buscarUsuariosInternos($validated);
 
-                    //return view('reports.report', compact('users', 'validated'));
-                    $pdf->loadView('reports.users.report-index', compact('users'));
-                    return $pdf->download('reporte-de-usuarios');
+                    $fechaEmision = \Carbon\Carbon::parse(\Carbon\Carbon::now())->locale('es_ES')->format('d-m-Y H:i');
+                    $pdf->loadView('reports.users.report-index', compact('users','fechaEmision'));
+                    return $pdf->stream('reporte-de-usuarios');
+
                 };
             } else {
                 //no hay busqueda, ordenar por filtro
@@ -67,17 +68,19 @@ class UserReportController extends Controller
                     //ordenar por campo rol
                     $users = $userService->ordenarUsuariosInternosPorRol($validated);
 
-                    //return view('reports.report', compact('users', 'validated'));
-                    $pdf->loadView('reports.users.report-index', compact('users'));
-                    return $pdf->download('reporte-de-usuarios');
+                    $fechaEmision = \Carbon\Carbon::parse(\Carbon\Carbon::now())->locale('es_ES')->format('d-m-Y H:i');
+                    $pdf->loadView('reports.users.report-index', compact('users','fechaEmision'));
+                    return $pdf->stream('reporte-de-usuarios');
+
                 } else {
 
                     //ordenar por campos name, email
                     $users = $userService->ordenarUsuariosInternos($validated);
 
-                    //return view('reports.report', compact('users', 'validated'));
-                    $pdf->loadView('reports.users.report-index', compact('users'));
-                    return $pdf->download('reporte-de-usuarios');
+                    $fechaEmision = \Carbon\Carbon::parse(\Carbon\Carbon::now())->locale('es_ES')->format('d-m-Y H:i');
+                    $pdf->loadView('reports.users.report-index', compact('users','fechaEmision'));
+                    return $pdf->stream('reporte-de-usuarios');
+
                 };
             };
         } else {
