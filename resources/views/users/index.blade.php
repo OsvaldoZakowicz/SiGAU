@@ -43,21 +43,39 @@
     </div>
     {{-- informe de busqueda --}}
     @if (count($validated) !== 0)
-        <div class="mx-2 flex items-center justify-start mt-2 text-md text-zinc-700">
-            <span>filtrado por columna:
-            <span class="ml-1 font-bold">
-                {{__($validated['filtro'])}}
-            </span>
-            @if (array_key_exists('valor', $validated))
-                <span class="ml-1">con valor:</span>
+        <div class="mx-2 p-1 flex items-center justify-between mt-2 text-md text-zinc-700 border border-zinc-300 bg-zinc-200">
+            <div>
+                <span>filtrado por columna:
                 <span class="ml-1 font-bold">
-                    {{$validated['valor']}}
+                    {{__($validated['filtro'])}}
                 </span>
-            @endif
-            <span class="ml-1">ordenado de forma:</span>
-            <span class="ml-1 font-bold">
-                {{__($validated['orden'])}}
-            </span>
+                @if (array_key_exists('valor', $validated))
+                    <span class="ml-1">con valor:</span>
+                    <span class="ml-1 font-bold">
+                        {{$validated['valor']}}
+                    </span>
+                @endif
+                <span class="ml-1">ordenado de forma:</span>
+                <span class="ml-1 font-bold">
+                    {{__($validated['orden'])}}
+                </span>
+            </div>
+            <div>
+                {{-- si hay resultados de busqueda o filtro --}}
+                @if (count($users) !== 0)
+                    {{-- formulario oculto para enviar parametros de reporte --}}
+                    <form action="{{route('report-users')}}" method="GET">
+                        <input type="text" name="filtro" value="{{$validated['filtro']}}" class="hidden">
+                        @if (array_key_exists('valor', $validated))
+                            <input type="text" name="valor" value="{{$validated['valor']}}" class="hidden">
+                        @endif
+                        <input type="text" name="orden" value="{{$validated['orden']}}" class="hidden">
+                        <button type="submit" title="reporte PDF de la tabla">
+                            <i class="fa-solid fa-file-pdf text-xl text-red-600"></i>
+                        </button>
+                    </form>
+                @endif
+            </div>
         </div>
     @endif
     {{-- tabla --}}
@@ -72,31 +90,39 @@
                 <x-tables.th-cell>acciones</x-tables.th-cell>
             </tr>
         </thead>
-        <tbody>
-            @foreach ($users as $user)
-                <tr class="text-sm text-zinc-800">
-                    <x-tables.td-cell>{{$user->id}}</x-tables.td-cell>
-                    <x-tables.td-cell>{{$user->name}}</x-tables.td-cell>
-                    <x-tables.td-cell>{{$user->email}}</x-tables.td-cell>
-                    <x-tables.td-cell>
-                        @if ($user->role_name === "inhabilitado")
-                            <span class="bg-yellow-300 px-1 text-zinc-600">{{$user->role_name}}</span>
-                        @elseif ($user->email === "admin@admin.com")
-                            <span class="bg-red-300 px-1 text-zinc-600">super admin</span>
-                        @else
-                            <span class="bg-green-300 px-1 text-zinc-600">{{$user->role_name}}</span>
-                        @endif
-                    </x-tables.td-cell>
-                    <x-tables.td-cell>{{$user->created_at}}</x-tables.td-cell>
-                    <x-tables.td-cell>
-                        <a href="{{route('users.show', $user->id)}}" class="mr-1 text-xs uppercase hover:text-sky-500">
-                            <i class="fa-solid fa-eye"></i>
-                            <span>ver</span>
-                        </a>
-                    </x-tables.td-cell>
+        @if (count($users) !== 0)
+            <tbody>
+                @foreach ($users as $user)
+                    <tr class="text-sm text-zinc-800">
+                        <x-tables.td-cell>{{$user->id}}</x-tables.td-cell>
+                        <x-tables.td-cell>{{$user->name}}</x-tables.td-cell>
+                        <x-tables.td-cell>{{$user->email}}</x-tables.td-cell>
+                        <x-tables.td-cell>
+                            @if ($user->role_name === "inhabilitado")
+                                <span class="bg-yellow-300 px-1 text-zinc-600">{{$user->role_name}}</span>
+                            @elseif ($user->email === "admin@admin.com")
+                                <span class="bg-red-300 px-1 text-zinc-600">super admin</span>
+                            @else
+                                <span class="bg-green-300 px-1 text-zinc-600">{{$user->role_name}}</span>
+                            @endif
+                        </x-tables.td-cell>
+                        <x-tables.td-cell>{{$user->created_at}}</x-tables.td-cell>
+                        <x-tables.td-cell>
+                            <a href="{{route('users.show', $user->id)}}" class="mr-1 text-xs uppercase hover:text-sky-500">
+                                <i class="fa-solid fa-eye"></i>
+                                <span>ver</span>
+                            </a>
+                        </x-tables.td-cell>
+                    </tr>
+                @endforeach
+            </tbody>
+        @else
+            <tbody>
+                <tr class="text-sm text-red-600">
+                    <x-tables.td-cell colspan="6">Sin resultados de busqueda.</x-tables.td-cell>
                 </tr>
-            @endforeach
-        </tbody>
+            </tbody>
+        @endif
     </table>
     {{-- paginacion --}}
     <div class="mx-2">

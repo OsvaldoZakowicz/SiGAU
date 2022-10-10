@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\RoleController;
+use App\Http\Controllers\User\UserReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,9 +37,9 @@ Route::get('/student', function () {
 Route::middleware(['auth'])->group(function () {
     
     //*controlador de recursos User
-    //!siempre metodos adicionales antes de rutas resource
-    Route::get('users/report', [UserController::class, 'reporte'])->name('reporte-usuarios');
     Route::resource('users', UserController::class)->names('users');
+    //*reportes User
+    Route::get('/report-users', [UserReportController::class, 'crear'])->name('report-users');
     
     Route::resource('roles', RoleController::class)->names('roles');
 });
