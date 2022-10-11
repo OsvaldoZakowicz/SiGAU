@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 
 //modelo User
 use App\Models\User;
+use Database\Factories\UserFactory;
 //modelo Role
 use Spatie\Permission\Models\Role;
 //modelo Permission
@@ -84,6 +85,15 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('delegado');
+
+        //50 usuarios mas
+        $users = User::factory()
+            ->count(50)
+            ->create();
+
+        foreach ($users as $user) {
+            $user->assignRole('inhabilitado');
+        };
 
     }
 }
