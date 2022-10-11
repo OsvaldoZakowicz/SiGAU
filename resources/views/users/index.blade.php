@@ -54,7 +54,7 @@
                             {{ __($validated['filtro']) }}
                         </span>
                         @if (array_key_exists('valor', $validated))
-                            <span class="ml-1">con valor:</span>
+                            <span class="ml-1">con valor de busqueda:</span>
                             <span class="ml-1 font-bold">
                                 {{ $validated['valor'] }}
                             </span>

@@ -30,9 +30,10 @@ class UserController extends Controller
      */
     public function index(Request $request, UserService $userService)
     {
+        //*se recibe un request
         //?tiene el request algun campo?
         if ($request->hasAny('filtro', 'valor', 'orden')) {
-            
+
             /**
              * *se recibe request
              * filtro = name | email | role
@@ -47,23 +48,16 @@ class UserController extends Controller
 
             //?existe valor de busqueda en el request?
             if ($request->input('valor') !== NULL) {
-
                 //hay busqueda
                 $validated = $validator->validated();
 
                 //?el filtro es para rol?
                 if ($request->input('filtro') === "role") {
-
                     //buscar por rol
                     $users = $userService->buscarUsuariosInternosPorRol($validated);
-
-                    return view('users.index', compact('users', 'validated'));
                 } else {
-
                     //buscar por campos name, email. con orden
                     $users = $userService->buscarUsuariosInternos($validated);
-
-                    return view('users.index', compact('users', 'validated'));
                 };
             } else {
                 //no hay busqueda, ordenar por filtro
@@ -71,28 +65,24 @@ class UserController extends Controller
 
                 //?el filtro es para rol
                 if ($request->input('filtro') === "role") {
-
                     //ordenar por campo rol
                     $users = $userService->ordenarUsuariosInternosPorRol($validated);
-
-                    return view('users.index', compact('users', 'validated'));
                 } else {
-
                     //ordenar por campos name, email
                     $users = $userService->ordenarUsuariosInternos($validated);
-
-                    return view('users.index', compact('users', 'validated'));
                 };
+
+                return view('users.index', compact('users', 'validated'));
             };
         } else {
-            
+
             //*si no se recibe request
             $validated = ['filtro' => 'created_at', 'orden' => 'desc'];
 
             //*lista por defecto
             $users = $userService->listarUsuariosInternos();
 
-            return view('users.index', compact('users','validated'));
+            return view('users.index', compact('users', 'validated'));
         };
     }
 
@@ -139,7 +129,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
-        
+
         $rolesAsignados = $user->getRoleNames();
 
         return view('users.show', compact('user', 'rolesAsignados'));
