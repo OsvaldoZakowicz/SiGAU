@@ -63,6 +63,7 @@
                         <span class="ml-1 font-bold">
                             {{ __($validated['orden']) }}
                         </span>
+                    </span>
                 </div>
                 <div>
                     {{-- si hay resultados de busqueda o filtro --}}

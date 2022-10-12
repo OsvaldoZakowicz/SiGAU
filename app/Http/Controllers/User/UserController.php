@@ -72,8 +72,10 @@ class UserController extends Controller
                     $users = $userService->ordenarUsuariosInternos($validated);
                 };
 
-                return view('users.index', compact('users', 'validated'));
             };
+
+            return view('users.index', compact('users', 'validated'));
+            
         } else {
 
             //*si no se recibe request
