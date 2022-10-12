@@ -4,7 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\User\UserService;
+use App\Services\User\UserReportService;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class UserReportController extends Controller
@@ -12,10 +13,23 @@ class UserReportController extends Controller
     /**
      * Crear reporte.
      */
-    public function crear(Request $request, UserService $userService)
+    public function crear(Request $request, UserReportService $userReportService)
     {
         //dompdf wrapper
         $pdf = app('dompdf.wrapper');
+
+        //fecha de reporte
+        $fechaReporte = Carbon::parse(Carbon::now())->locale('es_AR')->format('d-m-Y H:i');
+        
+        //titulo del reporte
+        $tituloReporte = 'reporte de usuarios';
+        
+        //usuario que reporta
+        $usuario = [
+            'nombre' => Auth()->user()->name,
+            'email' => Auth()->user()->email,
+            'rol' => Auth()->user()->getRoleNames()
+        ];
 
         //?tiene el request algun campo?
         if ($request->hasAny('filtro', 'valor', 'orden')) {
@@ -40,51 +54,40 @@ class UserReportController extends Controller
 
                 //?el filtro es para rol?
                 if ($request->input('filtro') === "role") {
-
-                    //buscar por rol
-                    $users = $userService->buscarUsuariosInternosPorRol($validated);
-
-                    $fechaEmision = \Carbon\Carbon::parse(\Carbon\Carbon::now())->locale('es_ES')->format('d-m-Y H:i');
-                    $pdf->loadView('reports.users.report-index', compact('users','fechaEmision'));
-                    return $pdf->stream('reporte-de-usuarios');
-
+                    
+                    $users = $userReportService->buscarUsuariosInternosPorRol($validated);
+                
                 } else {
-
-                    //buscar por campos name, email. con orden
-                    $users = $userService->buscarUsuariosInternos($validated);
-
-                    $fechaEmision = \Carbon\Carbon::parse(\Carbon\Carbon::now())->locale('es_ES')->format('d-m-Y H:i');
-                    $pdf->loadView('reports.users.report-index', compact('users','fechaEmision'));
-                    return $pdf->stream('reporte-de-usuarios');
-
+                   
+                    $users = $userReportService->buscarUsuariosInternos($validated);
+               
                 };
+
             } else {
+                
                 //no hay busqueda, ordenar por filtro
                 $validated = $validator->safe()->only(['filtro', 'orden']);
 
-                //?el filtro es para rol
+                //?el filtro es para rol?
                 if ($request->input('filtro') === "role") {
-
-                    //ordenar por campo rol
-                    $users = $userService->ordenarUsuariosInternosPorRol($validated);
-
-                    $fechaEmision = \Carbon\Carbon::parse(\Carbon\Carbon::now())->locale('es_ES')->format('d-m-Y H:i');
-                    $pdf->loadView('reports.users.report-index', compact('users','fechaEmision'));
-                    return $pdf->stream('reporte-de-usuarios');
-
+                   
+                    $users = $userReportService->ordenarUsuariosInternosPorRol($validated);
+                
                 } else {
-
-                    //ordenar por campos name, email
-                    $users = $userService->ordenarUsuariosInternos($validated);
-
-                    $fechaEmision = \Carbon\Carbon::parse(\Carbon\Carbon::now())->locale('es_ES')->format('d-m-Y H:i');
-                    $pdf->loadView('reports.users.report-index', compact('users','fechaEmision'));
-                    return $pdf->stream('reporte-de-usuarios');
-
+                    
+                    $users = $userReportService->ordenarUsuariosInternos($validated);
+                
                 };
             };
+
+            $pdf->loadView('reports.users.report-index', compact('users', 'fechaReporte', 'tituloReporte', 'usuario', 'validated', 'pdf'));
+            
+            return $pdf->stream('reporte-usuarios');
+
         } else {
+
             return redirect()->route('users.index');
-        }
+
+        };
     }
 }

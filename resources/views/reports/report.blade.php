@@ -1,172 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+    {{-- html minimo para un reporte --}}
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
     {{-- estilos de reporte --}}
-    {{-- <style>
-        :root {
-            --fondo-logo: #e0e1dd;
-            --fondo-descripcion: #adb5bd;
-            --fondo-cabecera-tabla: #ced4da;
-            --fondo-filas-tabla: #dee2e6;
-            --bordes: #adb5bd;
+    <style>
+        /* margenes de la pagina */
+        /* espacios reservados donde incluir la cabecera y pie */
+        @page {
+            margin: 200px 25px 80px 25px;
         }
 
         * {
-            box-sizing: border-box;
-            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #353535;
+        }
+
+        header {
+            position: fixed;
+            top: -160px;
+            left: 0px;
+            right: 0px;
+            height: 120px;
+            /* border: 1px solid tomato; */
+        }
+
+        .header-table {
+            width: 100%;
+            height: 120px;
+            font-size: 14px;
+            line-height: 120%;
+            border: none;
             padding: 0;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
 
-        body {
-            padding: 1rem;
+        .logo-container {
+            padding: 0;
+            border: none;
+            box-sizing: border-box;
         }
 
-        .cabecera,
-        .descripcion,
-        .pie {
-            display: block;
+        .logo-wrapper {
+            padding: 0;
             width: 100%;
-            border: 1px solid var(--bordes);
-            padding: .5rem;
+            height: inherit;
+            text-align: center;
         }
 
-        .cabecera {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .cabecera-logo-wrapper {
-            width: 200px;
-            height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--fondo-logo);
-        }
-
-        .cabecera-informacion {
-            width: 100%;
-            padding: .5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-        }
-
-        .renglon-cabecera {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .datos-cabecera {
-            margin: 5px 0;
-        }
-
-        .cabecera-informacion__titulo,
-        .cabecera-informacion__subtitulo,
-        .cabecera-informacion__datos {
-            font-weight: 700;
-            margin: 5px 0;
-        }
-
-        .tabla,
-        .descripcion {
-            margin: .5rem 0;
-        }
-
-        .descripcion {
-            background-color: var(--fondo-descripcion);
-        }
-
-        .tabla {
-            width: 100%;
-        }
-
-        .tabla,
-        th,
-        td {
-            border: 1px solid var(--bordes);
+        .border {
+            border: 1px solid #495057;
             border-collapse: collapse;
         }
 
-        tr {
-            height: 1.5rem;
+        .title {
+            background-color: #adb5bd;
+            color: #212529;
+            font-weight: 700;
         }
 
-        /* patron cebra por filas (tr), a partir de la cabecera */
-        /* usando even: colorea las filas pares */
-        /* usando odd: colorea las filas impares */
-        tr:nth-child(even) {
-            background-color: var(--fondo-filas-tabla);
+        .subtitle {
+            background-color: #e9ecef;
+            color: #212529;
+            font-weight: 700;
         }
 
-        th {
-            font-size: 1rem;
-            background-color: var(--fondo-cabecera-tabla);
+        .enphasis {
+            font-weight: 700;
         }
 
-        td {
-            font-size: .9rem;
-            padding: 0 5px;
+        .enphasis,
+        .data {
+            font-size: 12px;
         }
 
-        .pie {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
+        footer {
+            position: fixed;
+            bottom: -40px;
+            left: 0px;
+            right: 0px;
+            height: 30px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: 700;
+            font-size: 12px;
+            text-align: left;
         }
-    </style> --}}
 
-    <title>SiGAU - Reporte</title>
+        footer p {
+            font-size: 10px;
+            margin-left: 25px;
+            letter-spacing: .2px;
+            color: #495057;
+        }
 
+        .data-table {
+            width: 100%;
+        }
+
+        .data-table-head {
+            font-size: 10px;
+        }
+
+        .data-table__row-head {
+            font-size: 10px;
+            letter-spacing: .3px;
+            text-transform: uppercase;
+            padding: 3px 5px;
+            text-align: left;
+            background-color: #adb5bd;
+        }
+
+        .data-table-body {
+            font-size: 12px;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #e9ecef;
+        }
+
+        .data-table__row-data {
+            padding: 3px 5px;
+            letter-spacing: .2px;
+        }
+    </style>
 </head>
 
 <body>
-    {{-- cabecera de reporte --}}
-    <heder class="cabecera">
-        <div class="cabecera-logo-wrapper">
-            <div>logo</div>
-        </div>
-        <div class="cabecera-informacion">
-            <div class="renglon-cabecera">
-                <h2 class="cabecera-informacion__titulo">Si.G.A.U.</h2>
-            </div>
-            <div class="renglon-cabecera">
-                <h4 class="cabecera-informacion__subtitulo">Reporte de Usuarios&nbsp;</h4>
-                {{-- <span class="datos-cabecera">datos</span> --}}
-            </div>
-            <div class="renglon-cabecera">
-                <h4 class="cabecera-informacion__subtitulo">Usuarios Internos del Sistema&nbsp;</h4>
-                {{-- <span class="datos-cabecera">datos</span> --}}
-            </div>
-            <div class="renglon-cabecera">
-                <span class="cabecera-informacion__datos">Fecha de Emision:&nbsp;</span>
-                <span class="datos-cabecera">datos</span>
-            </div>
-            <div class="renglon-cabecera">
-                <span class="cabecera-informacion__datos">Emitido Por:&nbsp;</span>
-                <span
-                    class="datos-cabecera">{{ Auth()->user()->name }},&nbsp;{{ Auth()->user()->email }},&nbsp;rol:&nbsp;{{ Auth()->user()->getRoleNames() }}</span>
-            </div>
-        </div>
-    </heder>
-    {{-- cuerpo del reporte --}}
-    <div class="descripcion">
-        <span></span>
-    </div>
+    {{-- contenido dinamico del reporte --}}
     @yield('report-content')
-    {{-- pie del reporte --}}
-    <footer class="pie">
-        <p></p>
-    </footer>
+
+    {{-- dompdf page number --}}
+    {{-- mantener etiqueta script --}}
+    <script type="text/php">
+
+        if (isset($pdf)) { 
+            //Shows number center-bottom of A4 page with $x,$y values
+            $x = 490;  //X-axis i.e. vertical position 
+            $y = 795; //Y-axis horizontal position
+            $text = "Pagina {PAGE_NUM} de {PAGE_COUNT}";  //format of display message
+            $font =  $fontMetrics->get_font("helvetica", "bold");
+            $size = 9;
+            $color = array(0.2, 0.094, 0.0);
+            $word_space = 0.0;  //  default
+            $char_space = 0.0;  //  default
+            $angle = 0.0;   //  default
+            $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+        }
+
+    </script>
 </body>
 
 </html>
