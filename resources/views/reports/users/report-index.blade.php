@@ -29,7 +29,14 @@
                 <td colspan="2" class="header-cell border data">
                     <span style="font-weight: 700;">Nombre:</span>{{ $cabeceraReporte['nombre-usuario'] }}, 
                     <span style="font-weight: 700;">Correo: </span>{{ $cabeceraReporte['email-usuario'] }}, 
-                    <span style="font-weight: 700;">Rol: </span>{{ $cabeceraReporte['rol-usuario'][0] }}
+                    <span style="font-weight: 700;">Rol:</span>
+                    <span>
+                        @if (count($cabeceraReporte['rol-usuario']) !== 0)
+                            <span>{{$cabeceraReporte['rol-usuario'][0]}}</span>
+                        @else
+                            <span>Super Administrador</span>
+                        @endif
+                    </span>
                 </td>
             </tr>
             <tr class="header-row border">
