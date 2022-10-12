@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\RoleController;
+use App\Http\Controllers\User\RoleReportController;
 use App\Http\Controllers\User\UserReportController;
 
 /*
@@ -41,7 +42,11 @@ Route::middleware(['auth'])->group(function () {
     //*reportes User
     Route::get('/report-users', [UserReportController::class, 'crear'])->name('report-users');
     
+    //*controlador de recursos Roles
     Route::resource('roles', RoleController::class)->names('roles');
+    //*reportes Roles
+    Route::get('/report-roles', [RoleReportController::class, 'crear'])->name('report-roles');
+    
 });
 
 

@@ -44,6 +44,12 @@
                 <x-tables.td-cell>{{ $role->description }}</x-tables.td-cell>
             </tr>
             <tr>
+                <x-tables.th-cell class="text-left w-1/4">fecha de creacion:</x-tables.th-cell>
+                <x-tables.td-cell>
+                    {{\Carbon\Carbon::parse($role->created_at)->locale('es_ES')->format('d-m-Y H:i')}} Hrs.
+                </x-tables.td-cell>
+            </tr>
+            <tr>
                 <x-tables.th-cell class="text-left w-1/4">visibilidad del rol:</x-tables.th-cell>
                 <x-tables.td-cell>
                     @if ($role->visibility === 'readonly')

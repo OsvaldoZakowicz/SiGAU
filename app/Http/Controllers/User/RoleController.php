@@ -4,11 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-//spatie permission
+use Illuminate\Support\Facades\Validator;
+use App\Services\User\RoleService;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-//DB
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class RoleController extends Controller
 {
@@ -25,36 +25,52 @@ class RoleController extends Controller
     }
 
     /**
-     * Mostrar lista de roles.
+     * Listar roles.
+     * Recibe $request especial de formulario de busqueda.
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $busqueda)
+    public function index(Request $request, RoleService $roleService)
     {
-        if ($busqueda->filtro !== null && $busqueda->orden !== null) {
+        //*se recibe un request
+        //?tiene el request algun campo?
+        if ($request->hasAny('filtro','valor','orden')) {
             
-            //si no hay busqueda, reemplazo null por vacio
-            //de esta forma 'LIKE' coincide con todo
-            if ($busqueda->valor === null) {
-                $busqueda->valor = "";
+            /**
+             * *se recibe request
+             * filtro = name | description
+             * valor = busqueda para sql LIKE
+             * orden = asc | desc
+             */
+            $validator = Validator::make($request->all(),[
+                'filtro' => 'required',
+                'valor' => 'max:65',
+                'orden' => 'required'
+            ]);
+
+            //?existe valor de busqueda en el request?
+            if ($request->input('valor') !== NULL) {
+                //hay busqueda
+                $validated = $validator->validated();
+                $roles = $roleService->buscarRoles($validated);
+            } else {
+                //no hay busqueda, ordenar por filtro
+                $validated = $validator->safe()->only(['filtro','orden']);
+                $roles = $roleService->ordenarRoles($validated);
             };
 
-            //buscar por nombre o descripcion, con orden
-            if ($busqueda->filtro === 'name' || $busqueda->filtro === 'description') {
-                $roles = DB::table('roles')
-                    ->where('roles.'.$busqueda->filtro,'LIKE','%' . $busqueda->valor . '%')
-                    ->orderBy('roles.'.$busqueda->filtro, $busqueda->orden)
-                    ->paginate(15);
-            };
+            return view('roles.index', compact('roles','validated'));
 
-            return view('roles.index', compact('roles'));
+        } else {
+
+            //*si no se recibe request
+            $validated = ['filtro' => 'created_at', 'orden' => 'desc'];
+
+            //*lista por defecto
+            $roles = $roleService->listarRoles();
+
+            return view('roles.index', compact('roles','validated'));
         };
-
-        //roles ordenados por fecha de creacion mas reciente
-        $roles = DB::table('roles')
-            ->orderBy('created_at','desc')
-            ->paginate(15);
-
-        return view('roles.index', compact('roles'));
+        
     }
 
     /**
@@ -73,7 +89,7 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, RoleService $roleService)
     {
         $this->validate($request, [
             'name' => 'required|max:65|unique:roles,name',
@@ -81,15 +97,7 @@ class RoleController extends Controller
             'permission' => 'required'
         ]);
 
-        $role = Role::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'visibility' => 'readwrite'
-        ]);
-
-        //syncPermissions() es un metodo para sincronizar permisos a un usuario, o rol
-        //quita todos los permisos y concede los proporcionados en el request permission
-        $role->syncPermissions($request->input('permission'));
+        $role = $roleService->crearRol($request->all());
 
         return redirect()
             ->route('roles.index')
@@ -104,7 +112,7 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::find($id);
-        //permisos del rol
+
         $rolePermissions = $role->permissions->pluck('name');
 
         return view('roles.show', compact('role','rolePermissions'));
@@ -115,16 +123,13 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(RoleService $roleService,$id)
     {
-        $role = Role::find($id);
-        //obtengo permisos aplicables solo a administradores
-        $permission = Permission::where('asignable_to','administrador')->get();
-        //permisos del rol
-        $rolePermissions = DB::table('role_has_permissions')
-            ->where('role_has_permissions.role_id', $id)
-            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
-            ->all();
+        $role = $roleService->buscarRol($id);
+
+        $permission = $roleService->obtenerPermisosAdministradores();
+        
+        $rolePermissions = $roleService->obtenerPermisosDelRol($role->id);
 
         return view('roles.edit', compact('role','permission','rolePermissions'));
     }
@@ -135,7 +140,7 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, RoleService $roleService, $id)
     {
         $this->validate($request, [
             'name' => 'required|max:65',
@@ -143,14 +148,9 @@ class RoleController extends Controller
             'permission' => 'required'
         ]);
 
-        $role = Role::find($id);
-        $role->name = $request->input('name');
-        $role->description = $request->input('description');
-        $role->visibility = 'readwrite';
-        $role->save();
+        $role = $roleService->buscarRol($id);
 
-        //sincronizar permisos
-        $role->syncPermissions($request->input('permission'));
+        $role = $roleService->actualizarRol($role, $request->all());
 
         return redirect()
             ->route('roles.index')
@@ -162,7 +162,7 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role, RoleService $roleService)
     {
 
         //?se puede borrar el rol?
@@ -173,10 +173,8 @@ class RoleController extends Controller
         };
 
         //?el rol esta asociado a usuarios, o algun modelo?
-        $count = DB::table('model_has_roles')->where('role_id','=',$role->id)->count();
-
         //si tiene usuarios asociados, redirect con error
-        if ($count !== 0) {
+        if ($roleService->contarModelosAsociados($role) !== 0) {
             return redirect()
                 ->route('roles.show', compact('role'))
                 ->with('error', 'no se puede borrar el rol '.$role->name.' existen usuarios con ese rol');
@@ -190,7 +188,7 @@ class RoleController extends Controller
         };
 
         //*borrar rol
-        $role->delete();
+        $status = $roleService->borrarRol($role);
 
         return redirect()
             ->route('roles.index')

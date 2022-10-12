@@ -8,6 +8,7 @@
             <x-buttons.button-link-zinc-light href="{{route('roles.index')}}">
                 <i class="fa-solid fa-rotate text-zinc-600"></i>
             </x-buttons.button-link-zinc-light>
+            {{-- formulario de busqueda --}}
             <div class="w-2/3">
                 <form action="{{route('roles.index')}}" method="GET">
                     <div class="flex items-center">
@@ -39,12 +40,51 @@
             @endcan
         </div>
     </div>
+    {{-- informe de busqueda --}}
+    @if (count($validated) !== 0)
+        <div class="mx-2 p-1 flex items-center justify-between mt-2 text-md text-zinc-700 border border-zinc-300 bg-zinc-200">
+            <div>
+                <span>filtrado por columna:
+                    <span class="ml-1 font-bold">
+                        {{ __($validated['filtro']) }}
+                    </span>
+                    @if (array_key_exists('valor', $validated))
+                        <span class="ml-1">con valor de busqueda:</span>
+                        <span class="ml-1 font-bold">
+                            {{ $validated['valor'] }}
+                        </span>
+                    @endif
+                    <span class="ml-1">ordenado de forma:</span>
+                    <span class="ml-1 font-bold">
+                        {{ __($validated['orden']) }}
+                    </span>
+                </span>
+            </div>
+            <div>
+                {{-- si hay resultados de busqueda o filtro --}}
+                @if (count($roles) !== 0)
+                    <form action="{{route('report-roles')}}" method="GET">
+                        <input type="text" name="filtro" value="{{ $validated['filtro'] }}" class="hidden">
+                        @if (array_key_exists('valor', $validated))
+                            <input type="text" name="valor" value="{{ $validated['valor'] }}" class="hidden">
+                        @endif
+                        <input type="text" name="orden" value="{{ $validated['orden'] }}" class="hidden">
+                        <button type="submit" title="reporte PDF de la tabla">
+                            <i class="fa-solid fa-file-pdf text-xl text-red-600"></i>
+                        </button>
+                    </form>
+                @endif
+            </div>
+        </div>
+    @endif
+    {{-- tabla --}}
     <table class="table-auto m-2 border border-zinc-300 border-collapse">
         <thead>
             <tr>
                 <x-tables.th-cell>id</x-tables.th-cell>
                 <x-tables.th-cell>nombre</x-tables.th-cell>
                 <x-tables.th-cell>descripcion</x-tables.th-cell>
+                <x-tables.th-cell>fecha de creacion</x-tables.th-cell>
                 <x-tables.th-cell title="readonly: es un rol no editable, readwrite: rol editable">
                     <span>visibilidad</span>
                     <i class="fa-solid fa-circle-info ml-1"></i>
@@ -52,13 +92,14 @@
                 <x-tables.th-cell>acciones</x-tables.th-cell>
             </tr>
         </thead>
-        <tbody>
-            @if (count($roles))
+        @if (count($roles))
+            <tbody>
                 @foreach ($roles as $role)
                     <tr class="text-sm text-zinc-800">
                         <x-tables.td-cell>{{$role->id}}</x-tables.td-cell>
                         <x-tables.td-cell>{{$role->name}}</x-tables.td-cell>
                         <x-tables.td-cell>{{$role->description}}</x-tables.td-cell>
+                        <x-tables.td-cell>{{$role->created_at}} Hrs.</x-tables.td-cell>
                         <x-tables.td-cell>
                             @if ($role->visibility === "readonly")
                                 <span class="bg-red-300 text-zinc-600">{{$role->visibility}}</span>
@@ -74,12 +115,14 @@
                         </x-tables.td-cell>
                     </tr>
                 @endforeach
-            @else
-                <tr>
-                    <x-tables.td-cell class="">sin datos</x-tables.td-cell>
+            </tbody>
+        @else
+            <tbody>
+                <tr class="text-sm text-red-600">
+                    <x-tables.td-cell colspan="6">Sin resultados de busqueda.</x-tables.td-cell>
                 </tr>
-            @endif
-        </tbody>
+            </tbody>
+        @endif
     </table>
     {{-- paginacion --}}
     <div class="mx-2">
