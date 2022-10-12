@@ -111,7 +111,7 @@
                                     <span class="bg-green-300 px-1 text-zinc-600">{{ $user->role_name }}</span>
                                 @endif
                             </x-tables.td-cell>
-                            <x-tables.td-cell>{{$user->created_at}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$user->created_at}} Hrs.</x-tables.td-cell>
                             <x-tables.td-cell>
                                 <a href="{{ route('users.show', $user->id) }}"
                                     class="mr-1 text-xs uppercase hover:text-sky-500">

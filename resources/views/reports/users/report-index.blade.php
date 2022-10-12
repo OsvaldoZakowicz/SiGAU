@@ -18,18 +18,18 @@
                 </td>
             </tr>
             <tr class="header-row border">
-                <td colspan="3" class="header-cell border subtitle">Titulo del reporte: {{$tituloReporte}}</td>
+                <td colspan="3" class="header-cell border subtitle">Titulo del reporte: {{$cabeceraReporte['titulo']}}</td>
             </tr>
             <tr class="header-row border">
                 <td class="header-cell border enphasis">fecha de emision:</td>
-                <td colspan="2" class="header-cell border data">{{ $fechaReporte }} hrs.</td>
+                <td colspan="2" class="header-cell border data">{{ $cabeceraReporte['fecha'] }} hrs.</td>
             </tr>
             <tr class="header-row border">
                 <td class="header-cell border enphasis">emitido por:</td>
                 <td colspan="2" class="header-cell border data">
-                    <span style="font-weight: 700;">Nombre:</span>{{ $usuario['nombre'] }}, 
-                    <span style="font-weight: 700;">Correo: </span>{{ $usuario['email'] }}, 
-                    <span style="font-weight: 700;">Rol: </span>{{ $usuario['rol'][0] }}
+                    <span style="font-weight: 700;">Nombre:</span>{{ $cabeceraReporte['nombre-usuario'] }}, 
+                    <span style="font-weight: 700;">Correo: </span>{{ $cabeceraReporte['email-usuario'] }}, 
+                    <span style="font-weight: 700;">Rol: </span>{{ $cabeceraReporte['rol-usuario'][0] }}
                 </td>
             </tr>
             <tr class="header-row border">

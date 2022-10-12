@@ -38,7 +38,9 @@
             </tr>
             <tr>
                 <x-tables.th-cell class="text-left w-1/4">cuenta creada en:</x-tables.th-cell>
-                <x-tables.td-cell>{{$user->created_at}}</x-tables.td-cell>
+                <x-tables.td-cell>
+                    {{\Carbon\Carbon::parse($user->created_at)->locale('es_Ar')->format('d-m-Y H:i')}} Hrs.
+                </x-tables.td-cell>
             </tr>
             <tr>
                 <x-tables.th-cell class="text-left w-1/4">roles activos:</x-tables.th-cell>

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class UserReportController extends Controller
 {
     /**
-     * Crear reporte.
+     * *crear un reporte
      */
     public function crear(Request $request, UserReportService $userReportService)
     {
@@ -19,16 +19,17 @@ class UserReportController extends Controller
         $pdf = app('dompdf.wrapper');
 
         //fecha de reporte
-        $fechaReporte = Carbon::parse(Carbon::now())->locale('es_AR')->format('d-m-Y H:i');
-        
-        //titulo del reporte
-        $tituloReporte = 'reporte de usuarios';
-        
+        $fechaReporte = Carbon::parse(Carbon::now())
+                                ->locale('es_AR')
+                                ->format('d-m-Y H:i');
+
         //usuario que reporta
-        $usuario = [
-            'nombre' => Auth()->user()->name,
-            'email' => Auth()->user()->email,
-            'rol' => Auth()->user()->getRoleNames()
+        $cabeceraReporte = [
+            'titulo' => 'reporte de usuarios',
+            'fecha' => $fechaReporte,
+            'nombre-usuario' => Auth()->user()->name,
+            'email-usuario' => Auth()->user()->email,
+            'rol-usuario' => Auth()->user()->getRoleNames()
         ];
 
         //?tiene el request algun campo?
@@ -51,43 +52,34 @@ class UserReportController extends Controller
 
                 //hay busqueda
                 $validated = $validator->validated();
-
+                
                 //?el filtro es para rol?
                 if ($request->input('filtro') === "role") {
-                    
                     $users = $userReportService->buscarUsuariosInternosPorRol($validated);
-                
                 } else {
-                   
                     $users = $userReportService->buscarUsuariosInternos($validated);
-               
                 };
 
             } else {
-                
+
                 //no hay busqueda, ordenar por filtro
                 $validated = $validator->safe()->only(['filtro', 'orden']);
 
                 //?el filtro es para rol?
                 if ($request->input('filtro') === "role") {
-                   
                     $users = $userReportService->ordenarUsuariosInternosPorRol($validated);
-                
                 } else {
-                    
                     $users = $userReportService->ordenarUsuariosInternos($validated);
-                
                 };
+
             };
 
-            $pdf->loadView('reports.users.report-index', compact('users', 'fechaReporte', 'tituloReporte', 'usuario', 'validated', 'pdf'));
-            
+            $pdf->loadView('reports.users.report-index', compact('users','validated','cabeceraReporte','pdf'));
             return $pdf->stream('reporte-usuarios');
 
         } else {
 
             return redirect()->route('users.index');
-
         };
     }
 }
