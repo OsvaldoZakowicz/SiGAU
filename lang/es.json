@@ -474,6 +474,8 @@
     "Puerto Rico": "Puerto Rico",
     "Qatar": "Qatar",
     "Quarter To Date": "Trimestre hasta la fecha",
+    "readonly": "no editable",
+    "readwrite": "editable",
     "Receipt Email Addresses": "Direcciones para recibir correo electrónico",
     "Receipts": "Recibos",
     "Recovery Code": "Código de recuperación",

@@ -85,7 +85,7 @@
                 <x-tables.th-cell>nombre</x-tables.th-cell>
                 <x-tables.th-cell>descripcion</x-tables.th-cell>
                 <x-tables.th-cell>fecha de creacion</x-tables.th-cell>
-                <x-tables.th-cell title="readonly: es un rol no editable, readwrite: rol editable">
+                <x-tables.th-cell title="indica si el rol se puede editar o no.">
                     <span>visibilidad</span>
                     <i class="fa-solid fa-circle-info ml-1"></i>
                 </x-tables.th-cell>
@@ -102,9 +102,9 @@
                         <x-tables.td-cell>{{$role->created_at}} Hrs.</x-tables.td-cell>
                         <x-tables.td-cell>
                             @if ($role->visibility === "readonly")
-                                <span class="bg-red-300 text-zinc-600">{{$role->visibility}}</span>
+                                <span class="bg-red-300 text-zinc-600">{{__($role->visibility)}}</span>
                             @else
-                                <span class="bg-green-300 text-zinc-600">{{$role->visibility}}</span>
+                                <span class="bg-green-300 text-zinc-600">{{__($role->visibility)}}</span>
                             @endif
                         </x-tables.td-cell>
                         <x-tables.td-cell>
