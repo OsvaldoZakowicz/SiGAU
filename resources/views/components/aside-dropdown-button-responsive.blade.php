@@ -8,7 +8,7 @@
         <span x-show="toggleIcon">
             <i class="fa-solid fa-caret-left"></i>
         </span>
-        <span x-show="!toggleIcon">
+        <span x-show="! toggleIcon">
             <i class="fa-solid fa-caret-down"></i>
         </span>
     </div>
