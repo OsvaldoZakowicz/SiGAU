@@ -74,7 +74,7 @@ class UserService
     public function obtenerRolesParaUsuarioInterno()
     {
         $roles = DB::table('roles')
-            ->whereNotIn('name', ['estudiante', 'becado', 'delegado'])
+            ->whereNotIn('name', ['estudiante', 'becado', 'delegado', 'inhabilitado'])
             ->pluck('name', 'name')
             ->all();
 

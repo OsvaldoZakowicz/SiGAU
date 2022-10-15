@@ -21,7 +21,7 @@
                         @method('DELETE')
                         <x-buttons.button-submit-red>
                             <i class="fa-solid fa-lock mr-1"></i>
-                            <span>inhabilitar cuenta</span>
+                            <span>revocar rol</span>
                         </x-buttons.button-submit-red>
                     </form>
                 @endcan
