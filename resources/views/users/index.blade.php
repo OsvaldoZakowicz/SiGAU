@@ -104,11 +104,11 @@
                             <x-tables.td-cell>{{ $user->email }}</x-tables.td-cell>
                             <x-tables.td-cell>
                                 @if ($user->role_name === 'inhabilitado')
-                                    <span class="bg-yellow-300 px-1 text-zinc-600">{{ $user->role_name }}</span>
+                                    <span class="bg-zinc-300 px-1 text-zinc-800">{{ $user->role_name }}</span>
                                 @elseif ($user->email === 'admin@admin.com')
-                                    <span class="bg-red-300 px-1 text-zinc-600">super admin</span>
+                                    <span class="bg-red-300 px-1 text-zinc-800">super admin</span>
                                 @else
-                                    <span class="bg-green-300 px-1 text-zinc-600">{{ $user->role_name }}</span>
+                                    <span class="bg-green-300 px-1 text-zinc-800">{{ $user->role_name }}</span>
                                 @endif
                             </x-tables.td-cell>
                             <x-tables.td-cell>{{$user->created_at}} Hrs.</x-tables.td-cell>

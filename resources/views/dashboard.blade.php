@@ -13,6 +13,13 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- aonfiguración para alpine --}}
+    {{-- impide una carga prematura de html antes que alpine se inicie --}}
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+
 </head>
 
 <body class="font-sans antialiased">
@@ -24,7 +31,7 @@
         <div class="w-100vw h-screen flex flex-row">
             {{-- aside cambia de tamaño --}}
             
-            <aside x-data="{ toggleAside: false }" x-bind:class="!toggleAside ? 'w-16 p-2 bg-zinc-400 border-r-2 border-zinc-300' : 'flex-none w-1/6 p-2 bg-zinc-400 border-r-2 border-zinc-300'">
+            <aside x-cloak x-data="{ toggleAside: false }" x-bind:class="!toggleAside ? 'w-16 p-2 bg-zinc-400 border-r-2 border-zinc-300' : 'flex-none w-1/6 p-2 bg-zinc-400 border-r-2 border-zinc-300'">
 
                 {{-- minimizar/maximizar aside --}}
                 <div
