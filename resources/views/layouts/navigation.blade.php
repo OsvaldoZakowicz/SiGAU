@@ -5,23 +5,25 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="#">
                         <h2 class="flex justify-center items-center space-x-8 sm:-my-px sm:ml-2 text-gray-600">SiGAU</h2>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
-                    @can('ver-pagina-estudiantes')
+                    @can('ver-pagina-estudiante')
                         <!-- link a vista para estudiantes -->
                         <x-nav-link :href="route('student')" :active="request()->routeIs('student')">
-                            {{ __('Students') }}
+                            <i class="fa-solid fa-house mr-1"></i>
+                            <span>{{ __('Students') }}</span>
                         </x-nav-link>
                     @endcan
                     @can('ver-pagina-dashboard')
                         <!-- link a vista para otros roles -->
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                            <i class="fa-solid fa-house mr-1"></i>
+                            <span>{{ __('Dashboard') }}</span>
                         </x-nav-link>
                     @endcan
                 </div>
@@ -48,7 +50,7 @@
 
                     <x-slot name="content">
                         {{-- perfil  --}}
-                        <x-dropdown-link href="#">
+                        <x-dropdown-link :href="route('show-profile')">
                             <i class="fa-solid fa-address-card mr-1"></i>
                             <span>Mi perfil</span>
                         </x-dropdown-link>
