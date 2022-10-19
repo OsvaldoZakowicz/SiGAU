@@ -69,6 +69,26 @@ class UserService
     }
 
     /**
+     * *actualizar perfil
+     * esta accion es llevada a cabo por el propio usuario,
+     * puede cambiar sus datos de perfil, pero no su rol.
+     */
+    public function actualizarMiPerfil(User $user, $parametros)
+    {
+        if (!empty($parametros['password'])) {
+            //si no esta vacio el campo password, crear hash
+            $parametros['password'] = Hash::make($parametros['password']);
+        } else {
+            //si esta vacio, quitamos el item 'password' del array
+            $parametros = Arr::except($parametros, array('password'));
+        };
+
+        $user->update($parametros);
+
+        return $user;
+    }
+
+    /**
      * *obtener roles para usuarios internos
      */
     public function obtenerRolesParaUsuarioInterno()
