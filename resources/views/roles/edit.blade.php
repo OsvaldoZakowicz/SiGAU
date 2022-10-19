@@ -5,7 +5,7 @@
             <h3 class="text-base text-zinc-800 capitalize">roles: editar rol</h3>
             <span class="text-sm text-red-500">Al editar el rol <b>{{$role->name}}</b> este cambiará para todos los usuarios que lo tengan, sea cuidadoso!</span>
         </div>
-        <div class="my-2 mx-auto w-full border border-zinc-200">
+        <div class="my-2 mx-auto w-2/3 border bg-white border-zinc-200">
             {{-- formulario, model --}}
             {!! Form::model($role, ['route' => ['roles.update', $role->id], 'method' => 'PUT']) !!}
             <div class="flex flex-col items-center justify-center">

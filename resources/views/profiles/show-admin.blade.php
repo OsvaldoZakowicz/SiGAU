@@ -24,7 +24,7 @@
         </div>
         <div class="mx-2 flex">
             {{-- perfil --}}
-            <div class="w-full max-w-xs overflow-hidden bg-zinc-50 border border-zinc-100">
+            <div class="w-full max-w-xs overflow-hidden bg-white border border-zinc-200">
                 <img class="object-cover w-full h-56"
                     src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
                     alt="avatar">
@@ -40,7 +40,7 @@
                 </div>
             </div>
             {{-- cuenta --}}
-            <div class="w-full ml-3 p-3 overflow-hidden flex flex-col justify-between bg-zinc-50 border border-zinc-100">
+            <div class="w-full ml-3 p-3 overflow-hidden flex flex-col justify-between bg-white border border-zinc-200">
                 <div>
                     <div class="py-2 text-left">
                         <span class="block text-xs uppercase font-semibold tracking-wider text-zinc-600" tabindex="0"

@@ -55,7 +55,7 @@
             </div>
         </div>
     </nav>
-    <main>
+    <main class="bg-zinc-100">
 
     </main>
 </body>

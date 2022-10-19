@@ -4,7 +4,7 @@
         <div class="mx-2 flex flex-col items-start justify-start">
             <h3 class="text-base text-zinc-800 capitalize">usuarios: asignar rol al usuario</h3>
         </div>
-        <div class="my-2 mx-auto w-full border border-zinc-200">
+        <div class="my-2 mx-auto w-1/2 bg-white border border-zinc-200">
             {{-- formulario --}}
             {!! Form::model($user, ['method' => 'PUT', 'route' => ['users.update',$user->id]]) !!}
             <div class="flex flex-col items-center justify-center">

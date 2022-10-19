@@ -4,7 +4,7 @@
   <div class="mx-2 flex flex-col items-start justify-start">
       <h3 class="text-base text-zinc-800 capitalize">mi perfil: editar</h3>
   </div>
-  <div class="my-2 mx-auto w-full border border-zinc-200">
+  <div class="my-2 mx-auto w-2/3 border bg-white border-zinc-200">
       {{-- formulario --}}
       {!! Form::model($user, ['method' => 'PUT', 'route' => ['update-admin',$user]]) !!}
       <div class="flex flex-col items-center justify-center">

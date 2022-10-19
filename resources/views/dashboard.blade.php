@@ -425,7 +425,7 @@
                 @endcan
             </aside>
             {{-- main tiene full ancho --}}
-            <main class="relative flex-initial w-full bg-white">
+            <main class="relative flex-initial w-full bg-zinc-100">
                 {{-- mensajes de sesion --}}
                 @if (session('exito'))
                     <x-alerts.alert-success>
