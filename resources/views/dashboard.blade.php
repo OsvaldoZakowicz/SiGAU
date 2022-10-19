@@ -24,14 +24,14 @@
 
 <body class="font-sans antialiased">
     {{-- vista dashboard de administracion --}}
-    <div class="min-h-screen bg-zinc-100">
+    <div class="min-h-screen">
         {{-- navegacion --}}
         @include('layouts.navigation')
         {{-- aside + main --}}
         <div class="w-100vw h-screen flex flex-row">
             {{-- aside cambia de tamaño --}}
             
-            <aside x-cloak x-data="{ toggleAside: false }" x-bind:class="!toggleAside ? 'w-16 p-2 bg-zinc-400 border-r-2 border-zinc-300' : 'flex-none w-1/6 p-2 bg-zinc-400 border-r-2 border-zinc-300'">
+            <aside x-cloak x-data="{ toggleAside: false }" x-bind:class="!toggleAside ? 'w-16 p-2 bg-zinc-500' : 'flex-none w-1/6 p-2 bg-zinc-500'">
 
                 {{-- minimizar/maximizar aside --}}
                 <div
@@ -425,7 +425,7 @@
                 @endcan
             </aside>
             {{-- main tiene full ancho --}}
-            <main class="relative flex-initial w-full bg-white border-gray-200">
+            <main class="relative flex-initial w-full bg-white">
                 {{-- mensajes de sesion --}}
                 @if (session('exito'))
                     <x-alerts.alert-success>

@@ -24,7 +24,7 @@
 
 <body class="font-sans antialiased">
     {{-- vista de estudiantes --}}
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen">
         {{-- navegacion --}}
         @include('layouts.navigation')
 
@@ -32,7 +32,7 @@
             {{-- header o navegacion de estudiante --}}
 
             {{-- main tiene full ancho --}}
-            <main class="relative flex-initial w-full bg-white border-gray-200">
+            <main class="relative flex-initial w-full bg-white">
                 {{-- mensajes de sesion --}}
                 @if (session('exito'))
                     <x-alerts.alert-success>
