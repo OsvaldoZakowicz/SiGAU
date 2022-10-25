@@ -70,9 +70,9 @@
                 <x-tables.th-cell class="text-left w-1/4">visibilidad del rol:</x-tables.th-cell>
                 <x-tables.td-cell>
                     @if ($role->visibility === 'readonly')
-                        <span class="bg-red-300 px-1 text-zinc-800">{{ $role->visibility }}</span>
+                        <span class="bg-red-300 px-1 text-zinc-800">{{ __($role->visibility) }}</span>
                     @else
-                        <span class="bg-green-300 px-1 text-zinc-800">{{ $role->visibility }}</span>
+                        <span class="bg-green-300 px-1 text-zinc-800">{{ __($role->visibility) }}</span>
                     @endif
                 </x-tables.td-cell>
             </tr>

@@ -28,13 +28,13 @@ class RoleSeeder extends Seeder
 
         $administrador = Role::create([
             'name' => 'administrador',
-            'description' => 'accede a todos los modulos del dashboard',
+            'description' => 'administrador del sistema',
             'visibility' => 'readonly'
         ])->syncPermissions($adminPermissions);
 
         $auditor = Role::create([
             'name' => 'auditor',
-            'description' => 'accede al modulo de auditoria',
+            'description' => 'auditor del sistema',
             'visibility' => 'readonly'
         ])->syncPermissions([
             'ver-pagina-dashboard',
@@ -45,7 +45,7 @@ class RoleSeeder extends Seeder
 
         $secretarioGeneral = Role::create([
             'name' => 'secretario general',
-            'description' => 'accede al modulo de beca, becados, y casas',
+            'description' => 'secretario general de la secretaria de bienestar estudiantil',
             'visibility' => 'readonly'
         ])->syncPermissions([
             'ver-pagina-dashboard',
@@ -56,7 +56,7 @@ class RoleSeeder extends Seeder
 
         $encargadoAlbergue = Role::create([
             'name' => 'encargado albergues',
-            'description' => 'accede al modulo de becados, casas, planificaciones, y mantenimiento',
+            'description' => 'encargado de albergues de la secretaria de bienestar estudiantil',
             'visibility' => 'readonly'
         ])->syncPermissions([
             'ver-pagina-dashboard',
@@ -66,9 +66,19 @@ class RoleSeeder extends Seeder
             'ver-seccion-planificaciones'
         ]);
 
+        $becadoSecretariaDeBienestar = Role::create([
+            'name' => 'becado de secretaria',
+            'description' => 'estudiante becado como ayudante de la secretria de bienestar estudiantil',
+            'visibility' => 'readonly'
+        ])->syncPermissions([
+            'ver-pagina-dashboard',
+            'ver-seccion-becados',
+            'ver-seccion-beca'
+        ]);
+
         $rolInhabilitado = Role::create([
             'name' => 'inhabilitado',
-            'description' => 'rol de una cuenta interna inhabilitada',
+            'description' => 'rol por defecto de una cuenta interna inhabilitada',
             'visibility' => 'readonly'
         ])->syncPermissions(['ver-pagina-dashboard']);
 
@@ -82,19 +92,19 @@ class RoleSeeder extends Seeder
 
         $estudiante = Role::create([
             'name' => 'estudiante',
-            'description' => 'accede a las vistas de invitado, y estudiante para solicitud de beca',
+            'description' => 'estudiante de la universidad',
             'visibility' => 'readonly'
         ])->syncPermissions($estudiantePermission);
 
         $becado = Role::create([
             'name' => 'becado',
-            'description' => 'accede a las vistas de becado, y estudiante',
+            'description' => 'estudiante becado con albergue universitario',
             'visibility' => 'readonly'
         ])->syncPermissions($estudiantePermission);
 
         $delegado = Role::create([
             'name' => 'delegado',
-            'description' => 'accede a las vistas de delegado, becado, y estudiante',
+            'description' => 'estudiante becado con albergue universitario, y delegado de su casa',
             'visibility' => 'readonly'
         ])->syncPermissions($estudiantePermission);
 
