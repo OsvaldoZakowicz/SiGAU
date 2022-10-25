@@ -16,7 +16,6 @@
                             <select name="filtro"
                                 class="w-52 my-1 p-1 mr-1 rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                                 <option value="email">email</option>
-                                <option value="name">nombre</option>
                                 <option value="role">rol</option>
                             </select>
                             {{-- busqueda --}}
@@ -39,7 +38,7 @@
                 @can('crear-usuario')
                     <x-buttons.button-link-zinc href="{{ route('users.create') }}">
                         <i class="fa-solid fa-user-plus mr-1"></i>
-                        <span>crear usuario interno</span>
+                        <span>registrar usuario interno</span>
                     </x-buttons.button-link-zinc>
                 @endcan
             </div>
@@ -88,8 +87,8 @@
             <thead>
                 <tr>
                     <x-tables.th-cell>id</x-tables.th-cell>
-                    <x-tables.th-cell>nombre</x-tables.th-cell>
                     <x-tables.th-cell>correo</x-tables.th-cell>
+                    <x-tables.th-cell>correo verificado</x-tables.th-cell>
                     <x-tables.th-cell>rol activo</x-tables.th-cell>
                     <x-tables.th-cell>fecha de creacion</x-tables.th-cell>
                     <x-tables.th-cell>acciones</x-tables.th-cell>
@@ -100,8 +99,12 @@
                     @foreach ($users as $user)
                         <tr class="text-sm text-zinc-800">
                             <x-tables.td-cell>{{ $user->id }}</x-tables.td-cell>
-                            <x-tables.td-cell>{{ $user->name }}</x-tables.td-cell>
                             <x-tables.td-cell>{{ $user->email }}</x-tables.td-cell>
+                            @if ($user->email_verified_at !== NULL)
+                                <x-tables.td-cell>{{$user->email_verified_at}}</x-tables.td-cell>
+                            @else
+                            <x-tables.td-cell>no verificado</x-tables.td-cell>
+                            @endif
                             <x-tables.td-cell>
                                 @if ($user->role_name === 'inhabilitado')
                                     <span class="bg-zinc-300 px-1 text-zinc-800">{{ $user->role_name }}</span>

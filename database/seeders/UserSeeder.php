@@ -4,14 +4,12 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-//modelo User
 use App\Models\User;
 use Database\Factories\UserFactory;
-//modelo Role
 use Spatie\Permission\Models\Role;
-//modelo Permission
 use Spatie\Permission\Models\Permission;
+use App\Services\User\RoleService;
+use App\Services\User\UserService;
 
 class UserSeeder extends Seeder
 {
@@ -24,7 +22,6 @@ class UserSeeder extends Seeder
     {
         //*crear un super arministrador
         User::create([
-            'name' => 'super admin',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
@@ -32,7 +29,6 @@ class UserSeeder extends Seeder
 
         //administrador base
         User::create([
-            'name' => 'jose',
             'email' => 'administrador@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
@@ -40,7 +36,6 @@ class UserSeeder extends Seeder
 
         //auditor
         User::create([
-            'name' => 'maria',
             'email' => 'auditor@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
@@ -48,7 +43,6 @@ class UserSeeder extends Seeder
 
         //encargado de albergues
         User::create([
-            'name' => 'pepe',
             'email' => 'encargado@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
@@ -56,7 +50,6 @@ class UserSeeder extends Seeder
 
         //secretario general
         User::create([
-            'name' => 'miranda',
             'email' => 'secretario@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
@@ -64,7 +57,6 @@ class UserSeeder extends Seeder
 
         //estudiante
         User::create([
-            'name' => 'carlos',
             'email' => 'estudiante@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
@@ -72,7 +64,6 @@ class UserSeeder extends Seeder
 
         //becado
         User::create([
-            'name' => 'laura',
             'email' => 'becado@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
@@ -80,17 +71,16 @@ class UserSeeder extends Seeder
 
         //delegado
         User::create([
-            'name' => 'osvaldo',
             'email' => 'delegado@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password')
         ])->assignRole('delegado');
 
-        //50 usuarios mas
+        //10 usuarios mas
         $users = User::factory()
-            ->count(50)
+            ->count(10)
             ->create();
-
+            
         foreach ($users as $user) {
             $user->assignRole('inhabilitado');
         };

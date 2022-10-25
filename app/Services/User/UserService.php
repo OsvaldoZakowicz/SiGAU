@@ -13,6 +13,8 @@ use Illuminate\Support\Carbon;
  */
 class UserService
 {
+    //*constructor
+    function __construct() {}
 
     /**
      * *crear usuario interno
@@ -22,7 +24,7 @@ class UserService
         $parametros['password'] = Hash::make($parametros['password']);
 
         $user = User::create([
-            'name' => $parametros['name'],
+            //'name' => $parametros['name'],
             'email' => $parametros['email'],
             'password' => $parametros['password']
         ]);
@@ -119,7 +121,7 @@ class UserService
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email', 'users.created_at','users.email_verified_at', 'roles.id as role_id', 'roles.name as role_name')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('users.created_at', 'desc')
             ->paginate(15);
@@ -141,7 +143,7 @@ class UserService
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email', 'users.created_at','users.email_verified_at', 'roles.id as role_id', 'roles.name as role_name')
             ->where('users.' . $parametros['filtro'], 'LIKE', '%' . $parametros['valor'] . '%')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('users.' . $parametros['filtro'], $parametros['orden'])
@@ -164,7 +166,7 @@ class UserService
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email', 'users.created_at','users.email_verified_at', 'roles.id as role_id', 'roles.name as role_name')
             ->where('roles.name', 'LIKE', '%' . $parametros['valor'] . '%')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('roles.name', $parametros['orden'])
@@ -187,7 +189,7 @@ class UserService
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email', 'users.created_at','users.email_verified_at', 'roles.id as role_id', 'roles.name as role_name')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('users.' . $parametros['filtro'], $parametros['orden'])
             ->paginate(15);
@@ -208,7 +210,7 @@ class UserService
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email', 'users.created_at','users.email_verified_at', 'roles.id as role_id', 'roles.name as role_name')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('roles.name', $parametros['orden'])
             ->paginate(15);

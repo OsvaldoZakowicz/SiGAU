@@ -10,15 +10,15 @@
             <div class="flex flex-col items-center justify-center">
                 <div class="flex items-center justify-between w-full p-2">
                     {{-- nombre de usuario --}}
-                    <div class="w-1/2">
+                    {{-- <div class="w-1/2">
                         <x-required-input-label for="name" :value="__('User Name')" title="ingrese un nombre de usuario o nickname" />
                         @error('name')
                             <span class="text-xs text-red-600">{{ $message }}</span>
                         @enderror
                         {!! Form::text('name', null, ['class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
-                    </div>
+                    </div> --}}
                     {{-- email --}}
-                    <div class="w-1/2 ml-1">
+                    <div class="w-full">
                         <x-required-input-label for="email" :value="__('Email')"
                             title="ingrese un correo electrónico válido, ejemplo: micorreo@gmail.com" />
                         @error('email')

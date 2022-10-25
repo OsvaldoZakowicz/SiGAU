@@ -4,7 +4,7 @@
         {{-- x-data necesario para el modal --}}
         <div x-data="{ dialog: false }" class="relative mx-2 flex flex-col items-start justify-start">
             {{-- seccion de modal de confirmacion --}}
-            <x-modals.modal-warning :name="$user->name" :question="'Desea revocar el rol del usuario '" :message="'Esta accion dejará al usuario con un rol inhabilitado solo con acceso al dashboard y su cuenta'">
+            <x-modals.modal-warning :name="$user->email" :question="'Desea revocar el rol del usuario '" :message="'Esta accion dejará al usuario con un rol inhabilitado solo con acceso al dashboard y su cuenta'">
                 {{-- formulario --}}
                 <div class="px-3 py-2 mt-1 w-full flex items-center justify-end">
                     <x-buttons.button-link-zinc-light x-on:click="dialog = ! dialog" href="#" class="mr-1">
@@ -12,7 +12,7 @@
                         <span>cancelar</span>
                     </x-buttons.button-link-zinc-light>
                     @can('borrar-usuario')
-                        <form action="{{ route('users.destroy', $user) }}" method="POST">
+                        <form action="{{ route('disable-role', $user) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <x-buttons.button-submit-red>
@@ -30,7 +30,13 @@
                     <span>volver al listado</span>
                 </x-buttons.button-link-zinc-light>
                 @can('editar-usuario')
-                    <x-buttons.button-link-zinc href="{{ route('users.edit', $user->id) }}" class="mr-1">
+                    @if ($user->email_verified_at === NULL)
+                        <x-buttons.button-link-zinc href="{{ route('users.edit', $user) }}" class="mr-1">
+                            <i class="fa-solid fa-user-pen mr-1"></i>
+                            <span>editar usuario</span>
+                        </x-buttons.button-link-zinc>
+                    @endif
+                    <x-buttons.button-link-zinc href="{{route('edit-role', $user)}}" class="mr-1">
                         <i class="fa-solid fa-user-shield mr-1"></i>
                         <span>asignar rol</span>
                     </x-buttons.button-link-zinc>
@@ -52,12 +58,16 @@
         </div>
         <table class="m-2 border border-zinc-300 border-collapse">
             <tr>
-                <x-tables.th-cell class="text-left w-1/4">nombre de usuario:</x-tables.th-cell>
-                <x-tables.td-cell>{{ $user->name }}</x-tables.td-cell>
-            </tr>
-            <tr>
                 <x-tables.th-cell class="text-left w-1/4">correo:</x-tables.th-cell>
                 <x-tables.td-cell>{{ $user->email }}</x-tables.td-cell>
+            </tr>
+            <tr>
+                <x-tables.th-cell class="text-left w-1/4">correo verificado:</x-tables.th-cell>
+                @if ($user->email_verified_at !== NULL)
+                    <x-tables.td-cell>{{\Carbon\Carbon::parse($user->email_verified_at)->locale('es_Ar')->format('d-m-Y H:i') }} Hrs.</x-tables.td-cell>
+                @else
+                    <x-tables.td-cell> <span class="font-bold">no verificado</span>, puede editar el usuario hasta que se verifique el correo.</x-tables.td-cell>
+                @endif
             </tr>
             <tr>
                 <x-tables.th-cell class="text-left w-1/4">cuenta creada en:</x-tables.th-cell>

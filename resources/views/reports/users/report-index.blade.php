@@ -64,8 +64,8 @@
         <table class="data-table border">
             <thead class="data-table-head border">
                 <tr class="data-table__row border">
-                    <th class="data-table__row-head border">nombre</th>
                     <th class="data-table__row-head border">email</th>
+                    <th class="data-table__row-head border">email verificado</th>
                     <th class="data-table__row-head border">rol activo</th>
                     <th class="data-table__row-head border">fecha de creacion</th>
                 </tr>
@@ -73,8 +73,12 @@
             <tbody class="data-table-body">
                 @foreach ($users as $user)
                     <tr class="data-table__row border">
-                        <td class="data-table__row-data border">{{ $user->name }}</td>
                         <td class="data-table__row-data border">{{ $user->email }}</td>
+                        @if ($user->email_verified_at !== NULL)
+                            <td class="data-table__row-data border">{{ $user->email_verified_at }}</td>
+                        @else
+                            <td class="data-table__row-data border">no verificado</td>
+                        @endif
                         <td class="data-table__row-data border">{{ $user->role_name }}</td>
                         <td class="data-table__row-data border">{{ $user->created_at }}</td>
                     </tr>

@@ -21,7 +21,7 @@ class UserReportService {
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email','users.email_verified_at', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('users.created_at', 'desc')
             ->get();
@@ -29,6 +29,9 @@ class UserReportService {
         //formato de fecha
         foreach($users as $user) {
             $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+            if ($user->email_verified_at !== NULL) {
+                $user->email_verified_at = Carbon::parse($user->email_verified_at)->locale('es_ES')->format('d-m-Y H:i');
+            }
         };
 
         return $users;
@@ -43,7 +46,7 @@ class UserReportService {
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email','users.email_verified_at', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
             ->where('users.' . $parametros['filtro'], 'LIKE', '%' . $parametros['valor'] . '%')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('users.' . $parametros['filtro'], $parametros['orden'])
@@ -52,6 +55,9 @@ class UserReportService {
         //formato de fecha
         foreach($users as $user) {
             $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+            if ($user->email_verified_at !== NULL) {
+                $user->email_verified_at = Carbon::parse($user->email_verified_at)->locale('es_ES')->format('d-m-Y H:i');
+            }
         };
 
         return $users;
@@ -66,7 +72,7 @@ class UserReportService {
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email','users.email_verified_at', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
             ->where('roles.name', 'LIKE', '%' . $parametros['valor'] . '%')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('roles.name', $parametros['orden'])
@@ -75,6 +81,9 @@ class UserReportService {
         //formato de fecha
         foreach($users as $user) {
             $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+            if ($user->email_verified_at !== NULL) {
+                $user->email_verified_at = Carbon::parse($user->email_verified_at)->locale('es_ES')->format('d-m-Y H:i');
+            }
         };
 
         return $users;
@@ -89,7 +98,7 @@ class UserReportService {
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email','users.email_verified_at', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('users.' . $parametros['filtro'], $parametros['orden'])
             ->get();
@@ -97,6 +106,9 @@ class UserReportService {
         //formato de fecha
         foreach($users as $user) {
             $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+            if ($user->email_verified_at !== NULL) {
+                $user->email_verified_at = Carbon::parse($user->email_verified_at)->locale('es_ES')->format('d-m-Y H:i');
+            }
         };
 
         return $users;
@@ -110,7 +122,7 @@ class UserReportService {
         $users = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
+            ->select('users.id', 'users.email','users.email_verified_at', 'users.created_at', 'roles.id as role_id', 'roles.name as role_name')
             ->whereNotIn('roles.name', ['estudiante', 'becado', 'delegado'])
             ->orderBy('roles.name', $parametros['orden'])
             ->get();
@@ -118,6 +130,9 @@ class UserReportService {
         //formato de fecha
         foreach($users as $user) {
             $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+            if ($user->email_verified_at !== NULL) {
+                $user->email_verified_at = Carbon::parse($user->email_verified_at)->locale('es_ES')->format('d-m-Y H:i');
+            }
         };
 
         return $users;

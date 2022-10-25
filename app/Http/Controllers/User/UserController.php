@@ -36,7 +36,7 @@ class UserController extends Controller
 
             /**
              * *se recibe request
-             * filtro = name | email | role
+             * filtro = email | role
              * valor = busqueda para sql LIKE
              * orden = asc | desc
              */
@@ -107,7 +107,6 @@ class UserController extends Controller
     public function store(Request $request, UserService $userService)
     {
         $this->validate($request, [
-            'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
             'roles' => 'required'
@@ -130,7 +129,9 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        $user->created_at = Carbon::parse($user->created_at)->locale('es_ES')->format('d-m-Y H:i');
+        $user->created_at = Carbon::parse($user->created_at)
+            ->locale('es_ES')
+            ->format('d-m-Y H:i');
 
         $rolesAsignados = $user->getRoleNames();
 
@@ -139,14 +140,15 @@ class UserController extends Controller
 
     /**
      * Editar usuario.
+     * Un administrador edita una cuenta, siempre que está aún no haya sido
+     * verificada por el usuario en cuestion. Luego de eso, el propio usuario tiene
+     * control sobre su cuenta.
      * getRoleNames() retorna una coleccion de items clave => valor
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(UserService $userService, $id)
+    public function edit(UserService $userService, User $user)
     {
-        $user = User::find($id);
-
         $roles = $userService->obtenerRolesParaUsuarioInterno();
 
         $userRoles = $userService->obtenerRolesDelUsuarioInterno($user);
@@ -160,14 +162,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserService $userService, $id)
+    public function update(Request $request, UserService $userService, User $user)
     {
-        //TODO solo cambiar el rol
-
-        $user = User::find($id);
         $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'same:confirm-password',
             'roles' => 'required'
         ]);
@@ -186,20 +184,6 @@ class UserController extends Controller
      */
     public function destroy(User $user, UserService $userService)
     {
-        //!Borrar un usuario se realizara en otro controlador, a cargo del propio usuario
-
-        //?estoy inhabilitando mi propia cuenta?
-        if (Auth()->user()->id === $user->id) {
-            return redirect()
-                ->route('users.show', $user)
-                ->with('error', 'no puedes inhabilitarte a ti mismo');
-        };
-
-        //*Inhabilitar cuenta dejando solo permisos para ver dashboard.
-        $user = $userService->inhabilitarUsuarioInterno($user);
-
-        return redirect()
-            ->route('users.index')
-            ->with('exito', 'la cuenta del usuario ' . $user->name . ' ha sido inhabilitada');
+        #code
     }
 }

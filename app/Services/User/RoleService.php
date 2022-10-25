@@ -9,6 +9,9 @@ use Spatie\Permission\Models\Permission;
 
 class RoleService
 {
+    //*constructor
+    function __construct() {}
+
     /**
      * *crear rol
      */
