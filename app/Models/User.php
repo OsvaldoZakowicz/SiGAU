@@ -53,4 +53,12 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * esta asociado a una persona
+     */
+    public function people()
+    {
+        return $this->belongsTo(Person::class);
+    }
 }
