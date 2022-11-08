@@ -14,9 +14,9 @@ class Person extends Model
      */
     protected $fillable = [
         'identification_type_id',
-        'identificationNumber',
-        'lastName',
-        'firstName',
+        'identification_number',
+        'last_name',
+        'first_name',
         'gender_id'
     ];
 

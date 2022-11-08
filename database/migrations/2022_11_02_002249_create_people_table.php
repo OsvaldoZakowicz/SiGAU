@@ -21,18 +21,16 @@ return new class extends Migration
             $table->foreign('identification_type_id')
                 ->references('identification_type')
                 ->on('personal_identification_types');
-                //->nullOnDelete(); //si elimino un tipo de ID
 
-            $table->string('identificationNumber', 15)->unique();
-            $table->string('lastName', 95);
-            $table->string('firstName', 95);
+            $table->string('identification_number', 15)->unique();
+            $table->string('last_name', 95);
+            $table->string('first_name', 95);
 
             //tiene un genero
             $table->unsignedBigInteger('gender_id');
             $table->foreign('gender_id')
                 ->references('id')
                 ->on('genders');
-                //->nullOnDelete(); //si elimino un genero
 
             $table->timestamps();
         });

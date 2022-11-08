@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id('id');
-            $table->string('street', 10)->nullable();
-            $table->string('streetNumber', 10)->nullable();
-            $table->string('houseNumber', 10)->nullable();
-            $table->string('floorNumber', 10)->nullable();
-            $table->string('departmentNumber', 10)->nullable();
+            $table->string('street', 95);
+            $table->string('street_number', 10);
+            $table->string('house_number', 10)->nullable();
+            $table->string('floor_number', 10)->nullable();
+            $table->string('department_number', 10)->nullable();
 
             //pertenece a una persona
             $table->unsignedBigInteger('people_id');

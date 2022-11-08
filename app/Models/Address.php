@@ -14,10 +14,10 @@ class Address extends Model
      */
     protected $fillable = [
         'street',
-        'streetNumber',
-        'houseNumber',
-        'floorNumber',
-        'departmentNumber',
+        'street_number',
+        'house_number',
+        'floor_number',
+        'department_number',
         'location_id',
         'people_id'
     ];
