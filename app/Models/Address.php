@@ -17,7 +17,9 @@ class Address extends Model
         'streetNumber',
         'houseNumber',
         'floorNumber',
-        'departmentNumber'
+        'departmentNumber',
+        'location_id',
+        'people_id'
     ];
 
     /**

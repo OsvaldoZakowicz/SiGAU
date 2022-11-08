@@ -12,7 +12,10 @@ class Phone extends Model
     /**
      * atributos asignables masivamente
      */
-    protected $fillable = ['number'];
+    protected $fillable = [
+        'number',
+        'people_id'
+    ];
 
     /**
      * pertenece a una persona

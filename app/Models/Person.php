@@ -12,7 +12,13 @@ class Person extends Model
     /**
      * atributos asignables masivamente
      */
-    protected $fillable = ['identificationNumber', 'lastName', 'firstName'];
+    protected $fillable = [
+        'identification_type_id',
+        'identificationNumber',
+        'lastName',
+        'firstName',
+        'gender_id'
+    ];
 
     /**
      * una persona tiene un tipo de identificacion

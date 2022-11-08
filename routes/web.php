@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Search\SearchLocalidadController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
@@ -7,9 +8,11 @@ use App\Http\Controllers\User\RoleController;
 use App\Http\Controllers\User\RoleReportController;
 use App\Http\Controllers\User\ShowProfileController;
 use App\Http\Controllers\User\StudentProfileController;
+use App\Http\Controllers\User\UserAccountController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserReportController;
 use App\Http\Controllers\User\UserRoleController;
+use FontLib\Table\Type\name;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,21 +53,41 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/report-users', [UserReportController::class, 'crear'])
         ->name('report-users');
     
-    //controlador de perfil de usuarios, mostrar perfil segun usuario, invocable
+    //*controlador de perfil de usuarios, mostrar perfil segun usuario, invocable
     Route::get('/user/profile', ShowProfileController::class)
         ->name('show-profile');
 
-    //editar perfil administrador (u otros roles internos)
+    //editar cuenta de acceso administrador (u otros roles internos)
+    Route::get('/account-admin/{user}/edit', [UserAccountController::class, 'edit'])
+        ->name('edit-account-admin');
+
+    //actualizar cuenta de acceso administrador (u otros roles internos)
+    Route::put('/account-admin/{user}', [UserAccountController::class, 'update'])
+        ->name('update-account-admin');
+
+    //eliminar cuenta de acceso de administrador (u otros roles internos)
+    Route::delete('/account-admin/{user}', [UserAccountController::class, 'destroy'])
+        ->name('delete-account-admin');
+
+    //crear datos de perfil (datos personales) para un administrador (u otros roles internos)
+    Route::get('/profile-admin/{user}/create', [UserProfileController::class, 'create'])
+        ->name('create-profile-admin');
+
+    //almacenar datos de perfil (datos personales) para un administrador (u otros roles internos)
+    Route::post('/profile-admin/store', [UserProfileController::class, 'store'])
+        ->name('store-profile-admin');
+
+    //editar datos de perfil (datos personales) para un administrador (u otros roles internos)
     Route::get('/profile-admin/{user}/edit', [UserProfileController::class, 'edit'])
-        ->name('edit-admin');
+        ->name('edit-profile-admin');
 
-    //actualizar perfil administrador (u otros roles internos)
+    //actualizar datos de perfil (datos personales) para un administrador (u otros roles internos)
     Route::put('/profile-admin/{user}', [UserProfileController::class, 'update'])
-        ->name('update-admin');
-
-    //eliminar perfil de administrador (u otros roles internos)
-    Route::delete('/profile-admin/{user}', [UserProfileController::class, 'destroy'])
-        ->name('delete-admin');
+        ->name('update-profile-admin');
+    
+    //*buscar localidad
+    Route::post('/localidades/search', SearchLocalidadController::class)
+        ->name('buscar-localidad');
 
     //editar perfil estudiante (becado o delegado)
     Route::get('/profile-student/{user}/edit', [StudentProfileController::class, 'edit'])

@@ -8,13 +8,18 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
-
-    <!-- Scripts -->
+    {{-- fonts --}}
+    <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">   
+    {{-- css select2 --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{-- scripts vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- scripts jquery --}}
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    {{-- scripts select2 (necesita jquery antes) --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    {{-- aonfiguración para alpine --}}
+    {{-- configuración para alpine --}}
     {{-- impide una carga prematura de html antes que alpine se inicie --}}
     <style>
         [x-cloak] { display: none !important; }
