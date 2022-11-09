@@ -6,7 +6,7 @@
             <h3 class="text-base text-zinc-800 capitalize">mi cuenta: editar</h3>
         </div>
         {{-- formulario: tiene todo el ancho, hasta un maximo de 1280px --}}
-        <div class="my-2 mx-auto w-full max-w-7xl border bg-white border-zinc-200"">
+        <div class="my-2 mx-auto w-full max-w-7xl border bg-white border-zinc-200">
             {!! Form::model($user, ['method' => 'PUT', 'route' => ['update-account-admin', $user]]) !!}
             <div class="flex flex-col items-center justify-center">
                 <div class="flex items-center justify-between w-full p-2">

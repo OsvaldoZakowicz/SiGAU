@@ -18,10 +18,9 @@ class UserAccountController extends Controller
     //TODO constructor con middleware
 
     /**
-     * Editar usuario interno.
+     * *editar cuenta usuario interno.
      * Esta edición la lleva acabo el propio usuario, solo puede
-     * editar nombre de usuario y cambiar password.
-     * TODO: nombre, apellido, imagen de perfil ...
+     * editar email y cambiar password.
      */
     public function edit(User $user, UserService $userService)
     {
@@ -30,12 +29,11 @@ class UserAccountController extends Controller
     }
 
     /**
-     * Modificar perfil de usuario interno.
+     * *modificar cuenta de usuario interno.
      */
     public function update(Request $request, User $user, UserService $userService)
     {
         $this->validate($request, [
-            'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'same:confirm-password'
         ]);
@@ -44,11 +42,11 @@ class UserAccountController extends Controller
 
         return redirect()
             ->route('show-profile')
-            ->with('exito', 'perfil actualizado!');
+            ->with('exito', 'cuenta actualizada!');
     }
 
     /**
-     * Eliminar mi cuenta.
+     * *eliminar cuenta de usuario interno.
      */
     public function destroy(User $user)
     {
