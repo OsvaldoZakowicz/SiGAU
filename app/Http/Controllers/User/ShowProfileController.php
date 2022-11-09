@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Services\User\ProfileService;
 use App\Services\User\UserService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 /**
  * *Este controlador determina a que vista de perfil redirigir al
@@ -41,6 +38,8 @@ class ShowProfileController extends Controller
             //?existe en el/los roles del usuario un rol interno?
             if (in_array($roles[$i], $rolesInternos)) {
 
+                //es interno
+
                 //?tiene perfil completo?
                 if ($user->people_id !== NULL) {
                     
@@ -55,9 +54,26 @@ class ShowProfileController extends Controller
                 //no
                 return view('profiles.show-admin', compact('user','roles'));
 
+            } else {
+
+                //no es interno
+
+                //?tiene perfil completo?
+                if ($user->people_id !== NULL) {
+                    
+                    //si
+                    $profile = $profileService->obtenerPerfilCompleto($user);
+                    
+                    $location = $profileService->obtenerLocalidadActual($user);
+                    
+                    return view('profiles.show-student', compact('user','roles', 'profile', 'location'));
+                }
+
+                //no
+                return view('profiles.show-student', compact('user','roles'));
+
             }
         }
 
-        return view('profiles.show-student', compact('user','roles'));
     }
 }

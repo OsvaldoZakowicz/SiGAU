@@ -7,6 +7,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\RoleController;
 use App\Http\Controllers\User\RoleReportController;
 use App\Http\Controllers\User\ShowProfileController;
+use App\Http\Controllers\User\StudentAccountController;
 use App\Http\Controllers\User\StudentProfileController;
 use App\Http\Controllers\User\UserAccountController;
 use App\Http\Controllers\User\UserProfileController;
@@ -41,6 +42,9 @@ Route::get('/student', function () {
     return view('student');
 })->middleware(['auth', 'verified', 'permission:ver-pagina-estudiante'])->name('student');
 
+
+//TODO agrupar mejor las rutas.
+//TODO middleware verified.
 
 //rutas recursos, middleware en los controladores
 Route::middleware(['auth'])->group(function () {
@@ -89,18 +93,34 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/localidades/search', SearchLocalidadController::class)
         ->name('buscar-localidad');
 
-    //editar perfil estudiante (becado o delegado)
+    //editar cuenta de acceso estudiante (u otros roles academicos)
+    Route::get('/account-student/{user}/edit', [StudentAccountController::class, 'edit'])
+        ->name('edit-account-student');
+
+    //actualizar cuenta de acceso estudiante (u otros roles academicos)
+    Route::put('/account-student/{user}', [StudentAccountController::class, 'update'])
+        ->name('update-account-student');
+
+    //eliminar cuenta de acceso de estudiante (u otros roles academicos)
+    Route::delete('/account-student/{user}', [StudentAccountController::class, 'destroy'])
+        ->name('delete-account-student');
+
+    //crear datos de perfil (datos personales) para un estudiante (u otros roles academicos)
+    Route::get('/profile-student/{user}/create', [StudentProfileController::class, 'create'])
+        ->name('create-profile-student');
+
+    //almacenar datos de perfil (datos personales) para un estudiante (u otros roles academicos)
+    Route::post('/profile-student/store', [StudentProfileController::class, 'store'])
+        ->name('store-profile-student');
+
+    //editar datos de perfil (datos personales) para un estudiante (u otros roles academicos)
     Route::get('/profile-student/{user}/edit', [StudentProfileController::class, 'edit'])
-        ->name('edit-student');
+        ->name('edit-profile-student');
 
-    //actualizar perfil estudiante (becado o delegado)
+    //actualizar datos de perfil (datos personales) para un estudiante (u otros roles academicos)
     Route::put('/profile-student/{user}', [StudentProfileController::class, 'update'])
-        ->name('update-student');
+        ->name('update-profile-student');
 
-    //eliminar perfil estudiante (becado o delegado)
-    Route::delete('/profile-student/{user}', [StudentProfileController::class, 'destroy'])
-        ->name('delete-student');
-    
     //controlador de recursos Roles
     Route::resource('roles', RoleController::class)
         ->names('roles');

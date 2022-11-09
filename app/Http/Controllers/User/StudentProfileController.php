@@ -3,52 +3,91 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreStudentProfileRequest;
+use App\Http\Requests\UpdateStudentProfileRequest;
 use App\Models\User;
-use App\Services\User\UserService;
-use Illuminate\Http\Request;
+use App\Services\User\ProfileService;
 
 class StudentProfileController extends Controller
 {
-    //TODO constructor con middleware?
+    //TODO constructor con middleware
 
     /**
-     * Editar usuario estudiante
-     * Esta edición la lleva acabo el propio usuario, solo puede
-     * editar nombre de usuario y cambiar password.
-     * TODO: nombre, apellido, imagen de perfil ...
+     * *crear un perfil de usuario.
+     * para el usuario actualmente autenticado.
      */
-    public function edit(User $user, UserService $userService)
+    public function create(User $user, ProfileService $profileService)
     {
-        return view('profiles.edit-student', compact('user'));
+        $idTypes = $profileService->obtenerTiposIdentificacion();
+
+        $genders = $profileService->obtenerGeneros();
+        
+        return view('profiles.create-student-profile', compact('user', 'idTypes', 'genders'));
     }
 
     /**
-     * Modificar perfil de usuario interno.
+     * *guardar un perfil de usuario.
+     * para el usuario actualmente autenticado.
      */
-    public function update(Request $request, User $user, UserService $userService)
+    public function store(StoreStudentProfileRequest $request, ProfileService $profileService)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'same:confirm-password'
-        ]);
+        //TODO validar tipos de id personal
 
-        $user = $userService->actualizarMiPerfil($user,$request->all());
+        //usuario actual
+        $user = User::find(Auth()->user()->id);
 
-        return redirect()
-            ->route('show-profile')
-            ->with('exito', 'perfil actualizado!');
+        //validaciones basicas
+        $validated = $request->validated();
+
+        $people = $profileService->crearPerfil($validated, $user);
+
+        $phone = $profileService->crearTelefono($validated, $people);
+
+        $address = $profileService->crearDireccion($validated, $people);
+
+        return redirect()->route('show-profile')->with('exito','perfil creado');
     }
 
     /**
-     * Eliminar mi cuenta.
+     * *editar un perfil de usuario.
+     * para el usuario actualmente autenticado.
      */
-    public function destroy(User $user)
+    public function edit(User $user, ProfileService $profileService)
     {
-        //TODO Eliminacion segura, cierre de sesion.
+        //TODO retornar tipo de id y genero del perfil, para mostrar.
+        //TODO retornar los demas tipos de id y genero para cambiarlos.
+        
+        $idTypes = $profileService->obtenerTiposIdentificacion();
 
-        return redirect()
-            ->route('show-profile')
-            ->with('error', 'NO IMPLEMENTADO AUN');
+        $genders = $profileService->obtenerGeneros();
+
+        $profile = $profileService->obtenerPerfilCompleto($user);
+
+        $localidad = $profileService->obtenerLocalidadActual($user);
+
+        return view('profiles.edit-student-profile', compact('user','profile','localidad','idTypes', 'genders'));
+    }
+
+    /**
+     * *actualizar un perfil de usuario.
+     * para el usuario actualmente autenticado.
+     */
+    public function update(UpdateStudentProfileRequest $request, ProfileService $profileService)
+    {
+        //TODO validar tipos de id personal
+
+        //usuario actual
+        $user = User::find(Auth()->user()->id);
+
+        //validaciones basicas
+        $validated = $request->validated();
+
+        $people = $profileService->actualizarPerfil($validated, $user);
+
+        $phone = $profileService->actualizarTelefono($validated, $people);
+
+        $address = $profileService->actualizarDireccion($validated, $people);
+
+        return redirect()->route('show-profile')->with('exito','perfil actualizado');
     }
 }
