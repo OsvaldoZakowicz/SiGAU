@@ -36,7 +36,7 @@
         <div class="w-100vw h-screen flex flex-row">
             {{-- aside cambia de tamaño --}}
             
-            <aside x-cloak x-data="{ toggleAside: false }" x-bind:class="!toggleAside ? 'w-16 p-2 bg-zinc-500' : 'flex-none w-1/6 p-2 bg-zinc-500'">
+            <aside x-cloak x-data="{ toggleAside: true }" x-bind:class="!toggleAside ? 'w-16 p-2 bg-zinc-500' : 'flex-none w-1/6 p-2 bg-zinc-500'">
 
                 {{-- minimizar/maximizar aside --}}
                 <div
