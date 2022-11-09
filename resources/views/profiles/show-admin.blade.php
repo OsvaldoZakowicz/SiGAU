@@ -59,48 +59,44 @@
                     <div class="flex flex-col justify-between h-full w-full">
                         <div class="w-full flex flex-col flex-wrap">
                             <div class="py-1 text-left">
-                                <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">{{$user_profile->identification_type_id}}:</span>
-                                <span class="text-sm px-1 text-zinc-800">{{$user_profile->identificationNumber}}</span>
+                                <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">{{$profile->profile_id_type}}:</span>
+                                <span class="text-sm px-1 text-zinc-800">{{$profile->profile_id_number}}</span>
                             </div>
                             <div class="py-1 text-left">
                                 <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">apellido:</span>
-                                <span class="text-sm px-1 text-zinc-800">{{$user_profile->lastName}}</span>
+                                <span class="text-sm px-1 text-zinc-800">{{$profile->profile_last_name}}</span>
                             </div>
                             <div class="py-1 text-left">
                                 <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">nombre:</span>
-                                <span class="text-sm px-1 text-zinc-800">{{$user_profile->firstName}}</span>
+                                <span class="text-sm px-1 text-zinc-800">{{$profile->profile_first_name}}</span>
                             </div>
                             <div class="py-1 text-left">
                                 <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">género:</span>
-                                <span class="text-sm px-1 text-zinc-800">{{$user_gender->name}}</span>
+                                <span class="text-sm px-1 text-zinc-800">{{$profile->profile_gender_name}}</span>
                             </div>
                             <div class="py-1 text-left">
                                 <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">teléfono:</span>
-                                <span class="text-sm px-1 text-zinc-800">{{$user_phone->number}}</span>
+                                <span class="text-sm px-1 text-zinc-800">{{$profile->profile_phone_number}}</span>
                             </div>
                             <div class="py-1 text-left">
                                 <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">direccion:</span>
-                                <span class="text-sm px-1 text-zinc-800">Calle: {{$user_address->street}}, numero de calle / altura: {{$user_address->streetNumber}}</span>
+                                <span class="text-sm px-1 text-zinc-800">Calle: {{$profile->profile_address_street}}, numero de calle / altura: {{$profile->profile_address_number}}</span>
                             </div>
-                            @if ($user_address->houseNumber !== NULL)
+                            @if ($profile->profile_address_house_number !== NULL)
                                 <div class="py-1 text-left">
                                     <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">Casa:</span>
-                                    <span class="text-sm px-1 text-zinc-800">Nro. {{$user_address->houseNumber}}</span>
+                                    <span class="text-sm px-1 text-zinc-800">Nro. {{$profile->profile_address_house_number}}</span>
                                 </div>
                             @endif
-                            @if ($user_address->departmentNumber !== NULL)
+                            @if ($profile->profile_address_department_number !== NULL || $profile->profile_address_floor_number)
                                 <div class="py-1 text-left">
                                     <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">Departamento:</span>
-                                    <span class="text-sm px-1 text-zinc-800">Nro. {{$user_address->departmentNumber}} Piso: {{$user_address->floorNumber ?? '--'}}</span>
+                                    <span class="text-sm px-1 text-zinc-800">Nro. {{$profile->profile_address_department_number ?? '--'}} Piso: {{$profile->profile_address_floor_number ?? '--'}}</span>
                                 </div>
                             @endif
                             <div class="py-1 text-left">
-                                <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">Localidad / Departamento:</span>
-                                <span class="text-sm px-1 text-zinc-800">{{$user_location->name}}, CP {{$user_location->postal_code}}</span>
-                            </div>
-                            <div class="py-1 text-left">
-                                <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">Provincia:</span>
-                                <span class="text-sm px-1 text-zinc-800">{{$user_province->name}}</span>
+                                <span class="text-xs uppercase font-semibold tracking-wider text-zinc-600">Localidad:</span>
+                                <span class="text-sm px-1 text-zinc-800">{{$location['value']}}</span>
                             </div>
                         </div>
                         <div class="flex w-full justify-end items-center">

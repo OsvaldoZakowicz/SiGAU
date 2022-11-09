@@ -8,6 +8,9 @@ use App\Models\Person;
 use App\Models\Phone;
 use App\Models\User;
 use App\Services\User\UserService;
+use App\Services\User\ProfileService;
+use App\Http\Requests\StoreUserProfileRequest;
+use App\Http\Requests\UpdateUserProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,154 +21,76 @@ class UserProfileController extends Controller
     //TODO constructor con middleware?
 
     /**
-     * crear un perfil de usuario.
+     * *crear un perfil de usuario.
+     * para el usuario actualmente autenticado.
      */
-    public function create(User $user)
+    public function create(User $user, ProfileService $profileService)
     {
-        $identificationTypes = DB::table('personal_identification_types')
-            ->select('identification_type as id_type', 'format')
-            ->pluck('id_type', 'id_type');
+        $idTypes = $profileService->obtenerTiposIdentificacion();
 
-        $genders = DB::table('genders')
-            ->select('id', 'name')
-            ->pluck('name', 'id');
+        $genders = $profileService->obtenerGeneros();
         
-        return view('profiles.create-admin-profile', compact('user', 'identificationTypes', 'genders'));
+        return view('profiles.create-admin-profile', compact('user', 'idTypes', 'genders'));
     }
 
     /**
-     * almacenar un perfil de usuario.
+     * *almacenar un perfil de usuario.
+     * para el usuario actualmente autenticado.
+     * - valida el request con restricciones basicas.
      */
-    public function store(Request $request)
+    public function store(StoreUserProfileRequest $request, ProfileService $profileService)
     {
-        //TODO refactor
-        //TODO request aparte, validar tipos de id personal
+        //TODO validar tipos de id personal
 
-        $identificationTypeFormat = DB::table('personal_identification_types')
-        ->select('identification_type as id_type', 'format')
-        ->pluck('format', 'id_type')
-        ->all(); //['clave' => 'formato']
-
+        //usuario actual
         $user = User::find(Auth()->user()->id);
-        
-        $validator = Validator::make($request->all(),[
-            'tipo_id'           => 'required',
-            'number_id'         => 'required|unique:people,identificationNumber',
-            'gender'            => 'required',
-            'last_name'         => 'required|max:95',
-            'first_name'        => 'required|max:95',
-            'phone_number'      => 'required|unique:phones,number',
-            'street'            => 'required',
-            'street_number'     => 'required',
-            'house_number'      => 'nullable',
-            'department_number' => 'nullable',
-            'floor_number'      => 'nullable',
-            'localidad'         => 'required'
-        ]);
 
-        $validated = $validator->validated();
-            
-        $people = Person::create([
-            'identification_type_id' => $validated['tipo_id'],
-            'identificationNumber' => $validated['number_id'],
-            'lastName' => $validated['last_name'],
-            'firstName' => $validated['first_name'],
-            'gender_id' => $validated['gender']
-        ]);
+        //validaciones basicas
+        $validated = $request->validated();
 
-        Phone::create([
-            'number' => $validated['phone_number'],
-            'people_id' => $people->id
-        ]);
+        $people = $profileService->crearPerfil($validated, $user);
 
-        Address::create([
-            'street' => $validated['street'],
-            'streetNumber' => $validated['street_number'],
-            'houseNumber' => $validated['house_number'],
-            'floorNumber' => $validated['floor_number'],
-            'departmentNumber' => $validated['department_number'],
-            'people_id' => $people->id,
-            'location_id' => $validated['localidad']
-        ]);
+        $phone = $profileService->crearTelefono($validated, $people);
 
-        $user->people_id = $people->id;
-        $user->save();
+        $address = $profileService->crearDireccion($validated, $people);
 
-        return redirect()->route('show-profile')->with('exito','perfil guardado');
+        return redirect()->route('show-profile')->with('exito','perfil creado');
     }
 
-    public function edit(User $user)
+    /**
+     * *editar un perfil de usuario.
+     * para el usuario actualmente autenticado.
+     */
+    public function edit(User $user, ProfileService $profileService)
     {
-        //tipos de identificacion
-        $identificationTypes = DB::table('personal_identification_types')
-            ->select('identification_type as id_type', 'format')
-            ->pluck('id_type', 'id_type');
+        $idTypes = $profileService->obtenerTiposIdentificacion();
 
-        //generos
-        $genders = DB::table('genders')
-            ->select('id', 'name')
-            ->pluck('name', 'id');
+        $genders = $profileService->obtenerGeneros();
 
-        //datos del perfil de usuario
-        $user_profile = $user->people;
-        $user_phone = $user_profile->phone;
-        $user_address = $user_profile->address;
-        $user_gender = $user_profile->gender;
+        $profile = $profileService->obtenerPerfilCompleto($user);
 
-        //direccion especifica, localidad - provincia - pais
-        $user_location = $user_address->location;
-        $user_province = $user_location->province;
-        $user_country = $user_province->country;
+        $localidad = $profileService->obtenerLocalidadActual($user);
 
-        $user_location_string = 'localidad: ' . $user_location->name . ' codigo postal: ' . $user_location->postal_code . ' provincia: ' . $user_province->name . ' pais: ' . $user_country->name;
-
-        return view('profiles.edit-admin-profile', compact('user','user_profile','user_phone','user_address','user_gender', 'user_location_string', 'identificationTypes', 'genders'));
+        return view('profiles.edit-admin-profile', compact('user','profile','localidad','idTypes', 'genders'));
     }
 
-    public function update(Request $request)
+    /**
+     * *actualizar un perfil de usuario.
+     * para el usuario actualmente autenticado.
+     */
+    public function update(UpdateUserProfileRequest $request, ProfileService $profileService)
     {
+        //usuario actual
         $user = User::find(Auth()->user()->id);
-        
-        $validator = Validator::make($request->all(),[
-            'tipo_id'           => 'required',
-            'number_id'         => 'required',
-            'gender'            => 'required',
-            'last_name'         => 'required|max:95',
-            'first_name'        => 'required|max:95',
-            'phone_number'      => 'required',
-            'street'            => 'required',
-            'street_number'     => 'required',
-            'house_number'      => 'nullable',
-            'department_number' => 'nullable',
-            'floor_number'      => 'nullable',
-            'localidad'         => 'required'
-        ]);
 
-        $validated = $validator->validated();
+        //validaciones basicas
+        $validated = $request->validated();
 
-        //perfil del usuario
-        $user_profile = $user->people;
-        $user_profile->identification_type_id = $validated['tipo_id'];
-        $user_profile->identificationNumber = $validated['number_id'];
-        $user_profile->gender_id = $validated['gender'];
-        $user_profile->lastName = $validated['last_name'];
-        $user_profile->firstName = $validated['first_name'];
-        $user_profile->save();
+        $people = $profileService->actualizarPerfil($validated, $user);
 
-        //telefono
-        $user_phone = $user_profile->phone;
-        $user_phone->number = $validated['phone_number'];
-        $user_phone->save();
+        $phone = $profileService->actualizarTelefono($validated, $people);
 
-        //direccion
-        $user_address = $user_profile->address;
-        $user_address->street = $validated['street'];
-        $user_address->streetNumber = $validated['street_number'];
-        $user_address->houseNumber = $validated['house_number'];
-        $user_address->floorNumber = $validated['floor_number'];
-        $user_address->departmentNumber = $validated['department_number'];
-        $user_address->location_id = $validated['localidad'];
-        $user_address->save();
+        $address = $profileService->actualizarDireccion($validated, $people);
 
         return redirect()->route('show-profile')->with('exito','perfil actualizado');
     }

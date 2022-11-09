@@ -26,7 +26,7 @@
                             @error('tipo_id')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            {!! Form::select('tipo_id', $identificationTypes, null, [ 'class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
+                            {!! Form::select('tipo_id', $idTypes, null, [ 'class' => 'my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm']) !!}
                         </div>
                         <div class="w-full px-1">
                             <x-required-input-label 
@@ -163,11 +163,11 @@
                                 :value="'localidad, provincia y pais'"
                                 title="Busque su localidad ingresando su nombre o codigo postal."
                             />
-                            @error('localidad')
+                            @error('location')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <select name="localidad" id="select_localidad" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
-                                <option value="0">buscar por codigo postal o localidad ...</option>
+                            <select name="location" id="select_localidad" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                {{-- NOTA: debe estar vecio de opciones --}}
                             </select>
                         </div>
                     </div>
@@ -213,7 +213,7 @@
                                 results: response
                             };
                         },
-                        cache: false
+                        cache: true
                         }
                     });
                 });

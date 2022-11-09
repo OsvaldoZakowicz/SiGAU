@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\User\ProfileService;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +21,7 @@ class ShowProfileController extends Controller
      * Determinar la vista de perfil adecuada segun usuario.
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(UserService $userService)
+    public function __invoke(UserService $userService, ProfileService $profileService)
     {
 
         //TODO refactor
@@ -36,20 +37,19 @@ class ShowProfileController extends Controller
         $rolesInternos = array_values($userService->obtenerRolesParaUsuarioInterno());
 
         for ($i=0; $i < count($roles); $i++) { 
+
             //?existe en el/los roles del usuario un rol interno?
             if (in_array($roles[$i], $rolesInternos)) {
 
                 //?tiene perfil completo?
                 if ($user->people_id !== NULL) {
-                    //si
-                    $user_profile = $user->people;
-                    $user_phone = $user_profile->phone;
-                    $user_address = $user_profile->address;
-                    $user_location = $user_address->location;
-                    $user_province = $user_location->province;
-                    $user_gender = $user_profile->gender;
                     
-                    return view('profiles.show-admin', compact('user','roles', 'user_profile', 'user_gender', 'user_phone', 'user_address', 'user_location', 'user_province'));
+                    //si
+                    $profile = $profileService->obtenerPerfilCompleto($user);
+                    
+                    $location = $profileService->obtenerLocalidadActual($user);
+                    
+                    return view('profiles.show-admin', compact('user','roles', 'profile', 'location'));
                 }
 
                 //no

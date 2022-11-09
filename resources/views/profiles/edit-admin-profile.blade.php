@@ -30,7 +30,7 @@
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
                                 <select name="tipo_id" id="" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
-                                    @foreach ($identificationTypes as $key => $value)
+                                    @foreach ($idTypes as $key => $value)
                                         <option value="{{$key}}">{{$value}}</option>
                                     @endforeach
                                 </select>
@@ -44,7 +44,7 @@
                                 @error('number_id')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="number_id" id="" value="{{$user_profile->identificationNumber}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="number_id" id="" value="{{$profile->profile_id_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                             <div class="w-full px-1">
                                 <x-required-input-label 
@@ -75,7 +75,7 @@
                                 @error('last_name')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="last_name" id="" value="{{$user_profile->lastName}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="last_name" id="" value="{{$profile->profile_last_name}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                             <div class="w-full px-1">
                                 <x-required-input-label 
@@ -86,7 +86,7 @@
                                 @error('first_name')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="first_name" id="" value="{{$user_profile->firstName}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="first_name" id="" value="{{$profile->profile_first_name}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                             <div class="w-full px-1">
                                 <x-required-input-label 
@@ -97,7 +97,7 @@
                                 @error('phone_number')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="phone_number" id="" value="{{$user_phone->number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="phone_number" id="" value="{{$profile->profile_phone_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                                 @error('street')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="street" id="" value="{{$user_address->street}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="street" id="" value="{{$profile->profile_address_street}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                             <div class="w-full md:w-1/4 px-1">
                                 <x-required-input-label
@@ -124,7 +124,7 @@
                                 @error('street_number')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="street_number" id="" value="{{$user_address->streetNumber}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="street_number" id="" value="{{$profile->profile_address_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                         </div>
                         {{-- direccion numero de casa, piso, departamento --}}
@@ -138,7 +138,7 @@
                                 @error('house_number')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="house_number" id="" value="{{$user_address->houseNumber}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="house_number" id="" value="{{$profile->profile_address_house_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                             <div class="w-full px-1">
                                 <x-optional-input-label 
@@ -149,7 +149,7 @@
                                 @error('department_number')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="department_number" id="" value="{{$user_address->departmentNumber}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="department_number" id="" value="{{$profile->profile_address_department_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                             <div class="w-full px-1">
                                 <x-optional-input-label 
@@ -160,7 +160,7 @@
                                 @error('floor_number')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="text" name="floor_number" id="" value="{{$user_address->floorNumber}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                <input type="text" name="floor_number" id="" value="{{$profile->profile_address_floor_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                         </div>
                     </div>
@@ -176,10 +176,8 @@
                                 @error('localidad')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <select name="localidad" id="select_localidad" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
-                                    <option value="{{$user_address->location_id}}">
-                                        {{$user_location_string}}
-                                    </option>
+                                <select name="location" id="select_localidad" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                    <option value="{{$localidad['id']}}">{{$localidad['value']}}</option>
                                 </select>
                             </div>
                         </div>

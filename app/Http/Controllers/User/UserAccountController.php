@@ -40,7 +40,7 @@ class UserAccountController extends Controller
             'password' => 'same:confirm-password'
         ]);
 
-        $user = $userService->actualizarMiPerfil($user,$request->all());
+        $user = $userService->actualizarMiUsuario($user,$request->all());
 
         return redirect()
             ->route('show-profile')

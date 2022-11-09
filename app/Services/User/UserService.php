@@ -71,11 +71,11 @@ class UserService
     }
 
     /**
-     * *actualizar perfil
+     * *actualizar usuario.
      * esta accion es llevada a cabo por el propio usuario,
-     * puede cambiar sus datos de perfil, pero no su rol.
+     * puede cambiar sus datos de cuenta.
      */
-    public function actualizarMiPerfil(User $user, $parametros)
+    public function actualizarMiUsuario(User $user, $parametros)
     {
         if (!empty($parametros['password'])) {
             //si no esta vacio el campo password, crear hash
