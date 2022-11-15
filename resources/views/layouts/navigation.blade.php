@@ -36,8 +36,8 @@
                         <button
                             class="flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-700 hover:border-gray-300 focus:outline-none focus:text-zinc-700 focus:border-gray-300 transition duration-150 ease-in-out">
                             <div>
-                                <span>{{Auth()->user()->people->last_name}}</span>
-                                <span>{{Auth()->user()->people->first_name}}</span>
+                                <span>{{Auth()->user()->people->last_name ?? ''}}</span>
+                                <span>{{Auth()->user()->people->first_name ?? ''}}</span>
                                 <i class="fa-solid fa-user ml-1"></i>
                             </div>
                             <div class="ml-1">
