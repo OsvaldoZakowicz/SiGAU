@@ -38,6 +38,18 @@ class ProfileService
     }
 
     /**
+     * *obtener formato regex que valida
+     * un tipo de identificacion personal.
+     */
+    public function obtenerFormatoRegexTipoId($tipo_id)
+    {
+        return DB::table('personal_identification_types')
+            ->select('format')
+            ->where('identification_type','=',$tipo_id)
+            ->get();
+    }
+
+    /**
      * *obtener los generos
      * aplicables a perfiles.
      * @return array ['name' => 'id']

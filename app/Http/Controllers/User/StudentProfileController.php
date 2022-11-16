@@ -31,8 +31,6 @@ class StudentProfileController extends Controller
      */
     public function store(StoreStudentProfileRequest $request, ProfileService $profileService)
     {
-        //TODO validar tipos de id personal
-
         //usuario actual
         $user = User::find(Auth()->user()->id);
 
@@ -54,9 +52,6 @@ class StudentProfileController extends Controller
      */
     public function edit(User $user, ProfileService $profileService)
     {
-        //TODO retornar tipo de id y genero del perfil, para mostrar.
-        //TODO retornar los demas tipos de id y genero para cambiarlos.
-        
         $idTypes = $profileService->obtenerTiposIdentificacion();
 
         $genders = $profileService->obtenerGeneros();
@@ -74,8 +69,6 @@ class StudentProfileController extends Controller
      */
     public function update(UpdateStudentProfileRequest $request, ProfileService $profileService)
     {
-        //TODO validar tipos de id personal
-
         //usuario actual
         $user = User::find(Auth()->user()->id);
 

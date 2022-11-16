@@ -14,7 +14,7 @@
             <div class="flex flex-col items-center justify-center">
                 <div class="flex items-center justify-start w-full p-2">
                     <span class="capitalize text-base text-zinc-600">
-                        complete sus datos personales.
+                        actualice sus datos personales.
                     </span>
                 </div>
                 <div class="flex w-full p-1">
@@ -29,9 +29,14 @@
                             @error('tipo_id')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <select name="tipo_id" id="" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <select required name="tipo_id" id="" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                {{-- mantener seleccionado el tipo de id establecido --}}
+                                <option selected value="{{$profile->profile_id_type}}">{{$profile->profile_id_type}}</option>
+                                {{-- listar los otros tipos de id --}}
                                 @foreach ($idTypes as $key => $value)
-                                    <option value="{{$key}}">{{$value}}</option>
+                                    @if ($key !== $profile->profile_id_type)
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -44,7 +49,7 @@
                             @error('number_id')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <input type="text" name="number_id" id="" value="{{$profile->profile_id_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <input required type="text" name="number_id" id="" value="{{$profile->profile_id_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                         </div>
                         <div class="w-full px-1">
                             <x-required-input-label 
@@ -55,9 +60,14 @@
                             @error('gender')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <select name="gender" id="" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <select required name="gender" id="" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                                {{-- mantener seleccionado el genero establecido --}}
+                                <option selected value="{{$profile->profile_gender_id}}">{{$profile->profile_gender_name}}</option>
+                                {{-- listar los otros generos --}}
                                 @foreach ($genders as $key => $value)
-                                    <option value="{{$key}}">{{$value}}</option>
+                                    @if ($key !== $profile->profile_gender_id)
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -75,7 +85,7 @@
                             @error('last_name')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <input type="text" name="last_name" id="" value="{{$profile->profile_last_name}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <input required type="text" name="last_name" id="" value="{{$profile->profile_last_name}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                         </div>
                         <div class="w-full px-1">
                             <x-required-input-label 
@@ -86,7 +96,7 @@
                             @error('first_name')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <input type="text" name="first_name" id="" value="{{$profile->profile_first_name}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <input required type="text" name="first_name" id="" value="{{$profile->profile_first_name}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                         </div>
                         <div class="w-full px-1">
                             <x-required-input-label 
@@ -97,7 +107,7 @@
                             @error('phone_number')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <input type="text" name="phone_number" id="" value="{{$profile->profile_phone_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <input required type="tel" name="phone_number" id="" value="{{$profile->profile_phone_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                         </div>
                     </div>
                 </div>
@@ -113,7 +123,7 @@
                             @error('street')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <input type="text" name="street" id="" value="{{$profile->profile_address_street}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <input required type="text" name="street" id="" value="{{$profile->profile_address_street}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                         </div>
                         <div class="w-full md:w-1/4 px-1">
                             <x-required-input-label
@@ -124,7 +134,7 @@
                             @error('street_number')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <input type="text" name="street_number" id="" value="{{$profile->profile_address_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <input required type="text" name="street_number" id="" value="{{$profile->profile_address_number}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                         </div>
                     </div>
                     {{-- direccion numero de casa, piso, departamento --}}
@@ -176,7 +186,7 @@
                             @error('localidad')
                                 <span class="text-xs text-red-600">{{ $message }}</span>
                             @enderror
-                            <select name="location" id="select_localidad" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                            <select required name="location" id="select_localidad" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                                 <option value="{{$localidad['id']}}">{{$localidad['value']}}</option>
                             </select>
                         </div>

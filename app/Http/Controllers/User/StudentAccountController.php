@@ -50,8 +50,10 @@ class StudentAccountController extends Controller
      */
     public function destroy(User $user)
     {
-        //TODO Eliminacion segura, cierre de sesion.
-
+        //TODO Eliminar datos de perfil.
+        //TODO Identificar cuentas, remover roles.
+        //TODO Eliminacion segura de todas las cuentas, cierre de sesion.
+        
         return redirect()
             ->route('show-profile')
             ->with('error', 'NO IMPLEMENTADO AUN');

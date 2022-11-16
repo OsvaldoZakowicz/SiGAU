@@ -36,14 +36,12 @@ class UserProfileController extends Controller
      */
     public function store(StoreUserProfileRequest $request, ProfileService $profileService)
     {
-        //TODO validar tipos de id personal
-
         //usuario actual
         $user = User::find(Auth()->user()->id);
-
+        
         //validaciones basicas
         $validated = $request->validated();
-
+        
         $people = $profileService->crearPerfil($validated, $user);
 
         $phone = $profileService->crearTelefono($validated, $people);
@@ -59,9 +57,6 @@ class UserProfileController extends Controller
      */
     public function edit(User $user, ProfileService $profileService)
     {
-        //TODO retornar tipo de id y genero del perfil.
-        //TODO retornar los demas tipos de id y genero para cambiarlos. 
-        
         $idTypes = $profileService->obtenerTiposIdentificacion();
 
         $genders = $profileService->obtenerGeneros();
@@ -79,8 +74,6 @@ class UserProfileController extends Controller
      */
     public function update(UpdateUserProfileRequest $request, ProfileService $profileService)
     {
-        //TODO validar tipos de id personal
-        
         //usuario actual
         $user = User::find(Auth()->user()->id);
 
