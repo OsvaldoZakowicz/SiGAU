@@ -46,8 +46,15 @@ Route::get('/student', function () {
 //TODO agrupar mejor las rutas.
 //TODO middleware verified.
 
-//rutas recursos, middleware en los controladores
-Route::middleware(['auth'])->group(function () {
+/**
+ * * rutas de usuario administrador, perfil y cuenta
+ * * rutas a perfil general (usuario administrador y estudiante)
+ * * rutas a busqueda de localidades.
+ * middleware:
+ * - auth.
+ * - verified.
+ */
+Route::middleware(['auth', 'verified'])->group(function () {
     
     //controlador de recursos User
     Route::resource('users', UserController::class)
@@ -92,6 +99,15 @@ Route::middleware(['auth'])->group(function () {
     //*buscar localidad
     Route::post('/localidades/search', SearchLocalidadController::class)
         ->name('buscar-localidad');
+});
+
+/**
+ * *rutas de estudiante, perfil y cuenta
+ * middleware:
+ * - auth.
+ * - verified.
+ */
+Route::middleware(['auth','verified'])->group(function () {
 
     //editar cuenta de acceso estudiante (u otros roles academicos)
     Route::get('/account-student/{user}/edit', [StudentAccountController::class, 'edit'])
@@ -120,6 +136,15 @@ Route::middleware(['auth'])->group(function () {
     //actualizar datos de perfil (datos personales) para un estudiante (u otros roles academicos)
     Route::put('/profile-student/{user}', [StudentProfileController::class, 'update'])
         ->name('update-profile-student');
+});
+
+/**
+ * *rutas de roles y permisos.
+ * middleware:
+ * - auth.
+ * - verified
+ */
+Route::middleware(['auth','verified'])->group(function () {
 
     //controlador de recursos Roles
     Route::resource('roles', RoleController::class)
@@ -140,9 +165,7 @@ Route::middleware(['auth'])->group(function () {
     //inhabilitar usuario interno
     Route::delete('/user/{user}', [UserRoleController::class, 'disableUserRole'])
         ->name('disable-role');
-    
 });
-
 
 //*rutas auth
 require __DIR__.'/auth.php';
