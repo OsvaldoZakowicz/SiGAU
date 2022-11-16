@@ -11,6 +11,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 //para el paquete roles y permisos
 use Spatie\Permission\Traits\HasRoles;
+//para el paquete auditable
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * *Verificacion de email:
@@ -19,15 +21,16 @@ use Spatie\Permission\Traits\HasRoles;
  * pero lo hace a traves de herencia extendiendo del alias Authenticatable (Auth\User), alli esta
  * un trait MustVerifyEmail (no confundir con la interfaz) que tiene los metodos implementados.
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, Auditable
 {
     use HasApiTokens, HasFactory, Notifiable;
     //para el paquete roles y permisos
     use HasRoles;
+    //para el paquete auditable
+    use \OwenIt\Auditing\Auditable;
 
     /**
-     * The attributes that are mass assignable.
-     *
+     * *atributos asignados masivamente
      * @var array<int, string>
      */
     protected $fillable = [
@@ -37,7 +40,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * The attributes that should be hidden for serialization.
-     *
      * @var array<int, string>
      */
     protected $hidden = [
@@ -47,7 +49,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * The attributes that should be cast.
-     *
      * @var array<string, string>
      */
     protected $casts = [
@@ -55,7 +56,18 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * esta asociado a una persona
+     * *atributos que seran auditados
+     * @var array
+     */
+    protected $auditInclude = [
+        'email',
+        'password',
+        'email_verified_at'
+    ];
+
+
+    /**
+     * *esta asociado a una persona
      */
     public function people()
     {
