@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Audit\AuditController;
 use App\Http\Controllers\Search\SearchLocalidadController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -165,6 +166,22 @@ Route::middleware(['auth','verified'])->group(function () {
     //inhabilitar usuario interno
     Route::delete('/user/{user}', [UserRoleController::class, 'disableUserRole'])
         ->name('disable-role');
+});
+
+/**
+ * *rutas de auditoria.
+ * middleware:
+ * - auth.
+ * - verified.
+ */
+Route::middleware(['auth','verified'])->group(function () {
+
+    Route::get('audits', [AuditController::class, 'index'])
+        ->name('audits.index');
+
+    Route::get('audits/{audit}', [AuditController::class, 'show'])
+        ->name('audits.show');
+    
 });
 
 //*rutas auth

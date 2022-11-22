@@ -362,8 +362,13 @@
                                 <!-- slot content, mostrara los enlaces del dropdown -->
                                 <x-slot name="content">
                                     <!-- enlace dropdown -->
-                                    <x-aside-dropdown-link :href="route('dashboard')">
-                                        Opcion
+                                    <x-aside-dropdown-link :href="route('audits.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-glasses"></i>
+                                            </div>
+                                            <span>Ver Auditoria</span>
+                                        </div>
                                     </x-aside-dropdown-link>
                                 </x-slot>
                             </x-aside-dropdown>
