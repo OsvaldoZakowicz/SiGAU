@@ -18,7 +18,7 @@
                                 <label for="" class="text-sm">Evento</label>
                                 <select name="event"
                                     class="w-36 p-0.5 mr-1 rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
-                                    <option value="">todos</option>
+                                    <option value="all">todos</option>
                                     <option value="created">creado</option>
                                     <option value="updated">actualizado</option>
                                     <option value="deleted">eliminado</option>
@@ -30,7 +30,7 @@
                                 <label for="" class="text-sm">Tabla</label>
                                 <select name="table"
                                     class="w-36 p-0.5 mr-1 rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
-                                    <option value="">todas</option>
+                                    <option value="all">todas</option>
                                     @foreach ($tables as $key => $value)
                                         <option value="{{$key}}">{{__($value)}}</option>
                                     @endforeach
@@ -41,7 +41,7 @@
                                 <label for="" class="text-sm">Responsable</label>
                                 <select name="responsible"
                                     class="w-36 p-0.5 mr-1 rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
-                                    <option value="">todos</option>
+                                    <option value="all">todos</option>
                                     @foreach ($roles as $key => $value)
                                         <option value="{{$key}}">{{$value}}</option>
                                     @endforeach
@@ -50,6 +50,9 @@
                             {{-- busqueda --}}
                             <div class="flex flex-col items-start w-full mr-1">
                                 <label for="" class="text-sm">Buscar por id de registro</label>
+                                @error('search')
+                                    <span class="text-xs text-red-600">{{ $message }}</span>
+                                @enderror
                                 <input type="text" name="search" placeholder="buscar ..."
                                     class="p-0.5 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
@@ -94,27 +97,30 @@
                             {{ __($validated['responsible']) }}
                         </span>
                         @if (array_key_exists('search', $validated))
-                            <span class="ml-1">con valor de busqueda:</span>
-                            <span class="ml-1 font-bold">
-                                {{ $validated['search'] }}
-                            </span>
+                            @if ($validated['search'] !== null)
+                                <span class="ml-1">con valor de busqueda:</span>
+                                <span class="ml-1 font-bold">
+                                    {{ $validated['search'] }}
+                                </span>
+                            @endif
                         @endif
                         <span class="ml-1">ordenado de forma:</span>
                         <span class="ml-1 font-bold">
                             {{ __($validated['order']) }}
                         </span>
+                        <span class="ml-1">por fecha de evento</span>
                     </span>
                 </div>
                 <div>
                     {{-- si hay resultados de busqueda o filtro --}}
                     @if (count($audits) !== 0)
                         {{-- formulario oculto para enviar parametros de reporte --}}
-                        <form action="#" method="GET">
+                        <form action="{{route('report-audits')}}" method="GET">
                             <input type="text" name="event" value="{{ $validated['event'] }}" class="hidden">
                             <input type="text" name="table" value="{{ $validated['table'] }}" class="hidden">
                             <input type="text" name="responsible" value="{{ $validated['responsible'] }}" class="hidden">
                             @if (array_key_exists('search', $validated))
-                                <input type="text" name="valor" value="{{ $validated['search'] }}" class="hidden">
+                                <input type="text" name="search" value="{{ $validated['search'] }}" class="hidden">
                             @endif
                             <input type="text" name="order" value="{{ $validated['order'] }}" class="hidden">
                             <button type="submit" title="reporte PDF de la tabla">

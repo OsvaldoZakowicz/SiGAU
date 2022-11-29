@@ -19,40 +19,37 @@ class AuditController extends Controller
     public function index(Request $request, AuditService $auditService)
     {
 
-        if($request->hasAny('event','table','responsible','search','order')){
-            
+        if ($request->hasAny('event', 'table', 'responsible', 'search', 'order')) {
+
             //*request
             $validator = Validator::make($request->all(), [
                 'event' => 'nullable|string|max:45',
                 'table' => 'nullable|string|max:45',
                 'responsible' => 'nullable|string|max:45',
-                'search' => 'nullable|string|max:45',
+                'search' => 'nullable|numeric|max_digits:45',
                 'order' => 'nullable|string|max:45'
             ]);
 
-            //?existe valor de busqueda en el request?
-            if ($request->input('search') !== NULL) {
-                
-                //hay busqueda
-                $validated = $validator->validated();
-
-            } else {
-
-                //no hay busqueda, ordenar por tabla, evento, responsable.
-                $validated = $validator->safe()->except('search');
-
-                //obtener registros
-                $audits = $auditService->buscarRegistrosAuditoriaGlobal($validated);
-
-                //*tablas auditadas
-                $tables = $auditService->obtenerTablasAuditadas();
-
-                //*obtener roles responsables
-                $roles = $auditService->obtenerRolesResponsables();
-
-                return view('audits.index', compact('audits','validated','tables','roles'));
-
+            //error en validaciones
+            if ($validator->fails()) {
+                return redirect('audits')
+                    ->withErrors($validator)
+                    ->withInput();
             }
+
+            //validaciones correctas
+            $validated = $validator->validated();
+
+            //obtener registros
+            $audits = $auditService->buscarRegistrosAuditoriaGlobal($validated);
+
+            //*tablas auditadas
+            $tables = $auditService->obtenerTablasAuditadas();
+
+            //*obtener roles responsables
+            $roles = $auditService->obtenerRolesResponsables();
+
+            return view('audits.index', compact('audits', 'validated', 'tables', 'roles'));
 
         } else {
 
@@ -73,10 +70,8 @@ class AuditController extends Controller
             //*obtener roles responsables
             $roles = $auditService->obtenerRolesResponsables();
 
-            return view('audits.index', compact('audits','validated','tables','roles'));
+            return view('audits.index', compact('audits', 'validated', 'tables', 'roles'));
         }
-        
-
     }
 
     /**
@@ -88,6 +83,6 @@ class AuditController extends Controller
 
         $responsable = $auditService->obtenerResponsableDelEvento($id);
 
-        return view('audits.show', compact('audit','responsable'));
+        return view('audits.show', compact('audit', 'responsable'));
     }
 }

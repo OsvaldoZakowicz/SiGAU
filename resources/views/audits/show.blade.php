@@ -34,25 +34,33 @@
             </div>
             {{-- informacion del responsable --}}
             <div class="mr-1 p-2 border-l border-zinc-300">
-                <h4 class="block text-sm uppercase font-semibold tracking-wider text-zinc-600">Responsable de operación:</h4>
-                <div class="flex my-1">
-                    <h4 class="block text-sm font-semibold tracking-wider text-zinc-600">apellido y nombre:</h4>
-                    <span class="text-sm mx-1 px-1 text-zinc-800">
-                        @if ($responsable->last_name !== null && $responsable->first_name !== null)
-                            <span>{{ $responsable->last_name }}, {{ $responsable->first_name }}</span>
-                        @else
-                            <span class="italic">Este usuario aún no completó su perfil.</span>
-                        @endif
-                    </span>
-                </div>
-                <div class="flex my-1">
-                    <h4 class="block text-sm font-semibold tracking-wider text-zinc-600">cuenta de acceso:</h4>
-                    <span class="text-sm mx-1 px-1 text-zinc-800">{{ __($responsable->email) }}</span>
-                </div>
-                <div class="flex my-1">
-                    <h4 class="block text-sm font-semibold tracking-wider text-zinc-600">Rol:</h4>
-                    <span class="text-sm mx-1 px-1 text-zinc-800">{{ __($responsable->role_name) }}</span>
-                </div>
+                @if ($responsable !== null)
+                    <h4 class="block text-sm uppercase font-semibold tracking-wider text-zinc-600">Responsable de operación:</h4>
+                    <div class="flex my-1">
+                        <h4 class="block text-sm font-semibold tracking-wider text-zinc-600">apellido y nombre:</h4>
+                        <span class="text-sm mx-1 px-1 text-zinc-800">
+                            @if ($responsable->last_name !== null && $responsable->first_name !== null)
+                                <span>{{ $responsable->last_name }}, {{ $responsable->first_name }}</span>
+                            @else
+                                <span class="italic">Este usuario aún no completó su perfil.</span>
+                            @endif
+                        </span>
+                    </div>
+                    <div class="flex my-1">
+                        <h4 class="block text-sm font-semibold tracking-wider text-zinc-600">cuenta de acceso:</h4>
+                        <span class="text-sm mx-1 px-1 text-zinc-800">{{ __($responsable->email) }}</span>
+                    </div>
+                    <div class="flex my-1">
+                        <h4 class="block text-sm font-semibold tracking-wider text-zinc-600">rol:</h4>
+                        <span class="text-sm mx-1 px-1 text-zinc-800">{{ __($responsable->role_name) }}</span>
+                    </div>
+                @else
+                    <h4 class="block text-sm uppercase font-semibold tracking-wider text-zinc-600">Responsable de operación:</h4>
+                    <div class="flex my-1">
+                        <h4 class="block text-sm font-semibold tracking-wider text-zinc-600">apellido y nombre:</h4>
+                        <span class="text-sm mx-1 px-1 text-zinc-800">esta operacion no tiene responsable.</span>
+                    </div>
+                @endif
             </div>
         </div>
         {{-- estado actual del registro a la fecha --}}

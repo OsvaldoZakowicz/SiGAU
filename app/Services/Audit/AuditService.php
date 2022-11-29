@@ -61,7 +61,7 @@ class AuditService
 
     /**
      * *buscar registros de auditoria.
-     * - por evento, tabla, responsable.
+     * - por evento, tabla, responsable, busqueda.
      */
     public function buscarRegistrosAuditoriaGlobal($parametros)
     {
@@ -88,21 +88,24 @@ class AuditService
             );
         
         //?hay filtro de eventos?
-        if ($parametros['event'] !== NULL) {
+        if ($parametros['event'] !== 'all') {
             $queryBuilder->where('audits.event','like','%'.$parametros['event'].'%');
         }
 
         //?hay filtro de tablas?
-        if ($parametros['table'] !== NULL) {
+        if ($parametros['table'] !== 'all') {
             $queryBuilder->where('audits.auditable_type','like','%'.$parametros['table']);
         }
 
         //?hay filtro de rol?
-        if ($parametros['responsible'] !== NULL) {
+        if ($parametros['responsible'] !== 'all') {
             $queryBuilder->where('roles.name','like','%'.$parametros['responsible'].'%');
         }
-            
-        //dd($queryBuilder);
+
+        //?hay busqueda por id?
+        if ($parametros['search'] !== NULL) {
+            $queryBuilder->where('audits.auditable_id','=',$parametros['search']);
+        }
 
         //en este punto se resuelve la query
         $audits = $queryBuilder

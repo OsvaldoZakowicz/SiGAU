@@ -140,6 +140,7 @@ return [
         'name' => 'nombre',
         'email' => 'correo electrónico',
         'password' => 'contraseña',
-        'confirm-password' => 'confirmar contraseña'
+        'confirm-password' => 'confirmar contraseña',
+        'search' => 'búsqueda'
     ]
 ];

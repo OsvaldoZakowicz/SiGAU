@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Audit\AuditController;
+use App\Http\Controllers\Audit\AuditReportController;
 use App\Http\Controllers\Search\SearchLocalidadController;
-use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\RoleController;
@@ -14,7 +14,6 @@ use App\Http\Controllers\User\UserAccountController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserReportController;
 use App\Http\Controllers\User\UserRoleController;
-use FontLib\Table\Type\name;
 
 /*
 |--------------------------------------------------------------------------
@@ -181,6 +180,10 @@ Route::middleware(['auth','verified'])->group(function () {
 
     Route::get('audits/{audit}', [AuditController::class, 'show'])
         ->name('audits.show');
+
+    //reportes Audit
+    Route::get('/report-audits', [AuditReportController::class, 'crear'])
+        ->name('report-audits');
     
 });
 
