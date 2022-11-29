@@ -3,6 +3,7 @@
 namespace App\Services\Audit;
 
 use Illuminate\Support\Facades\DB;
+use OwenIt\Auditing\Models\Audit;
 
 class AuditReportService
 {
@@ -65,5 +66,25 @@ class AuditReportService
             ->get();
         
         return $audits;
+    }
+
+    public function buscarRegistroAuditoriaIndividual($id)
+    {
+        $audit = Audit::findOrFail($id);
+        return $audit;
+    }
+
+    public function buscarResponsableAuditoriaIndividual($id)
+    {
+        $responsable = DB::table('users')
+            ->join('audits','users.id','=','audits.user_id')
+            ->join('model_has_roles','users.id','=','model_has_roles.model_id')
+            ->join('roles','model_has_roles.role_id','=','roles.id')
+            ->leftJoin('people','users.people_id','=','people_id')
+            ->select('users.id','users.email','people.first_name','people.last_name','roles.name as role_name')
+            ->where('audits.id','=',$id)
+            ->first();
+
+        return $responsable;
     }
 }

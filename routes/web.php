@@ -184,6 +184,10 @@ Route::middleware(['auth','verified'])->group(function () {
     //reportes Audit
     Route::get('/report-audits', [AuditReportController::class, 'crear'])
         ->name('report-audits');
+
+    //reporte individual Audit
+    Route::get('/report-audit/{audit}', [AuditReportController::class, 'crearIndividual'])
+        ->name('report-audit');
     
 });
 

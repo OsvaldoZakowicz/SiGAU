@@ -62,4 +62,31 @@ class AuditReportController extends Controller
             return redirect()->route('audits.index');
         }
     }
+
+    public function crearIndividual(AuditReportService $auditReportService,$id)
+    {
+        //dompdf wrapper
+        $pdf = app('dompdf.wrapper');
+
+        //fecha de reporte
+        $fechaReporte = Carbon::parse(Carbon::now())
+                                ->locale('es_AR')
+                                ->format('d-m-Y H:i');
+
+        //usuario que reporta
+        $cabeceraReporte = [
+            'titulo' => 'reporte de auditoria individual',
+            'fecha' => $fechaReporte,
+            'nombre-usuario' => Auth()->user()->name,
+            'email-usuario' => Auth()->user()->email,
+            'rol-usuario' => Auth()->user()->getRoleNames()
+        ];
+
+        $audit = $auditReportService->buscarRegistroAuditoriaIndividual($id);
+
+        $responsable = $auditReportService->buscarResponsableAuditoriaIndividual($id);
+
+        $pdf->loadView('reports.audits.report-show', compact('audit','responsable','cabeceraReporte','pdf'));
+        return $pdf->stream('reporte-auditoria-individual');
+    }
 }

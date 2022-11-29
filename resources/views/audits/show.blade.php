@@ -8,6 +8,9 @@
                     <i class="fa-solid fa-rotate-left mr-1"></i>
                     <span>volver al listado</span>
                 </x-buttons.button-link-zinc-light>
+                <a href="{{route('report-audit', $audit->id)}}" title="reporte PDF de este cambio" class="ml-2">
+                    <i class="fa-solid fa-file-pdf text-xl text-red-600"></i>
+                </a>
             </div>
         </div>
         {{-- cabecera de informacion general --}}
@@ -66,8 +69,7 @@
         {{-- estado actual del registro a la fecha --}}
         <div class="mx-2 my-1 flex flex-col items-start justify-start">
             <span class="block text-sm font-semibold tracking-wider text-zinc-600"
-                title="esta primera tabla detalla el estado de cada atributo del registro segun la fecha de operación">Estado
-                del registro a la fecha de cambio: <i class="fa-solid fa-circle-info"></i></span>
+                title="esta primera tabla detalla el estado de cada atributo del registro segun la fecha de operación">Estado del registro a la fecha de cambio:<i class="fa-solid fa-circle-info"></i></span>
         </div>
         <table class="m-2 border border-zinc-300 border-collapse">
             @if (count($audit->new_values) !== 0)
@@ -86,8 +88,7 @@
         {{-- estado anterior del registro --}}
         <div class="mx-2 flex flex-col items-start justify-start">
             <span class="block text-sm font-semibold tracking-wider text-zinc-600"
-                title="esta segunda tabla detalla el estado de cada atributo antes de la operación, si existiere">Estado
-                anterior: <i class="fa-solid fa-circle-info"></i></span>
+                title="esta segunda tabla detalla el estado de cada atributo antes de la operación, si existiere">Estado anterior:<i class="fa-solid fa-circle-info"></i></span>
         </div>
         <table class="m-2 border border-zinc-300 border-collapse">
             @if (count($audit->old_values) !== 0)
