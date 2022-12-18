@@ -410,8 +410,21 @@
                                 <!-- slot content, mostrara los enlaces del dropdown -->
                                 <x-slot name="content">
                                     <!-- enlace dropdown -->
-                                    <x-aside-dropdown-link :href="route('dashboard')">
-                                        Opcion
+                                    <x-aside-dropdown-link :href="route('ambienttypes.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-thumbtack"></i>
+                                            </div>
+                                            <span>Tipos de Ambientes</span>
+                                        </div>
+                                    </x-aside-dropdown-link>
+                                    <x-aside-dropdown-link :href="route('servicetypes.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-thumbtack"></i>
+                                            </div>
+                                            <span>Tipos de Servicios</span>
+                                        </div>
                                     </x-aside-dropdown-link>
                                 </x-slot>
                             </x-aside-dropdown>
@@ -425,8 +438,21 @@
                                     </x-aside-dropdown-button-responsive>
                                 </x-slot>
                                 <x-slot name="content">
-                                    <x-aside-dropdown-link :href="route('dashboard')">
-                                        Opcion
+                                    <x-aside-dropdown-link :href="route('ambienttypes.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-thumbtack"></i>
+                                            </div>
+                                            <span>Tipos de Ambientes</span>
+                                        </div>
+                                    </x-aside-dropdown-link>
+                                    <x-aside-dropdown-link :href="route('servicetypes.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-thumbtack"></i>
+                                            </div>
+                                            <span>Tipos de Servicios</span>
+                                        </div>
                                     </x-aside-dropdown-link>
                                 </x-slot>
                             </x-aside-dropdown>

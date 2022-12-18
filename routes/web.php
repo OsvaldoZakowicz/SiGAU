@@ -14,6 +14,8 @@ use App\Http\Controllers\User\UserAccountController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserReportController;
 use App\Http\Controllers\User\UserRoleController;
+use App\Http\Controllers\House\AmbientTypeController;
+use App\Http\Controllers\House\ServiceTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -165,6 +167,24 @@ Route::middleware(['auth','verified'])->group(function () {
     //inhabilitar usuario interno
     Route::delete('/user/{user}', [UserRoleController::class, 'disableUserRole'])
         ->name('disable-role');
+});
+
+/**
+ * *rutas de casa.
+ * middleware:
+ * - auth.
+ * - verified.
+ */
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    //tipos de ambientes
+    Route::resource('ambienttypes', AmbientTypeController::class)
+        ->names('ambienttypes');
+    
+    //tipos de servicios
+    Route::resource('servicetypes', ServiceTypeController::class)
+        ->names('servicetypes');
+
 });
 
 /**

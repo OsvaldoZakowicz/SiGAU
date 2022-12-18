@@ -141,6 +141,7 @@ return [
         'email' => 'correo electrónico',
         'password' => 'contraseña',
         'confirm-password' => 'confirmar contraseña',
-        'search' => 'búsqueda'
+        'search' => 'búsqueda',
+        'description' => 'descripción'
     ]
 ];
