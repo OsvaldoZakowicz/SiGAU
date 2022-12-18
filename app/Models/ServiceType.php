@@ -22,4 +22,12 @@ class ServiceType extends Model implements Auditable
         'name',
         'description',
     ];
+
+    /**
+     * *un tipo de servicio tiene muchas descripciones de servicio
+     */
+    public function service_descriptions()
+    {
+        return $this->hasMany(ServiceDescription::class,'service_types_id','id');
+    }
 }

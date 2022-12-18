@@ -23,4 +23,12 @@ class AmbientType extends Model implements Auditable
         'description',
     ];
 
+    /**
+     * *un tipo de ambiente tiene muchas descripciones de ambiente.
+     */
+    public function ambient_descriptions()
+    {
+        return $this->hasMany(AmbientDescription::class,'ambient_types_id','id');
+    }
+
 }
