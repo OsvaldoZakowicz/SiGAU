@@ -17,7 +17,9 @@ class Person extends Model
         'identification_number',
         'last_name',
         'first_name',
-        'gender_id'
+        'gender_id',
+        'phone_id',
+        'address_id'
     ];
 
     /**
@@ -50,7 +52,7 @@ class Person extends Model
      */
     public function phone()
     {
-        return $this->hasOne(Phone::class, 'people_id');
+        return $this->belongsTo(Phone::class,'phone_id','id');
     }
 
     /**
@@ -58,6 +60,6 @@ class Person extends Model
      */
     public function address()
     {
-        return $this->hasOne(Address::class, 'people_id');
+        return $this->belongsTo(Address::class,'address_id','id');
     }
 }

@@ -18,10 +18,10 @@ class Phone extends Model
     ];
 
     /**
-     * pertenece a una persona
+     * lo tiene una persona
      */
     public function people()
     {
-        return $this->belongsTo(Person::class, 'people_id');
+        return $this->hasOne(Person::class, 'phone_id','id');
     }
 }

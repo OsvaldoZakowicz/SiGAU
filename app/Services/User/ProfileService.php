@@ -66,14 +66,16 @@ class ProfileService
      * datos de persona.
      * @return Person persona.
      */
-    public function crearPerfil(Array $parametros, User $user)
+    public function crearPerfil(Array $parametros, User $user, Phone $phone, Address $address)
     {
         $people = Person::create([
             'identification_type_id' => $parametros['tipo_id'],
             'identification_number' => $parametros['number_id'],
             'last_name' => $parametros['last_name'],
             'first_name' => $parametros['first_name'],
-            'gender_id' => $parametros['gender']
+            'gender_id' => $parametros['gender'],
+            'phone_id' => $phone->id,
+            'address_id' => $address->id
         ]);
 
         //asignar perfil a usuario
@@ -106,11 +108,10 @@ class ProfileService
      * telefono de una persona.
      * @return Phone telefono.
      */
-    public function crearTelefono(Array $parametros, Person $people)
+    public function crearTelefono(Array $parametros)
     {
         $phone = Phone::create([
             'number' => $parametros['phone_number'],
-            'people_id' => $people->id
         ]);
 
         return $phone;
@@ -135,7 +136,7 @@ class ProfileService
      * direccion de una persona.
      * @return Address direccion.
      */
-    public function crearDireccion(Array $parametros, Person $people)
+    public function crearDireccion(Array $parametros)
     {
         $address = Address::create([
             'street' => $parametros['street'],
@@ -143,7 +144,6 @@ class ProfileService
             'house_number' => $parametros['house_number'],
             'floor_number' => $parametros['floor_number'],
             'department_number' => $parametros['department_number'],
-            'people_id' => $people->id,
             'location_id' => $parametros['location']
         ]);
 
@@ -178,8 +178,8 @@ class ProfileService
         $datos = DB::table('people')
             ->join('users','people.id','=','users.people_id')
             ->join('genders','people.gender_id','=','genders.id')
-            ->join('phones','people.id','=','phones.people_id')
-            ->join('addresses','people.id','=','addresses.people_id')
+            ->join('phones','people.phone_id','=','phones.id')
+            ->join('addresses','people.address_id','=','addresses.id')
             ->select(
                 'people.id as profile_id',
                 'people.identification_type_id as profile_id_type',

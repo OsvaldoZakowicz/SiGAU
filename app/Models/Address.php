@@ -23,11 +23,11 @@ class Address extends Model
     ];
 
     /**
-     * pertenece a una persona.
+     * *direccion de una persona.
      */
     public function people()
     {
-        return $this->belongsTo(Person::class, 'people_id');
+        return $this->hasOne(Person::class, 'address_id','id');
     }
 
     /**

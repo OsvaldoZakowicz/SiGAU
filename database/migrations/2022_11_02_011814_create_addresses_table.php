@@ -21,13 +21,6 @@ return new class extends Migration
             $table->string('floor_number', 10)->nullable();
             $table->string('department_number', 10)->nullable();
 
-            //pertenece a una persona
-            $table->unsignedBigInteger('people_id');
-            $table->foreign('people_id')
-                ->references('id')
-                ->on('people')
-                ->cascadeOnDelete(); //si elimino una persona
-
             //pertenece a una ubicacion
             $table->unsignedBigInteger('location_id');
             $table->foreign('location_id')

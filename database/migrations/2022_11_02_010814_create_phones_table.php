@@ -16,14 +16,6 @@ return new class extends Migration
         Schema::create('phones', function (Blueprint $table) {
             $table->id('id');
             $table->string('number', 15)->unique();
-
-            //pertenece a una persona
-            $table->unsignedBigInteger('people_id');
-            $table->foreign('people_id')
-                ->references('id')
-                ->on('people')
-                ->cascadeOnDelete(); //si elimino una persona
-                
             $table->timestamps();
         });
     }

@@ -41,12 +41,11 @@ class UserProfileController extends Controller
         
         //validaciones basicas
         $validated = $request->validated();
+
+        $phone = $profileService->crearTelefono($validated);
+        $address = $profileService->crearDireccion($validated);
         
-        $people = $profileService->crearPerfil($validated, $user);
-
-        $phone = $profileService->crearTelefono($validated, $people);
-
-        $address = $profileService->crearDireccion($validated, $people);
+        $people = $profileService->crearPerfil($validated, $user, $phone, $address);
 
         return redirect()->route('show-profile')->with('exito','perfil creado');
     }
