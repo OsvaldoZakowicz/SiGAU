@@ -17,6 +17,7 @@ use App\Http\Controllers\User\UserReportController;
 use App\Http\Controllers\User\UserRoleController;
 use App\Http\Controllers\House\AmbientTypeController;
 use App\Http\Controllers\House\HouseController;
+use App\Http\Controllers\House\ServiceController;
 use App\Http\Controllers\House\ServiceDescriptionController;
 use App\Http\Controllers\House\ServiceTypeController;
 
@@ -199,6 +200,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //casas
     Route::resource('houses', HouseController::class)
         ->names('houses');
+
+    //servicios
+    Route::get('services/create/{id}', [ServiceController::class, 'createHouseService'])
+        ->name('service-for-house');
+    Route::resource('services', ServiceController::class)
+        ->names('services');
 
 });
 

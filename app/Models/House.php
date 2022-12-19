@@ -35,4 +35,12 @@ class House extends Model implements Auditable
         return $this->belongsTo(Address::class,'address_id','id');
     }
 
+    /**
+     * *tiene servicios
+     */
+    public function services()
+    {
+        return $this->hasMany(Service::class,'house_id','id');
+    }
+
 }

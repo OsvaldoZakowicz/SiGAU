@@ -119,27 +119,62 @@
         <table class="table-auto m-2 border border-zinc-300 border-collapse">
             <thead>
                 <tr>
-                    <th colspan="4">servicios</th>
+                    <th colspan="6" class="px-1 py-1 text-xs uppercase font-bold bg-zinc-200 text-zinc-600">
+                        <div class="flex justify-between items-center">
+                            <span>servicios de la casa</span>
+                            <x-buttons.button-link-zinc href="{{route('service-for-house',$casa->id)}}">
+                                <i class="fa-solid fa-pen-to-square mr-1"></i>
+                                <span>nuevo servicio</span>
+                            </x-buttons.button-link-zinc>
+                        </div>
+                    </th>
                 </tr>
                 <tr>
                     <x-tables.th-cell>id</x-tables.th-cell>
-                    <x-tables.th-cell>id</x-tables.th-cell>
-                    <x-tables.th-cell>id</x-tables.th-cell>
+                    <x-tables.th-cell>servicio</x-tables.th-cell>
+                    <x-tables.th-cell>nro. conexión | cuenta</x-tables.th-cell>
+                    <x-tables.th-cell>titular | dueño</x-tables.th-cell>
+                    <x-tables.th-cell>CUIT</x-tables.th-cell>
+                    <x-tables.th-cell>acciones</x-tables.th-cell>
                 </tr>
             </thead>
-            <tbody>
-                <tr class="text-sm text-zinc-800">
-                    <x-tables.td-cell>dato</x-tables.td-cell>
-                    <x-tables.td-cell>dato</x-tables.td-cell>
-                    <x-tables.td-cell>dato</x-tables.td-cell>
-                </tr>
-            </tbody>
+            @if (count($serviciosDeLaCasa) !== 0)
+                <tbody>
+                    @foreach ($serviciosDeLaCasa as $servicio)
+                        <tr class="text-sm text-zinc-800">
+                            <x-tables.td-cell>{{$servicio->id}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$servicio->service_description->service_type->name}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$servicio->connection_number}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$servicio->service_owner}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$servicio->cuit}}</x-tables.td-cell>
+                            <x-tables.td-cell>
+                                <a href="{{ route('services.edit', $servicio->id) }}"
+                                    class="mr-1 text-xs uppercase hover:text-green-500">
+                                    <i class="fa-solid fa-pen"></i>
+                                    <span>editar</span>
+                                </a>
+                                <a href="{{ route('services.show', $servicio->id) }}"
+                                    class="mr-1 text-xs uppercase hover:text-sky-500">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span>detalles</span>
+                                </a>
+                            </x-tables.td-cell>
+                        </tr>
+                    @endforeach
+                </tbody>
+            @else
+                <tbody>
+                    <tr>
+                        <td colspan="6" class="px-1 text-sm text-red-600 border border-zinc-300">esta casa no cuenta con servicios registrados!</td>
+                    </tr>
+                </tbody>
+            @endif
         </table>
         {{-- ambientes --}}
         <table class="table-auto m-2 border border-zinc-300 border-collapse">
             <thead>
                 <tr>
-                    <th colspan="7">ambientes</th>
+                    <th colspan="7" class="px-1 text-xs border border-zinc-300 uppercase font-bold bg-zinc-600 text-white">ambientes de la casa</th>
                 </tr>
                 <tr>
                     <x-tables.th-cell>id</x-tables.th-cell>

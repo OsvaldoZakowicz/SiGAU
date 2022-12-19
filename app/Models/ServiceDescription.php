@@ -38,4 +38,12 @@ class ServiceDescription extends Model implements Auditable
     {
         return $this->belongsTo(ServiceType::class,'service_types_id','id');
     }
+
+    /**
+     * *describe muchos servicios
+     */
+    public function services()
+    {
+        return $this->hasMany(Service::class,'service_description_id','id');
+    }
 }
