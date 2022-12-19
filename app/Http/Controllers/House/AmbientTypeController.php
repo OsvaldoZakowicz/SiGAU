@@ -41,8 +41,8 @@ class AmbientTypeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => ['required','alpha','max:95'],
-            'description' => ['required','alpha','max:95'],
+            'name' => ['required','string','max:95'],
+            'description' => ['required','string','max:95'],
         ]);
 
         $ambientType = new AmbientType;
@@ -86,8 +86,8 @@ class AmbientTypeController extends Controller
         $tipoAmbiente = AmbientType::find($id);
 
         $this->validate($request, [
-            'name' => ['required','alpha','max:95'],
-            'description' => ['required','alpha','max:95'],
+            'name' => ['required','string','max:95'],
+            'description' => ['required','string','max:95'],
         ]);
 
 
