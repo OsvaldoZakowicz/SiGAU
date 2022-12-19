@@ -38,4 +38,12 @@ class AmbientDescription extends Model implements Auditable
     {
         return $this->belongsTo(AmbientType::class,'ambient_types_id','id');
     }
+
+    /**
+     * *tiene muchos ambientes
+     */
+    public function ambients()
+    {
+        return $this->hasMany(Ambient::class,'ambient_description_id','id');
+    }
 }

@@ -43,4 +43,12 @@ class House extends Model implements Auditable
         return $this->hasMany(Service::class,'house_id','id');
     }
 
+    /**
+     * *tiene ambientes
+     */
+    public function ambients()
+    {
+        return $this->hasMany(Ambient::class,'house_id','id');
+    }
+
 }

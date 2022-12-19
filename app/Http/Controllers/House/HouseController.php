@@ -75,7 +75,8 @@ class HouseController extends Controller
     {
         $casa = House::find($id);
         $serviciosDeLaCasa = $casa->services;
-        return view('house.show', compact('casa','serviciosDeLaCasa'));
+        $ambientesDeLaCasa = $casa->ambients;
+        return view('house.show', compact('casa','serviciosDeLaCasa','ambientesDeLaCasa'));
     }
 
     /**

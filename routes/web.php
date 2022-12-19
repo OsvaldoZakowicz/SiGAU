@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Audit\AuditController;
 use App\Http\Controllers\Audit\AuditReportController;
+use App\Http\Controllers\House\AmbientController;
 use App\Http\Controllers\House\AmbientDescriptionController;
 use App\Http\Controllers\Search\SearchLocalidadController;
 use Illuminate\Support\Facades\Route;
@@ -211,6 +212,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //areas de limpieza
     Route::resource('cleaningareas', CleaningAreaController::class)
         ->names('cleaningareas');
+
+    //ambientes
+    Route::get('ambients/create/{id}', [AmbientController::class, 'createHouseAmbient'])
+        ->name('ambient-for-house');
+    Route::resource('ambients', AmbientController::class)
+        ->names('ambients');
 
 });
 

@@ -174,23 +174,60 @@
         <table class="table-auto m-2 border border-zinc-300 border-collapse">
             <thead>
                 <tr>
-                    <th colspan="7" class="px-1 text-xs border border-zinc-300 uppercase font-bold bg-zinc-600 text-white">ambientes de la casa</th>
+                    <th colspan="8" class="px-1 py-1 text-xs uppercase font-bold bg-zinc-200 text-zinc-600">
+                        <div class="flex justify-between items-center">
+                            <span>ambientes de la casa</span>
+                            <x-buttons.button-link-zinc href="{{route('ambient-for-house',$casa->id)}}">
+                                <i class="fa-solid fa-pen-to-square mr-1"></i>
+                                <span>nuevo ambiente</span>
+                            </x-buttons.button-link-zinc>
+                        </div>
+                    </th>
                 </tr>
                 <tr>
                     <x-tables.th-cell>id</x-tables.th-cell>
-                    <x-tables.th-cell>id</x-tables.th-cell>
-                    <x-tables.th-cell>id</x-tables.th-cell>
-                    <x-tables.th-cell>id</x-tables.th-cell>
+                    <x-tables.th-cell>ambiente</x-tables.th-cell>
+                    <x-tables.th-cell>cantidad en la casa</x-tables.th-cell>
+                    <x-tables.th-cell>tamaño del ambiente</x-tables.th-cell>
+                    <x-tables.th-cell>cant. lugares</x-tables.th-cell>
+                    <x-tables.th-cell>cant. luces</x-tables.th-cell>
+                    <x-tables.th-cell>cant. tomas</x-tables.th-cell>
+                    <x-tables.th-cell>acciones</x-tables.th-cell>
                 </tr>
             </thead>
+            @if (count($ambientesDeLaCasa) !== 0)
+                <tbody>
+                    @foreach ($ambientesDeLaCasa as $ambiente)
+                        <tr class="text-sm text-zinc-800">
+                            <x-tables.td-cell>{{$ambiente->id}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$ambiente->ambient_description->ambient_type->name}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$ambiente->quantity}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$ambiente->ambient_description->size}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$ambiente->ambient_description->places_quantity}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$ambiente->ambient_description->lights_quantity}}</x-tables.td-cell>
+                            <x-tables.td-cell>{{$ambiente->ambient_description->plugs_quantity}}</x-tables.td-cell>
+                            <x-tables.td-cell>
+                                <a href="{{ route('ambients.edit', $ambiente->id) }}"
+                                    class="mr-1 text-xs uppercase hover:text-green-500">
+                                    <i class="fa-solid fa-pen"></i>
+                                    <span>editar</span>
+                                </a>
+                                <a href="{{ route('ambients.show', $ambiente->id) }}"
+                                    class="mr-1 text-xs uppercase hover:text-sky-500">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span>detalles</span>
+                                </a>
+                            </x-tables.td-cell>
+                        </tr>
+                    @endforeach
+                </tbody>
+            @else    
             <tbody>
-                <tr class="text-sm text-zinc-800">
-                    <x-tables.td-cell>dato</x-tables.td-cell>
-                    <x-tables.td-cell>dato</x-tables.td-cell>
-                    <x-tables.td-cell>dato</x-tables.td-cell>
-                    <x-tables.td-cell>dato</x-tables.td-cell>
+                <tr>
+                    <td colspan="6" class="px-1 text-sm text-red-600 border border-zinc-300">esta casa no cuenta con ambientes registrados!</td>
                 </tr>
             </tbody>
+            @endif
         </table>
     </div>
 @endsection
