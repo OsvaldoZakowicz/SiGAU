@@ -187,6 +187,14 @@
                                             <span>Desc. Servicios</span>
                                         </div>
                                     </x-aside-dropdown-link>
+                                    <x-aside-dropdown-link :href="route('cleaningareas.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-broom"></i>
+                                            </div>
+                                            <span>Áreas de Limpieza</span>
+                                        </div>
+                                    </x-aside-dropdown-link>
                                 </x-slot>
                             </x-aside-dropdown>
                         </div>
@@ -221,6 +229,14 @@
                                                 <i class="fa-solid fa-handshake"></i>
                                             </div>
                                             <span>Desc. Servicios</span>
+                                        </div>
+                                    </x-aside-dropdown-link>
+                                    <x-aside-dropdown-link :href="route('cleaningareas.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-broom"></i>
+                                            </div>
+                                            <span>Áreas de Limpieza</span>
                                         </div>
                                     </x-aside-dropdown-link>
                                 </x-slot>
