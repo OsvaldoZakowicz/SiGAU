@@ -16,6 +16,7 @@ use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserReportController;
 use App\Http\Controllers\User\UserRoleController;
 use App\Http\Controllers\House\AmbientTypeController;
+use App\Http\Controllers\House\HouseController;
 use App\Http\Controllers\House\ServiceDescriptionController;
 use App\Http\Controllers\House\ServiceTypeController;
 
@@ -194,6 +195,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //descripciones de servicio
     Route::resource('servicedescriptions', ServiceDescriptionController::class)
         ->names('servicedescriptions');
+
+    //casas
+    Route::resource('houses', HouseController::class)
+        ->names('houses');
 
 });
 

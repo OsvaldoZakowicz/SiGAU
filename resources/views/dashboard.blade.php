@@ -163,6 +163,14 @@
                                 <!-- slot content, mostrara los enlaces del dropdown -->
                                 <x-slot name="content">
                                     <!-- enlace dropdown -->
+                                    <x-aside-dropdown-link :href="route('houses.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-house-user"></i>
+                                            </div>
+                                            <span>Casas</span>
+                                        </div>
+                                    </x-aside-dropdown-link>
                                     <x-aside-dropdown-link :href="route('ambientdescriptions.index')">
                                         <div class="w-full flex flex-row items-center justify-start">
                                             <div class="w-7 h-full flex items-center justify-center">
@@ -191,6 +199,14 @@
                                     </x-aside-dropdown-button-responsive>
                                 </x-slot>
                                 <x-slot name="content">
+                                    <x-aside-dropdown-link :href="route('houses.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-house-user"></i>
+                                            </div>
+                                            <span>Casas</span>
+                                        </div>
+                                    </x-aside-dropdown-link>
                                     <x-aside-dropdown-link :href="route('ambientdescriptions.index')">
                                         <div class="w-full flex flex-row items-center justify-start">
                                             <div class="w-7 h-full flex items-center justify-center">
