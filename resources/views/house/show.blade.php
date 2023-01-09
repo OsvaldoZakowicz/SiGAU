@@ -1,44 +1,50 @@
 @extends('dashboard')
 @section('dashboard-content')
     <div class="w-full h-max flex flex-col p-1">
-        {{-- x-data necesario para el modal --}}
-        <div x-data="{ dialog: false }" class="relative mx-2 flex flex-col items-start justify-start">
-            {{-- seccion de modal de confirmacion --}}
-            <x-modals.modal-warning :name="$casa->address->house_number" :question="'Desea eliminar la casa '" :message="'Esta accion es irreversible'">
-                {{-- formulario --}}
-                <div class="px-3 py-2 mt-1 w-full flex items-center justify-end">
-                    <x-buttons.button-link-zinc-light x-on:click="dialog = ! dialog" href="#" class="mr-1">
-                        <i class="fa-solid fa-ban"></i>
-                        <span>cancelar</span>
+        {{-- encabezado --}}
+        <div class="bg-zinc-300">
+            {{-- titulo de seccion --}}
+            <div class="p-1 flex justify-center items-center bg-zinc-400">
+                <h3 class="text-sm font-bold text-zinc-800 uppercase inline-block">casas: ver casa</h3>
+            </div>
+            {{-- x-data necesario para el modal --}}
+            <div x-data="{ dialog: false }" class="relative m-1">
+                {{-- seccion de modal de confirmacion --}}
+                <x-modals.modal-warning :name="$casa->address->house_number" :question="'Desea eliminar la casa '" :message="'Esta accion es irreversible'">
+                    {{-- formulario --}}
+                    <div class="px-3 py-2 mt-1 w-full flex items-center justify-end">
+                        <x-buttons.button-link-zinc-light x-on:click="dialog = ! dialog" href="#" class="mr-1">
+                            <i class="fa-solid fa-ban"></i>
+                            <span>cancelar</span>
+                        </x-buttons.button-link-zinc-light>
+                        <form action="{{route('houses.destroy', $casa->id)}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <x-buttons.button-submit-red>
+                                <i class="fa-solid fa-trash-can mr-1"></i>
+                                <span>eliminar</span>
+                            </x-buttons.button-submit-red>
+                        </form>
+                    </div>
+                </x-modals.modal-warning>
+                <div class="w-full flex items-center justify-end">
+                    <x-buttons.button-link-zinc-light href="{{ route('houses.index') }}" class="mr-2">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>volver al listado</span>
                     </x-buttons.button-link-zinc-light>
-                    <form action="{{route('houses.destroy', $casa->id)}}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <x-buttons.button-submit-red>
-                            <i class="fa-solid fa-trash-can mr-1"></i>
-                            <span>eliminar</span>
-                        </x-buttons.button-submit-red>
-                    </form>
+                    <x-buttons.button-link-zinc href="{{ route('houses.edit', $casa->id) }}" class="mr-2">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i>
+                        <span>editar</span>
+                    </x-buttons.button-link-zinc>
+                    <x-buttons.button-link-red x-on:click="dialog = ! dialog" href="#">
+                        <i class="fa-solid fa-trash-can mr-1"></i>
+                        <span>eliminar</span>
+                    </x-buttons.button-link-red>
                 </div>
-            </x-modals.modal-warning>
-            <h3 class="text-base text-zinc-800 capitalize">casas: ver casa</h3>
-            <div class="w-full flex items-center justify-end">
-                <x-buttons.button-link-zinc-light href="{{ route('houses.index') }}" class="mr-2">
-                    <i class="fa-solid fa-rotate-left"></i>
-                    <span>volver al listado</span>
-                </x-buttons.button-link-zinc-light>
-                <x-buttons.button-link-zinc href="{{ route('houses.edit', $casa->id) }}" class="mr-2">
-                    <i class="fa-solid fa-pen-to-square mr-1"></i>
-                    <span>editar</span>
-                </x-buttons.button-link-zinc>
-                <x-buttons.button-link-red x-on:click="dialog = ! dialog" href="#">
-                    <i class="fa-solid fa-trash-can mr-1"></i>
-                    <span>eliminar</span>
-                </x-buttons.button-link-red>
             </div>
         </div>
         {{-- cabecera de informacion general --}}
-        <div class="mx-2 my-2 p-2 mb-4 flex flex-row items-start justify-start border border-zinc-300 border-collapse">
+        <div class="my-2 p-2 mb-4 flex flex-row items-start justify-start border border-zinc-300 border-collapse">
             {{-- casa --}}
             <div class="mr-1 p-2">
                 <h4 class="block text-sm uppercase font-semibold tracking-wider text-zinc-600">Informacion de la casa:</h4>
@@ -116,7 +122,7 @@
             </div>
         </div>
         {{-- servicios --}}
-        <table class="table-auto m-2 border border-zinc-300 border-collapse">
+        <table class="my-2 table-auto border border-zinc-300 border-collapse">
             <thead>
                 <tr>
                     <th colspan="6" class="px-1 py-1 text-xs uppercase font-bold bg-zinc-200 text-zinc-600">
@@ -171,7 +177,7 @@
             @endif
         </table>
         {{-- ambientes --}}
-        <table class="table-auto m-2 border border-zinc-300 border-collapse">
+        <table class="my-2 table-auto border border-zinc-300 border-collapse">
             <thead>
                 <tr>
                     <th colspan="8" class="px-1 py-1 text-xs uppercase font-bold bg-zinc-200 text-zinc-600">
