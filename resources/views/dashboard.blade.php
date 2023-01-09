@@ -9,20 +9,23 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     {{-- fonts --}}
-    <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">   
+    <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
     {{-- css select2 --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     {{-- scripts vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{-- scripts jquery --}}
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     {{-- scripts select2 (necesita jquery antes) --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     {{-- configuración para alpine --}}
     {{-- impide una carga prematura de html antes que alpine se inicie --}}
     <style>
-        [x-cloak] { display: none !important; }
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 
 </head>
@@ -31,22 +34,18 @@
     {{-- vista dashboard de administracion --}}
     <div class="min-h-screen">
         {{-- navegacion --}}
-        @include('layouts.navigation')
+        @include('layouts.admin-navigation')
         {{-- aside + main --}}
         <div class="w-100vw h-screen flex flex-row">
             {{-- aside cambia de tamaño --}}
-            
-            <aside x-cloak x-data="{ toggleAside: true }" x-bind:class="!toggleAside ? 'w-16 p-2 bg-zinc-500' : 'flex-none w-1/6 p-2 bg-zinc-500'">
-
+            <aside 
+                x-cloak x-data="{ toggleAside: false }" 
+                x-bind:class="!toggleAside ? 'w-20 p-2 bg-gray-400' : 'flex-none w-1/6 p-2 bg-gray-400'">
                 {{-- minimizar/maximizar aside --}}
-                <div
-                    x-bind:class="!toggleAside ? 'm-2 flex items-center justify-center' : 'm-2 flex items-center justify-between'">
+                <div x-bind:class="!toggleAside ? 'm-2 flex items-center justify-center' : 'm-2 flex items-center justify-between'">
                     {{-- menu, mostrar ocultar menu, cambiar flechas --}}
-                    <h2
-                        x-bind:class="!toggleAside ? 'hidden' : 'uppercase text-xs text-zinc-800 font-bold tracking-widest'">
-                        menu</h2>
-                    <button x-on:click="toggleAside = ! toggleAside"
-                        class="text-zinc-800 font-bold tracking-widest">
+                    <h2 x-bind:class="!toggleAside ? 'hidden' : 'uppercase text-xs text-zinc-800 font-bold tracking-widest'">menu</h2>
+                    <button x-on:click="toggleAside = ! toggleAside" class="text-zinc-800 font-bold tracking-widest">
                         {{-- flecha hacia izquierda --}}
                         <span x-show="toggleAside">
                             <i class="fa-solid fa-arrow-left-long" title="minimizar menu"></i>
@@ -57,12 +56,13 @@
                         </span>
                     </button>
                 </div>
-
-                <div class="mx-2 my-4 border-t-1 border-zinc-800">{{-- espacio --}}</div>
-
+                {{-- espacio --}}
+                <div class="mx-2 my-4 border-t-1 border-zinc-800"></div>
                 {{-- BECA --}}
                 @can('ver-seccion-beca')
-                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'">
+                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'"
+                        title="BECA"
+                        >
                         {{-- dropdown normal --}}
                         <div x-show="toggleAside">
                             <x-aside-dropdown align="left" width="48">
@@ -102,7 +102,9 @@
                 @endcan
                 {{-- BECADOS --}}
                 @can('ver-seccion-becados')
-                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'">
+                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'"
+                        title="BECADOS"
+                        >
                         {{-- dropdown normal --}}
                         <div x-show="toggleAside">
                             <x-aside-dropdown align="left" width="48">
@@ -145,7 +147,9 @@
                 @endcan
                 {{-- CASAS --}}
                 @can('ver-seccion-casas')
-                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'">
+                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'"
+                        title="CASAS"
+                        >
                         {{-- dropdown normal --}}
                         <div x-show="toggleAside">
                             <x-aside-dropdown align="left" width="48">
@@ -246,7 +250,9 @@
                 @endcan
                 {{-- PLANIFICACIONES --}}
                 @can('ver-seccion-planificaciones')
-                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'">
+                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'"
+                        title="PLANIFICACIONES"
+                        >
                         {{-- dropdown normal --}}
                         <div x-show="toggleAside">
                             <x-aside-dropdown align="left" width="48">
@@ -289,7 +295,9 @@
                 @endcan
                 {{-- MANTENIMIENTO --}}
                 @can('ver-seccion-mantenimiento')
-                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'">
+                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'"
+                        title="MANTENIMIENTO"
+                        >
                         {{-- dropdown normal --}}
                         <div x-show="toggleAside">
                             <x-aside-dropdown align="left" width="48">
@@ -332,7 +340,9 @@
                 @endcan
                 {{-- USUARIOS --}}
                 @can('ver-seccion-usuarios')
-                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'">
+                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'"
+                        title="USUARIOS"
+                        >
                         {{-- dropdown normal --}}
                         <div x-show="toggleAside">
                             <x-aside-dropdown align="left" width="48">
@@ -402,7 +412,9 @@
                 @endcan
                 {{-- AUDITORIA --}}
                 @can('ver-seccion-auditoria')
-                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'">
+                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'"
+                        title="AUDITORIA"
+                        >
                         {{-- dropdown normal --}}
                         <div x-show="toggleAside">
                             <x-aside-dropdown align="left" width="48">
@@ -440,8 +452,13 @@
                                     </x-aside-dropdown-button-responsive>
                                 </x-slot>
                                 <x-slot name="content">
-                                    <x-aside-dropdown-link :href="route('dashboard')">
-                                        Opcion
+                                    <x-aside-dropdown-link :href="route('audits.index')">
+                                        <div class="w-full flex flex-row items-center justify-start">
+                                            <div class="w-7 h-full flex items-center justify-center">
+                                                <i class="fa-solid fa-glasses"></i>
+                                            </div>
+                                            <span>Ver Auditoria</span>
+                                        </div>
                                     </x-aside-dropdown-link>
                                 </x-slot>
                             </x-aside-dropdown>
@@ -450,7 +467,9 @@
                 @endcan
                 {{-- PARAMETROS --}}
                 @can('ver-seccion-parametros')
-                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'">
+                    <div x-bind:class="toggleAside ? 'm-2' : 'm-1'"
+                        title="PARAMETROS"
+                        >
                         {{-- dropdown normal --}}
                         <div x-show="toggleAside">
                             <x-aside-dropdown align="left" width="48">
@@ -519,7 +538,7 @@
                 @endcan
             </aside>
             {{-- main tiene full ancho --}}
-            <main class="relative flex-initial w-full bg-zinc-100">
+            <main class="relative flex-initial w-full bg-white">
                 {{-- mensajes de sesion --}}
                 @if (session('exito'))
                     <x-alerts.alert-success>

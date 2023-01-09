@@ -1,14 +1,20 @@
 <button
-    x-data="{ toggleIcon : true }"
+    x-data="{ toggleIcon : false }"
     x-on:click="toggleIcon = ! toggleIcon"
-    title="click para abrir y cerrar"
+    x-on:click.outside="toggleIcon = false"
     class="w-full flex items-center justify-between text-md font-medium text-zinc-800 hover:text-zinc-100 hover:border-zinc-300 focus:outline-none focus:text-zinc-100 focus:border-zinc-300 transition duration-150 ease-in-out">
-    {{$slot}}
+    {{-- titulo e icono del boton --}}
+    <div>
+        {{$slot}}
+    </div>
+    {{-- boton con el icono dropdown --}}
     <div class="ml-1">
-        <span x-show="toggleIcon">
+        {{-- dropdown cerrado --}}
+        <span x-show="! toggleIcon">
             <i class="fa-solid fa-caret-left"></i>
         </span>
-        <span x-show="!toggleIcon">
+        {{-- dropdown abierto --}}
+        <span x-show="toggleIcon">
             <i class="fa-solid fa-caret-down"></i>
         </span>
     </div>
