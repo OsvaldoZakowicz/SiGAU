@@ -1,12 +1,16 @@
 @extends('dashboard')
 @section('dashboard-content')
     <div class="w-full h-max flex flex-col p-1">
-        <div class="mx-2 flex flex-col items-start justify-start">
-            <h3 class="text-base text-zinc-800 capitalize">roles: editar rol</h3>
-            <span class="text-sm text-red-500">Al editar el rol <b>{{$role->name}}</b> este cambiará para todos los usuarios que lo tengan, sea cuidadoso!</span>
+        {{-- encabezado --}}
+        <div class="bg-zinc-300">
+            {{-- titulo de seccion --}}
+            <div class="p-1 flex justify-center items-center bg-zinc-400">
+                <h3 class="text-sm font-bold text-zinc-800 uppercase inline-block">roles: editar rol</h3>
+            </div>
         </div>
-        <div class="my-2 mx-auto w-2/3 border bg-white border-zinc-200">
-            {{-- formulario, model --}}
+        {{-- formulario, model --}}
+        <div class="my-2 mx-auto w-full border bg-white border-zinc-200">
+            <span class="mx-1 p-1 text-sm text-red-500">Al editar el rol <b>{{$role->name}}</b> este cambiará para todos los usuarios que lo tengan, sea cuidadoso!</span>
             {!! Form::model($role, ['route' => ['roles.update', $role->id], 'method' => 'PUT']) !!}
             <div class="flex flex-col items-center justify-center">
                 {{-- nombre --}}

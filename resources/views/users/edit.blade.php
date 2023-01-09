@@ -1,11 +1,15 @@
 @extends('dashboard')
 @section('dashboard-content')
     <div class="w-full h-max flex flex-col p-1">
-        <div class="mx-2 flex flex-col items-start justify-start">
-            <h3 class="text-base text-zinc-800 capitalize">usuarios: editar usuario</h3>
+        {{-- encabezado --}}
+        <div class="bg-zinc-300">
+            {{-- titulo de seccion --}}
+            <div class="p-1 flex justify-center items-center bg-zinc-400">
+                <h3 class="text-sm font-bold text-zinc-800 uppercase inline-block">usuarios: editar usuario</h3>
+            </div>
         </div>
-        <div class="my-2 mx-auto w-1/2 bg-white border border-zinc-200">
-            {{-- formulario --}}
+        {{-- formulario --}}
+        <div class="my-2 mx-auto w-full bg-white border border-zinc-200">
             {!! Form::model($user, ['method' => 'PUT', 'route' => ['users.update',$user]]) !!}
             <div class="flex flex-col items-center justify-center">
                 <div class="flex items-center justify-between w-full p-2">
