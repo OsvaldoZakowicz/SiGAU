@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('cleaning_areas', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name',95);
-            $table->string('cleaning_description',200);
+            $table->string('name',95)->unique();
+            $table->text('cleaning_description');
             $table->integer('cleaning_frequency',false,true);
             $table->integer('cleaning_points',false,true);
             $table->timestamps();

@@ -25,38 +25,35 @@
                     </div>
                     {{-- descripcion --}}
                     <div class="w-full mt-2 p-2">
-                        <x-required-input-label for="cleaning_description" :value="'descripcion del área de limpieza'"
-                            title="ingrese una descripcion sobre el área de limpieza que va a crear" />
+                        <x-required-input-label for="cleaning_description" :value="'descripcion larga del área de limpieza'" title="ingrese una descripcion larga sobre el área de limpieza a crear, puede expresar como sería una buena limpieza. Máximo 650 caracteres." />
                         @error('cleaning_description')
                             <span class="text-xs text-red-600">{{ $message }}</span>
                         @enderror
-                        <textarea required name="cleaning_description" id="cleaning_description" cols="20" rows="10"
-                            class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">{{ old('cleaning_description') }}</textarea>
+                        <textarea required name="cleaning_description" id="cleaning_description" cols="20" rows="5" maxlength="650" placeholder="hasta 650 caracteres" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">{{ old('cleaning_description') }}</textarea>
                     </div>
                     <div class="flex w-full mt-2 p-2">
                         <div class="flex w-full">
                             <div class="w-1/2">
-                                <x-required-input-label for="cleaning_frequency" :value="'frecuencia esperada de la limpieza'"
-                                    title="ingrese la frecuncia con la cual se debe limpiar el área de limpieza." />
+                                <x-required-input-label for="cleaning_frequency" :value="'frecuencia esperada de la limpieza (mínimo 1 vez, máximo 10 veces)'"
+                                    title="ingrese la cantidad de veces estimada que se debe limpiar el área." />
                                 @error('cleaning_frequency')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                                <input type="number" name="cleaning_frequency" id="cleaning_frequency" min="1" max="10" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm" value="{{old('cleaning_frequency')}}">
+                                <input type="number" name="cleaning_frequency" id="cleaning_frequency" min="1" max="10" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm" value="{{old('cleaning_frequency') ?? "1"}}">
                             </div>
                             <div class="w-1/2 ml-2">
-                                <x-required-input-label for="cleaning_points" :value="'puntaje obtenible (de 5 pts. a 50 pts.)'"
-                                    title="ingrese el puntaje obtenible por completar el área de limpieza." />
+                                <x-required-input-label for="cleaning_points" :value="'puntaje obtenible (de 5 pts. a 50 pts.)'" title="ingrese el puntaje obtenible por completar el área de limpieza." />
                                 @error('cleaning_points')
                                     <span class="text-xs text-red-600">{{ $message }}</span>
                                 @enderror
-                               <input type="number" step="5" max="50" min="5" name="cleaning_points" id="cleaning_points" value="{{old('cleaning_points')}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
+                               <input type="number" step="5" max="50" min="5" name="cleaning_points" id="cleaning_points" value="{{old('cleaning_points') ?? "5"}}" class="my-1 p-1 w-full rounded-md shadow-sm border-zinc-300 focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 text-sm">
                             </div>
                         </div>
                     </div>
                     {{-- informacion --}}
                     <div class="w-full mt-2 p-2 border-b border-zinc-300">
-                        <span class="block font-medium text-sm text-gray-600">mantenga el cursor sobre el icono <i
-                                class="fa-solid fa-circle-info"></i> para mas informacion.</span>
+                        <span class="block font-medium text-sm text-gray-600">mantenga el cursor sobre el icono <i class="fa-solid fa-circle-info"></i> para mas informacion.</span>
+                        <span class="block font-medium text-sm text-gray-600">el símbolo <span class="text-red-600">*</span> indica datos obligatorios.</span>
                     </div>
                     {{-- buttons --}}
                     <div class="w-full p-2 flex items-center justify-end">

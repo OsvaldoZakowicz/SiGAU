@@ -84,7 +84,7 @@
         <table class="my-2 table-auto border border-zinc-300 border-collapse">
             <thead>
                 <tr>
-                    <x-tables.th-cell>id</x-tables.th-cell>
+                    <x-tables.th-cell class="hidden">id</x-tables.th-cell>
                     <x-tables.th-cell>área</x-tables.th-cell>
                     <x-tables.th-cell>descripción de limpieza</x-tables.th-cell>
                     <x-tables.th-cell>frecuencia de limpieza</x-tables.th-cell>
@@ -96,7 +96,7 @@
                 <tbody>
                     @foreach ($areasDeLimpieza as $areas)
                         <tr class="text-sm text-zinc-800">
-                            <x-tables.td-cell>{{ $areas->id }}</x-tables.td-cell>
+                            <x-tables.td-cell class="hidden">{{ $areas->id }}</x-tables.td-cell>
                             <x-tables.td-cell>{{ $areas->name }}</x-tables.td-cell>
                             <x-tables.td-cell>{{ $areas->cleaning_description }}</x-tables.td-cell>
                             <x-tables.td-cell>{{ $areas->cleaning_frequency }}</x-tables.td-cell>
@@ -119,7 +119,7 @@
             @else
                 <tbody>
                     <tr class="text-sm text-red-600">
-                        <x-tables.td-cell colspan="6">Sin resultados.</x-tables.td-cell>
+                        <x-tables.td-cell colspan="6">Sin resultados. Puede crear areas de limpieza accediendo al botón "registrar área"</x-tables.td-cell>
                     </tr>
                 </tbody>
             @endif
