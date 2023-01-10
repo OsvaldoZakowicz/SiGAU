@@ -9,7 +9,7 @@
         {{-- datos --}}
         <div class="px-3 py-2 w-full">
             <span class="font-semibold text-lg text-yellow-600">Atención!</span>
-            <p class="text-base text-zinc-700 font-bold">{{$question}} {{ $name }} ?</p>
+            <p class="text-base text-zinc-700 font-bold">{{$question}} <span class="uppercase">{{ $name }}</span> ?</p>
             <p class="text-sm text-zinc-700 mt-1 font-semibold">{{$message}} !</p>
         </div>
         {{$slot}}
