@@ -5,6 +5,9 @@ namespace App\Http\Controllers\House;
 use App\Http\Controllers\Controller;
 use App\Models\ServiceType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ServiceTypeController extends Controller
 {
@@ -37,14 +40,36 @@ class ServiceTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => ['required','string','max:95'],
+        //*nombres de tipos de servicios unicos
+
+        /* $this->validate($request, [
+            'name' => ['required','unique:service_types,name','string','max:95'],
             'description' => ['required','string','max:95'],
+        ]); */
+
+        $validator = Validator::make($request->all(),[
+            'name' => ['required','unique:service_types,name','regex:/^([a-zA-Z\ ]+)$/i','max:95'],
+            'description' => ['required','regex:/^([a-zA-Z\ ]+)$/i','max:95']
+        ],[
+            'required' => 'El campo :attribute es obligatorio',
+            'unique' => 'El campo :attribute ya existe para otro tipo de servicio',
+            'regex' => 'El campo :attribute debe ser texto sin numeros, acentos o simbolos',
+            'max' => 'El campo :attribute no debe superar los 95 caracteres'
         ]);
 
+        if ($validator->fails()) {
+            return redirect()
+                        ->route('servicetypes.create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        //*datos en lowercase
         $tipoServicio = new ServiceType;
-        $tipoServicio->name = $request->name;
-        $tipoServicio->description = $request->description;
+        $tipoServicio->name = Str::lower($validated['name']);
+        $tipoServicio->description = Str::lower($validated['description']);
         $tipoServicio->save();
 
         return redirect()
@@ -81,12 +106,41 @@ class ServiceTypeController extends Controller
     {
         $tipoServicio = ServiceType::find($id);
 
-        $this->validate($request, [
-            'name' => ['required', 'string', 'max:95'],
-            'description' => ['required', 'string', 'max:95'],
+        $datos = $request->all();
+
+        //*validator requiere previamente extraer datos del request
+        $validator = Validator::make($datos, [
+            'name' => [
+                'required',
+                Rule::unique('service_types','name')->ignore($tipoServicio->id),
+                'regex:/^([a-zA-Z\ ]+)$/i',
+                'max:95'
+            ],
+            'description' => [
+                'required',
+                'regex:/^([a-zA-Z\ ]+)$/i',
+                'max:95'
+            ]
+        ], [
+            'required' => 'El campo :attribute es obligatorio',
+            'unique' => 'El campo :attribute ya existe para otro tipo de servicio',
+            'regex' => 'El campo :attribute debe ser texto sin numeros, acentos o simbolos',
+            'max' => 'El campo :attribute no debe superar los 95 caracteres'
         ]);
 
-        $tipoServicio->update($request->all());
+        if ($validator->fails()) {
+            return redirect()
+                        ->route('servicetypes.edit', [$tipoServicio->id])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        //*datos en lowercase
+        $tipoServicio->name = Str::lower($validated['name']);
+        $tipoServicio->description = Str::lower($validated['description']);
+        $tipoServicio->save();
 
         return redirect()
             ->route('servicetypes.index')
@@ -95,17 +149,23 @@ class ServiceTypeController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ServiceType  $serviceType
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $tipoServicio = ServiceType::find($id);
+
+        //?el tipo de servicio esta asociado a descripciones de servicio?
+        if ($tipoServicio->service_descriptions->count() !== 0) {
+            return redirect()
+                ->route('servicetypes.show', [$tipoServicio->id])
+                ->with('error', 'el tipo de servicio ' . $tipoServicio->name . ' está siendo usado por descripciones de servicios para casas de albergue, no se puede eliminar.');
+        }
+
         $tipoServicio->delete();
 
         return redirect()
             ->route('servicetypes.index')
-            ->with('exito', 'tipo de servicio eliminado');
+            ->with('exito', 'tipo de servicio ' . $tipoServicio->name . ' fue eliminado');
     }
 }

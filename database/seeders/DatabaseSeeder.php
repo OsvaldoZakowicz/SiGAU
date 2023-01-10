@@ -30,6 +30,9 @@ class DatabaseSeeder extends Seeder
             #4 pais, provincias, localidades ARG
             CountryArgSeeder::class,
 
+            #5 tipos de servicios comunes
+            ServiceTypesSeeder::class,
+
         ]);
     }
 }

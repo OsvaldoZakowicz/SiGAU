@@ -84,7 +84,8 @@
         <table class="my-2 table-auto border border-zinc-300 border-collapse">
             <thead>
                 <tr>
-                    <x-tables.th-cell>id</x-tables.th-cell>
+                    {{-- id oculto por defecto --}}
+                    <x-tables.th-cell class="hidden">id</x-tables.th-cell>
                     <x-tables.th-cell>tipo de servicio</x-tables.th-cell>
                     <x-tables.th-cell>descripción</x-tables.th-cell>
                     <x-tables.th-cell>acciones</x-tables.th-cell>
@@ -94,7 +95,8 @@
                 <tbody>
                     @foreach ($tiposServicio as $tipoServicio)
                         <tr class="text-sm text-zinc-800">
-                            <x-tables.td-cell>{{ $tipoServicio->id }}</x-tables.td-cell>
+                            {{-- id oculto por defecto --}}
+                            <x-tables.td-cell class="hidden">{{ $tipoServicio->id }}</x-tables.td-cell>
                             <x-tables.td-cell>{{ $tipoServicio->name }}</x-tables.td-cell>
                             <x-tables.td-cell>{{ $tipoServicio->description }}</x-tables.td-cell>
                             <x-tables.td-cell>
@@ -115,7 +117,7 @@
             @else
                 <tbody>
                     <tr class="text-sm text-red-600">
-                        <x-tables.td-cell colspan="6">Sin resultados.</x-tables.td-cell>
+                        <x-tables.td-cell colspan="6">Sin resultados. Puede crear tipos de servicios accediendo al botón "registrar tipo"</x-tables.td-cell>
                     </tr>
                 </tbody>
             @endif
