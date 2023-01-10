@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\AmbientType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AmbientTypeController extends Controller
 {
@@ -40,15 +42,30 @@ class AmbientTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => ['required','string','max:95'],
-            'description' => ['required','string','max:95'],
+        $validator = Validator::make($request->all(),[
+            'name' => ['required','unique:ambient_types,name','regex:/^([a-zA-Z,.ñ\ ]{1,95})$/i','max:95'],
+            'description' => ['required','regex:/^([a-zA-Z,.ñ\ ]{1,95})$/i','max:95'],
+        ],[
+            'required' => 'El campo :attribute es obligatorio',
+            'unique' => 'El campo :attribute ya existe para otro tipo de ambiente',
+            'regex' => 'El campo :attribute debe ser texto sin numeros, acentos o simbolos',
+            'max' => 'El campo :attribute no debe superar los 95 caracteres'
         ]);
 
-        $ambientType = new AmbientType;
-        $ambientType->name = $request->name;
-        $ambientType->description = $request->description;
-        $ambientType->save();
+        if ($validator->fails()) {
+            return redirect()
+                        ->route('ambienttypes.create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        //*datos en lowercase
+        $tipoAmbiente = new AmbientType;
+        $tipoAmbiente->name = Str::lower($validated['name']);
+        $tipoAmbiente->description = Str::lower($validated['description']);
+        $tipoAmbiente->save();
 
         return redirect()
             ->route('ambienttypes.index')
@@ -85,13 +102,35 @@ class AmbientTypeController extends Controller
     {
         $tipoAmbiente = AmbientType::find($id);
 
-        $this->validate($request, [
-            'name' => ['required','string','max:95'],
-            'description' => ['required','string','max:95'],
+        $validator = Validator::make($request->all(),[
+            'name' => [
+                'required',
+                Rule::unique('ambient_types','name')->ignore($tipoAmbiente->id),
+                'regex:/^([a-zA-Z,.ñ\ ]{1,95})$/i',
+                'max:95'],
+            'description' => [
+                'required',
+                'regex:/^([a-zA-Z,.ñ\ ]{1,95})$/i',
+                'max:95'],
+        ],[
+            'required' => 'El campo :attribute es obligatorio',
+            'unique' => 'El campo :attribute ya existe para otro tipo de ambiente',
+            'regex' => 'El campo :attribute debe ser texto sin numeros, acentos o simbolos',
+            'max' => 'El campo :attribute no debe superar los 95 caracteres'
         ]);
 
+        if ($validator->fails()) {
+            return redirect()
+                        ->route('ambienttypes.edit', [$tipoAmbiente->id])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
-        $tipoAmbiente->update($request->all());
+        $validated = $validator->validated();
+
+        $tipoAmbiente->name = Str::lower($validated['name']);
+        $tipoAmbiente->description = Str::lower($validated['description']);
+        $tipoAmbiente->save();
 
         return redirect()
             ->route('ambienttypes.index')
@@ -106,10 +145,17 @@ class AmbientTypeController extends Controller
     public function destroy($id)
     {
         $tipoAmbiente = AmbientType::find($id);
+
+        if ($tipoAmbiente->ambient_descriptions->count() !== 0) {
+            return redirect()
+                ->route('ambienttypes.show', [$tipoAmbiente->id])
+                ->with('error','el tipo de ambiente ' . $tipoAmbiente->name . ' está siendo usado por descripciones de ambientes para casas de albergue, no se puede eliminar.');
+        }
+
         $tipoAmbiente->delete();
 
         return redirect()
             ->route('ambienttypes.index')
-            ->with('exito', 'tipo de ambiente eliminado');
+            ->with('exito', 'tipo de ambiente ' . $tipoAmbiente->name . ' fue eliminado');
     }
 }

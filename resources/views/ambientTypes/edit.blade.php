@@ -17,7 +17,7 @@
                     {{-- nombre --}}
                     <div class="w-full mt-2 p-2">
                         <x-required-input-label for="name" :value="'nombre del tipo de ambiente'"
-                            title="ingrese el nombre del tipo de ambiente a crear" />
+                            title="ingrese el nombre del tipo de ambiente" />
                         @error('name')
                             <span class="text-xs text-red-600">{{ $message }}</span>
                         @enderror
@@ -27,7 +27,7 @@
                     {{-- descripcion --}}
                     <div class="w-full mt-2 p-2">
                         <x-required-input-label for="description" :value="'descripcion del tipo de ambiente'"
-                            title="ingrese una descripcion sobre el tipo de ambiente que va a crear" />
+                            title="ingrese una descripcion sobre el tipo de ambiente" />
                         @error('description')
                             <span class="text-xs text-red-600">{{ $message }}</span>
                         @enderror
@@ -36,8 +36,8 @@
                     </div>
                     {{-- informacion --}}
                     <div class="w-full mt-2 p-2 border-b border-zinc-300">
-                        <span class="block font-medium text-sm text-gray-600">mantenga el cursor sobre el icono <i
-                                class="fa-solid fa-circle-info"></i> para mas informacion.</span>
+                        <span class="block font-medium text-sm text-gray-600">mantenga el cursor sobre el icono <i class="fa-solid fa-circle-info"></i> para mas informacion.</span>
+                        <span class="block font-medium text-sm text-gray-600">el símbolo <span class="text-red-600">*</span> indica datos obligatorios.</span>
                     </div>
                     {{-- buttons --}}
                     <div class="w-full p-2 flex items-center justify-end">

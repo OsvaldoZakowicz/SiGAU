@@ -84,7 +84,7 @@
         <table class="table-auto my-2 border border-zinc-300 border-collapse">
             <thead>
                 <tr>
-                    <x-tables.th-cell>id</x-tables.th-cell>
+                    <x-tables.th-cell class="hidden">id</x-tables.th-cell>
                     <x-tables.th-cell>tipo de ambiente</x-tables.th-cell>
                     <x-tables.th-cell>descripción</x-tables.th-cell>
                     <x-tables.th-cell>acciones</x-tables.th-cell>
@@ -94,7 +94,7 @@
                 <tbody>
                     @foreach ($tiposAmbiente as $tipoAmbiente)
                         <tr class="text-sm text-zinc-800">
-                            <x-tables.td-cell>{{ $tipoAmbiente->id }}</x-tables.td-cell>
+                            <x-tables.td-cell class="hidden">{{ $tipoAmbiente->id }}</x-tables.td-cell>
                             <x-tables.td-cell>{{ $tipoAmbiente->name }}</x-tables.td-cell>
                             <x-tables.td-cell>{{ $tipoAmbiente->description }}</x-tables.td-cell>
                             <x-tables.td-cell>
@@ -115,7 +115,7 @@
             @else
                 <tbody>
                     <tr class="text-sm text-red-600">
-                        <x-tables.td-cell colspan="6">Sin resultados.</x-tables.td-cell>
+                        <x-tables.td-cell colspan="6">Sin resultados. Puede crear tipos de ambientes accediendo al botón "registrar tipo"</x-tables.td-cell>
                     </tr>
                 </tbody>
             @endif

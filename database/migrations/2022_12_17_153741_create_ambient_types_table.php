@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('ambient_types', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name', 95);
+            $table->string('name', 95)->unique();
             $table->string('description', 95);
             $table->timestamps();
         });
